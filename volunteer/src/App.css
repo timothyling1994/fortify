@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+.App{
+  width:100vw;
+  height:100vh;
+  font-family: 'Noto Sans', sans-serif;
+  font-size:45px;
+  margin:0;
+}
+
+.Header{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  border-bottom:solid black 2px;
+}
+
+.title{
+  padding:0.25em 0.25em 0.25em 0.5em;
+
+}
+
+.header-btn-container{
+  margin-left:auto;
+  margin-right:0.5em;
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  font-size:30px;
+}
+
+.inbox,.request-help-btn,.profile-btn{
+  padding:0.5em;
+}
+
+.inbox,.profile-btn{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
