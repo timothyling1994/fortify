@@ -6,6 +6,7 @@
   font-family: 'Noto Sans', sans-serif;
   font-size:45px;
   margin:0;
+  overflow: hidden;
 }
 
 .Header{
@@ -14,6 +15,7 @@
   align-items: center;
   width:100%;
   border-bottom:solid black 2px;
+  height:10vh;
 }
 
 .title{
@@ -27,7 +29,7 @@
   display:flex;
   justify-content: center;
   align-items:center;
-  font-size:30px;
+  font-size:25px;
 }
 
 .inbox,.request-help-btn,.profile-btn{
@@ -38,4 +40,78 @@
   display:flex;
   justify-content: center;
   align-items: center;
+}
+
+.main-content{
+  display:flex;
+  height:90vh;
+  width:100vw;
+}
+.DeliveriesPanel{
+  display:flex;
+  align-content: flex-start;
+  flex-wrap:wrap;
+  width:35vw;
+  height:100%;
+  font-size:27px;
+  overflow:scroll;
+}
+
+
+.delivery-btn-container{
+  display:flex;
+  align-items:center;
+  width:100%;
+  height:2em;
+  padding:0.25em;
+
+}
+
+.delivery-requests-label, .my-deliveries-label{
+  width:50%;
+  border:solid black 1px;
+  text-align:center;
+}
+
+
+
+.MapImage {
+  height:90vh;
+  width:65vw;
+  position: relative;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.delivery-details{
+  display:flex;
+  flex-wrap:wrap;
+  width:100%;
+}
+
+.entry{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content: center;
+  width:100%;
+  padding:0.5em;
+  border:solid black 3px;
+}
+.entry-location,.entry-date-container{
+  width:100%;
+  font-size:20px;
+  text-align:center;
+}
+
+.entry-date-container{
+  display:flex;
+  padding:0.5em;
+  width:100%;
+  justify-content: center;
+  font-size:15px;
+}
+
+.entry-date-created,.entry-volunteer-date{
+  width:50%;
 }
