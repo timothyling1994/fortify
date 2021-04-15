@@ -342,3 +342,11 @@
   font-family: 'Noto Sans', sans-serif;
   font-size:20px;
 }
+
+#locations{
+  position: absolute;
+  background-color: lightgrey;
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  z-index:1;
+}

@@ -6,14 +6,33 @@ import {useState} from "react";
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
+import uniqid from "uniqid";
+import {ToastContainer,toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function RequestModal (props) {
 
 	const [requestDate,setRequestDate] = useState(new Date());
+
+	const invalid_form = (message) => toast.error(message, {
+		position: "top-right",
+		autoClose: 3000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		draggable: true,
+		progress: undefined,
+	});//toast("Invalid Address!");
+
+	let styles = {
+		fontSize: '20px',
+		fontFamily: 'Noto Sans, sans-serif',
+	}
 	
 	const mbxGeoCoding = require('@mapbox/mapbox-sdk/services/geocoding');
 	const geoCodingService = mbxGeoCoding({ accessToken: 'pk.eyJ1IjoidGltb3RoeWxpbmcxOTk0IiwiYSI6ImNrbmZuOWFtbzFtM2YycG1pbTJkeWIwOXQifQ.Yhzp9YEOq_oqZPXQ28jKaw' });
+
+	const [autoCompleteAddresses, setAutoCompleteAddresses] = useState([]);
 
 	const autoCompleteLocation = (query) => {
 		geoCodingService.forwardGeocode({
@@ -28,6 +47,7 @@ function RequestModal (props) {
 		  .then(response => {
 		    const match = response.body;
 		    console.log(match);
+		    setAutoCompleteAddresses(match.features);
 	  	});
 	};
 
@@ -35,14 +55,70 @@ function RequestModal (props) {
 		props.setShowRequestModal(false);
 	};
 
+	const addRequest = () => {
+
+	};
+
+	const formValidation = () => {
+
+		let request_location_input = document.querySelector(".request-location-input").value;
+		let request_details_input = document.querySelector(".request-details-input").value;
+		let request_date_input = document.querySelector(".request-date-input").value;
+		
+		let isValidForm = false;
+
+		if(request_location_input !== '' && request_details_input !== '' && request_date_input !== '')
+		{
+			geoCodingService.forwardGeocode({
+			  query: request_location_input,
+			  mode:"mapbox.places",
+			  types:['country','address','region','postcode','place','locality','district','place','poi','neighborhood'],
+			  limit:1,
+			  proximity: [-122.414, 37.776]
+			})
+			  .send()
+			  .then(response => {
+			    const match = response.body;
+			    if(match.features[0].place_name !== request_location_input)
+				{
+					invalid_form('Invalid Address!');
+				}
+						   
+		  	});
+		}
+		else
+		{
+			if(request_location_input == '')
+			{
+				invalid_form('Invalid Address!');
+			}
+
+			if(request_details_input == '')
+			{
+				invalid_form('Invalid Details!');
+			}
+
+			if(request_date_input == '')
+			{
+				invalid_form('Invalid Date!');
+			}
+		}
+
+		if(isValidForm)
+		{
+			addRequest();
+		};	
+	};
+
 	return (
 		<div className="RequestModal">
+			<ToastContainer style={styles}/>
 			<div className="request-modal-container">
 				<div className="request-category-label">What are you requesting?</div>
 				<div className="request-main-category-container">
 					<div className="request-category-container">
 						<div className="request-category-image">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tools-kitchen-2" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffbf00" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-tools-kitchen-2" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
 							  <path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12zm0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3" />
 							</svg>
@@ -51,7 +127,7 @@ function RequestModal (props) {
 					</div>
 					<div className="request-category-container">
 						<div className="request-category-image">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pill" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffbf00" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-pill" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
 							  <path d="M4.5 12.5l8 -8a4.94 4.94 0 0 1 7 7l-8 8a4.94 4.94 0 0 1 -7 -7" />
 							  <line x1="8.5" y1="8.5" x2="15.5" y2="15.5" />
@@ -61,7 +137,7 @@ function RequestModal (props) {
 					</div>
 					<div className="request-category-container">
 						<div className="request-category-image">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-walk" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffbf00" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-walk" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
 							  <circle cx="13" cy="4" r="1" />
 							  <line x1="7" y1="21" x2="10" y2="17" />
@@ -74,7 +150,7 @@ function RequestModal (props) {
 
 					<div className="request-category-container">
 						<div className="request-category-image">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-car" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffbf00" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-car" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
 							  <circle cx="7" cy="17" r="2" />
 							  <circle cx="17" cy="17" r="2" />
@@ -86,7 +162,7 @@ function RequestModal (props) {
 
 					<div className="request-category-container">
 						<div className="request-category-image">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tools" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffbf00" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-tools" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
 							  <path d="M3 21h4l13 -13a1.5 1.5 0 0 0 -4 -4l-13 13v4" />
 							  <line x1="14.5" y1="5.5" x2="18.5" y2="9.5" />
@@ -101,7 +177,7 @@ function RequestModal (props) {
 
 					<div className="request-category-container">
 						<div className="request-category-image">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-package" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffbf00" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-package" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
 							  <polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3" />
 							  <line x1="12" y1="12" x2="20" y2="7.5" />
@@ -115,7 +191,14 @@ function RequestModal (props) {
 				</div>
 				<div className="request-location-container">
 					<div className="request-location-label">Location:</div>
-					<input className="request-location-input" placeholder="400 Brannan Street" onChange={()=>{autoCompleteLocation(document.querySelector(".request-location-input").value)}}/>
+					
+					<input className="request-location-input" list="locations" placeholder="400 Brannan Street" onChange={()=>{autoCompleteLocation(document.querySelector(".request-location-input").value)}}/>
+
+					<datalist id="locations">
+						{autoCompleteAddresses.map((address)=>{
+							return <option key={uniqid()} value={address.place_name}/>	
+						})}
+					</datalist>
 				</div>
 				<div className="request-details-container">
 					<div className="request-details-label">Details:</div>
@@ -126,6 +209,7 @@ function RequestModal (props) {
 					<Flatpickr
 				        data-enable-time
 				        value={requestDate}
+				        className="request-date-input"
 				        options={{ minDate: new Date() }} 
 				        onChange={date => {
 				          setRequestDate(date);
@@ -133,7 +217,7 @@ function RequestModal (props) {
 				    />
 				</div>
 				<div className="request-delivery-btn-container">
-					<div className="request-delivery-btn">Make Request</div>
+					<div className="request-delivery-btn" onClick={formValidation}>Make Request</div>
 					<div className="request-cancel-btn" onClick={closeRequestModal}>Cancel</div>
 				</div>
 			</div>
