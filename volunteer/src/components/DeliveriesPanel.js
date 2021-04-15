@@ -76,8 +76,8 @@ function DeliveriesPanel () {
 		<div className="DeliveriesPanel">
 			{displayEntryModal ? <EntryModal deliveryRequests={deliveryRequests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
 			<div className="delivery-btn-container">
-				<div className={requestAttributes.join(" ")} onClick={()=>{toggleDeliveryDisplay(true)}}>Delivery Requests</div>
-				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{toggleDeliveryDisplay(false)}}>My Deliveries</div>
+				<div className={requestAttributes.join(" ")} onClick={()=>{toggleDeliveryDisplay(true)}}>Task Requests</div>
+				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{toggleDeliveryDisplay(false)}}>My Tasks</div>
 			</div>
 			<div className="delivery-details">
 				{showDeliveryRequests ? deliveryRequests.map((entry)=>{

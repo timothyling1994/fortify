@@ -36,6 +36,21 @@
   padding:0.5em;
 }
 
+.inbox svg:hover{
+  fill:#a905b6;
+}
+
+.request-help-btn{
+  color:#7bc62d;
+}
+
+.request-help-btn:hover{
+  animation:enlarge 1s;
+}
+.profile-btn svg:hover{
+  fill:#009988;;
+}
+
 .inbox,.profile-btn{
   display:flex;
   justify-content: center;
@@ -92,6 +107,11 @@
   left: 0;
   bottom: 0;
 }
+
+.display{
+  font-size:15px;
+  text-align: center;
+}
 .delivery-details{
   display:flex;
   flex-wrap:wrap;
@@ -105,6 +125,10 @@
   width:100%;
   padding:0.5em;
   border-top:solid black 3px;
+}
+
+.entry:hover{
+  background-color: #ffbf00;
 }
 .entry-location,.entry-date-container{
   width:100%;
@@ -125,10 +149,10 @@
 }
 
 .highlight{
-  background-color: orange;
+  background-color: #ffbf00;
 }
 
-.EntryModal{
+.EntryModal,.RequestModal{
   position: fixed;
   z-index: 2;
   left: 0;
@@ -150,10 +174,24 @@
   background-color: #fefefe;
   border: 1px solid #888;
   width:50%;
-  height:50%;  
+}
+
+.request-modal-container{
+  display:flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  justify-content: center;
+  align-content: center;
+  margin: 1% auto;
+  background-color: #fefefe;
+  border: 1px solid #888;
+  width:60%;
+  overflow:auto;
+  z-index: 2;
 }
 
 .modal-taskName{
+  padding:0.5em;
   font-size:40px;
 }
 
@@ -165,7 +203,7 @@
   display:flex;
   width:100%;
   font-size:20px;
-  margin-top:0.5em;
+  margin-top:2em;
 }
 
 .modal-date-posted{
@@ -182,7 +220,7 @@
   display:flex;
   justify-content: center;
   width:100%;
-  margin-top:1.75em;
+  margin-top:1em;
 }
 
 .modal-submit-btn,.modal-cancel-btn{
@@ -191,11 +229,11 @@
   padding:0.25em;
 } 
 .modal-submit-btn:hover{
-  background-color: green;
+  background-color: #7bc62d;
 }
 
 .modal-cancel-btn:hover{
-  background-color: red;
+  background-color: #ff4500;
 }
 
 .marker{
@@ -205,4 +243,102 @@
   height: 50px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.request-category-label{
+  width:100%;
+  text-align:center;
+  font-size:45px;
+  padding-top:0.25em;
+}
+
+.request-main-category-container{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content: center;
+  align-items: center;
+  padding-top:0.5em;
+  padding-bottom:0.5em;
+}
+
+
+.request-category-container{
+  display:flex;
+  flex-wrap:wrap;
+  width:15vw;
+  justify-content: center;
+  align-items: center;
+  padding:0.25em;
+  border: solid black 1px;
+  font-size:30px;
+  margin:0.05em;
+  background-color: white;
+}
+
+.request-category-image{
+  width:100%;
+  text-align: center;
+}
+
+.request-category-container:hover{
+  animation:enlarge 1s;
+}
+
+@keyframes enlarge {
+  0%{transform:scale(1);}
+  50%{transform:scale(1.15);}
+  100%{transform:scale(1);}
+}
+.request-location-container,.request-details-container,.request-date-container{
+  display:flex;
+  justify-content: flex-start;
+  width:100%;
+  padding:0.25em;
+}
+
+.request-delivery-btn-container{
+  display:flex;
+  justify-content: center;
+  width:100%;
+  padding:0.25em;
+}
+.request-location-label,.request-details-label,.request-date-label{
+  text-align:right;
+  font-size:30px;
+  width:5em;
+  margin-right:0.5em;
+}
+
+.request-details-date{
+  text-align:center;
+  width:100%;
+}
+.request-date-container{
+  text-align: center;
+  width:100%;
+}
+.request-delivery-btn,.request-cancel-btn{
+  border:solid black 2px;
+  padding:0.1em;
+  font-size:30px;
+  margin:0.5em;
+}
+
+.request-delivery-btn:hover{
+  background-color: #7bc62d;
+}
+
+.request-cancel-btn:hover{
+  background-color: #ff4500;
+}
+
+.request-location-input,.request-details-input{
+  flex-grow:1;
+  font-size:20px;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.Flatpickr{
+  font-family: 'Noto Sans', sans-serif;
+  font-size:20px;
 }

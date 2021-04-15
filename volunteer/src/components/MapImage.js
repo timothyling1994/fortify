@@ -38,8 +38,8 @@ function MapImage(props){
 			      coordinates: [-122.414, 37.776]
 			    },
 			    properties: {
-			      title: 'Mapbox',
-			      description: 'San Francisco, California'
+			      title: 'Pick up medicine from pharmacy',
+			      description: '415 Hayes Street San Francisco, CA 94104'
 			    }
 			  }]
 			};
@@ -48,9 +48,11 @@ function MapImage(props){
 				let el = document.createElement('div');
 				el.className="marker";
 				//el.style.backgroundImage = `url(${Icon})`;
-				
-
-				new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).addTo(map);
+				new mapboxgl.Marker(el)
+				  .setLngLat(marker.geometry.coordinates)
+				  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+				    .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+				  .addTo(map);
 			})
 
 		});

@@ -1,11 +1,16 @@
 import React from "react";
 
 function Header (props) {
+
+	const openRequestModal = ()=>{
+		props.setShowRequestModal(true);
+	};
+
 	return (
 		<div className="Header">
 			<div className="title">Volunteer.Me</div>
 			<div className="header-btn-container">
-				<div className="request-help-btn"> Request Help</div>
+				<div className="request-help-btn" onClick={openRequestModal}> Request Help</div>
 				<div className="inbox">
 					<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-mailbox" width="30" height="30" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#000000" fill="none" strokeLinecap="round" strokeLinejoin="round">
 					  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
