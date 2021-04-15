@@ -1,7 +1,7 @@
 import react from "react";
 import "flatpickr/dist/themes/material_green.css";
 import Flatpickr from "react-flatpickr";
-import {useState} from "react";
+import {useState,useEffect} from "react";
 
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -9,11 +9,14 @@ import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 import uniqid from "uniqid";
 import {ToastContainer,toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import firebase from "firebase";
 
 
 function RequestModal (props) {
 
 	const [requestDate,setRequestDate] = useState(new Date());
+	const [validForm,setValidForm] = useState(false);
+	const [currentForm,setCurrentForm] = useState({});
 
 	const invalid_form = (message) => toast.error(message, {
 		position: "top-right",
@@ -56,38 +59,86 @@ function RequestModal (props) {
 	};
 
 	const addRequest = () => {
-
+		console.log(currentForm);
+		if(Object.keys(currentForm).length !== 0)
+		{
+			firebase.firestore().collection('requests').doc("myAccountId").collection('requestObj').add({
+			category:currentForm.request_category_input,
+			coords:currentForm.request_location_coords,
+			date:currentForm.request_date_input,
+			details:currentForm.request_details_input,
+			location:currentForm.request_location_input,
+			assignedVolunteer:"",
+			});
+		}
 	};
 
-	const formValidation = () => {
+	const addCategoryHighlight = (event) => {
+		
+		let nodelist = document.querySelectorAll(".request-category-container");
+		nodelist.forEach(node=>{
+			if(node.classList.contains("request-category-highlight"))
+			{
+				node.classList.remove("request-category-highlight");
+			}
+		});
+		event.target.closest(".request-category-container").classList.add("request-category-highlight");
+	};
 
+	const formValidation = async () => {
+
+		let request_selected_category = document.querySelector(".request-category-highlight");
 		let request_location_input = document.querySelector(".request-location-input").value;
 		let request_details_input = document.querySelector(".request-details-input").value;
 		let request_date_input = document.querySelector(".request-date-input").value;
-		
-		let isValidForm = false;
+		let request_location_coords = [];
 
-		if(request_location_input !== '' && request_details_input !== '' && request_date_input !== '')
+		if(request_location_input !== '' && request_details_input !== '' && request_date_input !== '' && request_selected_category !== null)
 		{
-			geoCodingService.forwardGeocode({
+			let response = await geoCodingService.forwardGeocode({
 			  query: request_location_input,
 			  mode:"mapbox.places",
-			  types:['country','address','region','postcode','place','locality','district','place','poi','neighborhood'],
-			  limit:1,
+			  types:['address','poi'],
+			  limit:5,
 			  proximity: [-122.414, 37.776]
-			})
-			  .send()
-			  .then(response => {
-			    const match = response.body;
-			    if(match.features[0].place_name !== request_location_input)
-				{
-					invalid_form('Invalid Address!');
-				}
-						   
-		  	});
+			}).send();
+
+			const match = response.body;
+
+			let isExactMatch = false;
+
+		    for (let i=0; i<match.features.length;i++)
+		    {
+		    	if (match.features[i].place_name == request_location_input)
+		    	{
+		    		isExactMatch = true;
+		    		request_location_coords = [...match.features[i].geometry.coordinates];
+
+		    		let request_category_input = request_selected_category.textContent;
+
+		    		setCurrentForm({
+						request_location_input,
+						request_details_input,
+						request_date_input,
+						request_category_input,
+						request_location_coords,
+					});
+
+		    		setValidForm(true);
+		    	}
+		    }
+
+		    if(!isExactMatch)
+			{
+				invalid_form('Invalid Address!');
+			}
 		}
 		else
 		{
+			if(request_selected_category == null)
+			{
+				invalid_form('Please select category!');
+			}
 			if(request_location_input == '')
 			{
 				invalid_form('Invalid Address!');
@@ -102,30 +153,30 @@ function RequestModal (props) {
 			{
 				invalid_form('Invalid Date!');
 			}
-		}
 
-		if(isValidForm)
-		{
-			addRequest();
-		};	
+		}	
 	};
+
+	useEffect(()=>{
+		addRequest();
+	},[currentForm]);
 
 	return (
 		<div className="RequestModal">
 			<ToastContainer style={styles}/>
 			<div className="request-modal-container">
-				<div className="request-category-label">What are you requesting?</div>
+				<div className="request-category-header">What are you requesting?</div>
 				<div className="request-main-category-container">
-					<div className="request-category-container">
+					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">
 							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-tools-kitchen-2" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
 							  <path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12zm0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3" />
 							</svg>
 						</div>
-						<div className="request-category-groceries-label">Groceries</div>
+						<div className="request-category-label">Groceries</div>
 					</div>
-					<div className="request-category-container">
+					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">
 							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-pill" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -133,9 +184,9 @@ function RequestModal (props) {
 							  <line x1="8.5" y1="8.5" x2="15.5" y2="15.5" />
 							</svg>
 						</div>
-						<div className="request-category-medicine-label">Medicine</div>
+						<div className="request-category-label">Medicine</div>
 					</div>
-					<div className="request-category-container">
+					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">
 							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-walk" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -145,10 +196,10 @@ function RequestModal (props) {
 							  <path d="M6 12l2 -3l4 -1l3 3l3 1" />
 							</svg>
 						</div>
-						<div className="request-category-dog-label">Dog Walking</div>
+						<div className="request-category-label">Dog Walking</div>
 					</div>
 
-					<div className="request-category-container">
+					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">
 							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-car" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -157,10 +208,10 @@ function RequestModal (props) {
 							  <path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5" />
 							</svg>
 						</div>
-						<div className="request-category-transportation-label">Transportation</div>
+						<div className="request-category-label">Transportation</div>
 					</div>
 
-					<div className="request-category-container">
+					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">
 							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-tools" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -172,10 +223,10 @@ function RequestModal (props) {
 							  <line x1="16" y1="17" x2="14.5" y2="18.5" />
 							</svg>
 						</div>
-						<div className="request-category-assembly-label">Assembly</div>
+						<div className="request-category-label">Assembly</div>
 					</div>
 
-					<div className="request-category-container">
+					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">
 							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-package" width="50" height="50" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffbf00" fill="none" strokeLinecap="round" strokeLinejoin="round">
 							  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -186,7 +237,7 @@ function RequestModal (props) {
 							  <line x1="16" y1="5.25" x2="8" y2="9.75" />
 							</svg>
 						</div>
-						<div className="request-category-other-label">Other</div>
+						<div className="request-category-label">Other</div>
 					</div>
 				</div>
 				<div className="request-location-container">

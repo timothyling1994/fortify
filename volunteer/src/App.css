@@ -245,7 +245,7 @@
   cursor: pointer;
 }
 
-.request-category-label{
+.request-category-header{
   width:100%;
   text-align:center;
   font-size:45px;
@@ -282,6 +282,10 @@
 
 .request-category-container:hover{
   animation:enlarge 1s;
+}
+
+.request-category-highlight{
+  border: solid #ffbf00 2px;
 }
 
 @keyframes enlarge {
