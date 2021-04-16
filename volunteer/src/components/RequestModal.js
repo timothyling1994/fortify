@@ -25,7 +25,7 @@ function RequestModal (props) {
 		closeOnClick: true,
 		draggable: true,
 		progress: undefined,
-	});//toast("Invalid Address!");
+	});
 
 	let styles = {
 		fontSize: '20px',

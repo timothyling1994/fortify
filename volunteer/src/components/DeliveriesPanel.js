@@ -4,57 +4,14 @@ import uniqid from "uniqid";
 import EntryModal from "./EntryModal.js"
 import firebase from "firebase";
 
-function DeliveriesPanel () {
-
-	let requestObj1 = {
-
-		entryId: uniqid(),
-		taskName: "Pick up medicine from pharmacy",
-		additionalDetails: "I have auto-immune disease, please leave outside door",
-		location: "415 Hayes Street San Francisco, CA 94104",
-		requesterId: "456",
-		volunteerId: "999",
-		date_posted: "4/12/2021",
-		volunteer_date: "4/14/2021",
-		volunteer_time: "4:00 pm"
-
-	};
-
-	let requestObj2 = {
-
-		entryId: uniqid(),
-		taskName: "Pick up vaccines from pharmacy",
-		additionalDetails: "I have auto-immune disease, please leave outside door",
-		location: "415 Hayes Street San Francisco, CA 94104",
-		requesterId: "456",
-		volunteerId: "999",
-		date_posted: "4/12/2021",
-		volunteer_date: "4/14/2021",
-		volunteer_time: "4:00 pm"
-
-	};
+function DeliveriesPanel (props) {
 
 	const [showDeliveryRequests,setShowDeliveryRequests] = useState(true);
-	const [deliveryRequests, setDeliveryRequests] = useState([]);
 	const [myDeliveries, setMyDeliveries] = useState([]);
 	const [requestAttributes,setRequestAttributes] = useState(["delivery-requests-label"]);
 	const [myDeliveriesAttributes,setMyDeliveriesAttributes] = useState(["my-deliveries-label"]);
 	const [displayEntryModal,setDisplayEntryModal] = useState(false);
 	const [currentEntryId,setCurrentEntryId] = useState("");
-
-	const initDeliveryPanel = () => {
-
-		let requestObjArr = [];
-
-		firebase.firestore().collection('requests').get().then((querySnapshot) =>{
-			querySnapshot.forEach((doc)=>{
-				requestObjArr.push(doc.data());
-			});
-			setDeliveryRequests(requestObjArr);
-			console.log(requestObjArr);
-		});
-	
-	};
 
 	const toggleDeliveryDisplay = (value) => {
 		setShowDeliveryRequests(value);
@@ -78,9 +35,6 @@ function DeliveriesPanel () {
 		highlightDiv();
 	},[showDeliveryRequests]);
 
-	useEffect(()=>{
-		initDeliveryPanel();
-	},[]);
 
 	const openEntryModal = (entryId) => {
 		setCurrentEntryId(entryId);
@@ -93,13 +47,13 @@ function DeliveriesPanel () {
 
 	return (
 		<div className="DeliveriesPanel">
-			{displayEntryModal ? <EntryModal deliveryRequests={deliveryRequests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
+			{displayEntryModal ? <EntryModal requests={props.requests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
 			<div className="delivery-btn-container">
 				<div className={requestAttributes.join(" ")} onClick={()=>{toggleDeliveryDisplay(true)}}>Task Requests</div>
 				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{toggleDeliveryDisplay(false)}}>My Tasks</div>
 			</div>
 			<div className="delivery-details">
-				{showDeliveryRequests ? deliveryRequests.map((entry)=>{
+				{showDeliveryRequests ? props.requests.map((entry)=>{
 					return (
 						<div className="entry" key={entry.entryId} onClick={()=>{openEntryModal(entry.entryId)}}>
 							<div className="entry-taskName">{entry.taskName}</div>

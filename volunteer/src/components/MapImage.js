@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 import Icon from "maki/icons/marker-15.svg";
+import firebase from "firebase";
 
 
 function MapImage(props){
@@ -14,11 +15,12 @@ function MapImage(props){
 	const [lat, setLat] = useState(37.76);
 	const [zoom, setZoom] = useState(11.8);
 
-
 	mapboxgl.workerClass = MapboxWorker;
 	mapboxgl.accessToken = 'pk.eyJ1IjoidGltb3RoeWxpbmcxOTk0IiwiYSI6ImNrbmZuOWFtbzFtM2YycG1pbTJkeWIwOXQifQ.Yhzp9YEOq_oqZPXQ28jKaw';
 
+
 	useEffect(() => {
+
 		const map = new mapboxgl.Map({
 			container: mapContainer.current,
 			style: 'mapbox://styles/mapbox/streets-v11',
@@ -26,28 +28,32 @@ function MapImage(props){
 			zoom: zoom
 		});
 
+		let featuresArr = [];
+		props.requests.forEach((request)=>{
+			featuresArr.push({
+				type: 'Feature',
+			    geometry: {
+			      type: 'Point',
+			      coordinates: request.coords
+			    },
+			    properties: {
+			      title: request.taskName,
+			      description: request.location
+			    }
+			})
+		});
+
 		map.on('load',function(){
 
 			let geojson = {
 			  type: 'FeatureCollection',
-			  features: [
-			  {
-			    type: 'Feature',
-			    geometry: {
-			      type: 'Point',
-			      coordinates: [-122.414, 37.776]
-			    },
-			    properties: {
-			      title: 'Pick up medicine from pharmacy',
-			      description: '415 Hayes Street San Francisco, CA 94104'
-			    }
-			  }]
+			  features: featuresArr
 			};
 
 			geojson.features.forEach(function(marker){
 				let el = document.createElement('div');
 				el.className="marker";
-				//el.style.backgroundImage = `url(${Icon})`;
+	
 				new mapboxgl.Marker(el)
 				  .setLngLat(marker.geometry.coordinates)
 				  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
@@ -66,7 +72,6 @@ function MapImage(props){
 		return () => map.remove();
 	}, []);
 
-	//<div className="display">lat:{lat} long:{lng} zoom:{zoom}</div>
 	return(
 		<div>
 			<div className="display">lat:{lat} long:{lng} zoom:{zoom}</div>
