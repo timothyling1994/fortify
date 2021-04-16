@@ -2,6 +2,7 @@ import React from "react";
 import {useState,useEffect} from "react";
 import uniqid from "uniqid";
 import EntryModal from "./EntryModal.js"
+import firebase from "firebase";
 
 function DeliveriesPanel () {
 
@@ -34,12 +35,26 @@ function DeliveriesPanel () {
 	};
 
 	const [showDeliveryRequests,setShowDeliveryRequests] = useState(true);
-	const [deliveryRequests, setDeliveryRequests] = useState([requestObj1,requestObj2]);
+	const [deliveryRequests, setDeliveryRequests] = useState([]);
 	const [myDeliveries, setMyDeliveries] = useState([]);
 	const [requestAttributes,setRequestAttributes] = useState(["delivery-requests-label"]);
 	const [myDeliveriesAttributes,setMyDeliveriesAttributes] = useState(["my-deliveries-label"]);
 	const [displayEntryModal,setDisplayEntryModal] = useState(false);
 	const [currentEntryId,setCurrentEntryId] = useState("");
+
+	const initDeliveryPanel = () => {
+
+		let requestObjArr = [];
+
+		firebase.firestore().collection('requests').get().then((querySnapshot) =>{
+			querySnapshot.forEach((doc)=>{
+				requestObjArr.push(doc.data());
+			});
+			setDeliveryRequests(requestObjArr);
+			console.log(requestObjArr);
+		});
+	
+	};
 
 	const toggleDeliveryDisplay = (value) => {
 		setShowDeliveryRequests(value);
@@ -62,6 +77,10 @@ function DeliveriesPanel () {
 	useEffect(()=>{
 		highlightDiv();
 	},[showDeliveryRequests]);
+
+	useEffect(()=>{
+		initDeliveryPanel();
+	},[]);
 
 	const openEntryModal = (entryId) => {
 		setCurrentEntryId(entryId);
@@ -86,8 +105,8 @@ function DeliveriesPanel () {
 							<div className="entry-taskName">{entry.taskName}</div>
 							<div className="entry-location">{entry.location}</div>
 							<div className="entry-date-container">
-								<div className="entry-date-posted">posted: {entry.date_posted}</div>
-								<div className="entry-volunteer-date"> date: {entry.volunteer_date} {entry.volunteer_time}</div>
+								<div className="entry-date-posted">posted: {entry.posted_date}</div>
+								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
 						</div>
 					)

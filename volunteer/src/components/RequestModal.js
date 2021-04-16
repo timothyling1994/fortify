@@ -59,16 +59,22 @@ function RequestModal (props) {
 	};
 
 	const addRequest = () => {
-		console.log(currentForm);
+
 		if(Object.keys(currentForm).length !== 0)
 		{
-			firebase.firestore().collection('requests').doc("myAccountId").collection('requestObj').add({
+			let id = uniqid();
+			let today = new Date();
+			let posted_date = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+
+			firebase.firestore().collection('requests').doc().set({
 			category:currentForm.request_category_input,
 			coords:currentForm.request_location_coords,
 			date:currentForm.request_date_input,
-			details:currentForm.request_details_input,
+			taskName:currentForm.request_details_input,
 			location:currentForm.request_location_input,
 			assignedVolunteer:"",
+			posted_date: posted_date,
+
 			});
 		}
 	};
@@ -166,6 +172,33 @@ function RequestModal (props) {
 			<ToastContainer style={styles}/>
 			<div className="request-modal-container">
 				<div className="request-category-header">What are you requesting?</div>
+				<div className="request-details-container">
+					<div className="request-details-label">Task:</div>
+					<input className="request-details-input" placeholder="Pick up my medication from the local CVS."></input>
+				</div>
+				<div className="request-location-container">
+					<div className="request-location-label">Location:</div>
+					
+					<input className="request-location-input" list="locations" placeholder="400 Brannan Street" onChange={()=>{autoCompleteLocation(document.querySelector(".request-location-input").value)}}/>
+
+					<datalist id="locations">
+						{autoCompleteAddresses.map((address)=>{
+							return <option key={uniqid()} value={address.place_name}/>	
+						})}
+					</datalist>
+				</div>
+				<div className="request-date-container">
+					<div className="request-date-label">Date:</div>
+					<Flatpickr
+				        data-enable-time
+				        value={requestDate}
+				        className="request-date-input"
+				        options={{ minDate: new Date() }} 
+				        onChange={date => {
+				          setRequestDate(date);
+				        }}
+				    />
+				</div>
 				<div className="request-main-category-container">
 					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">
@@ -239,33 +272,6 @@ function RequestModal (props) {
 						</div>
 						<div className="request-category-label">Other</div>
 					</div>
-				</div>
-				<div className="request-location-container">
-					<div className="request-location-label">Location:</div>
-					
-					<input className="request-location-input" list="locations" placeholder="400 Brannan Street" onChange={()=>{autoCompleteLocation(document.querySelector(".request-location-input").value)}}/>
-
-					<datalist id="locations">
-						{autoCompleteAddresses.map((address)=>{
-							return <option key={uniqid()} value={address.place_name}/>	
-						})}
-					</datalist>
-				</div>
-				<div className="request-details-container">
-					<div className="request-details-label">Details:</div>
-					<textarea className="request-details-input" placeholder="Pick up my medication from the local CVS."></textarea>
-				</div>
-				<div className="request-date-container">
-					<div className="request-date-label">Date:</div>
-					<Flatpickr
-				        data-enable-time
-				        value={requestDate}
-				        className="request-date-input"
-				        options={{ minDate: new Date() }} 
-				        onChange={date => {
-				          setRequestDate(date);
-				        }}
-				    />
 				</div>
 				<div className="request-delivery-btn-container">
 					<div className="request-delivery-btn" onClick={formValidation}>Make Request</div>

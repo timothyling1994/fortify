@@ -130,6 +130,9 @@
 .entry:hover{
   background-color: #ffbf00;
 }
+.entry-taskName{
+  font-weight:bold;
+}
 .entry-location,.entry-date-container{
   width:100%;
   font-size:20px;
