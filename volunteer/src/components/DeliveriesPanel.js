@@ -56,7 +56,9 @@ function DeliveriesPanel (props) {
 				{showDeliveryRequests ? props.requests.map((entry)=>{
 					return (
 						<div className="entry" key={uniqid()} onClick={()=>{openEntryModal(entry.entryId)}}>
-							<div className="entry-taskName">{entry.taskName}</div>
+							<div className="entry-taskName-container">
+								<div className="entry-taskName">{entry.taskName}</div>
+							</div>
 							<div className="entry-location">{entry.location}</div>
 							<div className="entry-date-container">
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>

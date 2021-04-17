@@ -121,7 +121,6 @@
 .entry{
   display:flex;
   flex-wrap:wrap;
-  justify-content: center;
   width:100%;
   padding:0.5em;
   border-top:solid black 3px;
@@ -130,13 +129,24 @@
 .entry:hover{
   background-color: #ffbf00;
 }
+
+.entry-taskName-container{
+  display:flex;
+  width:100%;
+}
 .entry-taskName{
+  color:#00b341;
   font-weight:bold;
 }
-.entry-location,.entry-date-container{
+
+.entry-location{
   width:100%;
   font-size:18px;
-  text-align:center;
+  padding-top:0.5em;
+}
+.entry-date-container{
+  width:100%;
+  font-size:18px;
   padding:0.5em;
 }
 
