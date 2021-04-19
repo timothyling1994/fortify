@@ -93,7 +93,7 @@ function MapImage(props){
 			};
 		}
 
-	},[renderMap]);
+	},[renderMap,props.requests]);
 
 	return(
 		<div>

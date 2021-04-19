@@ -67,15 +67,16 @@ function RequestModal (props) {
 			let posted_date = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+(today.getDate());
 
 			firebase.firestore().collection('requests').doc().set({
-			category:currentForm.request_category_input,
-			coords:currentForm.request_location_coords,
-			date:currentForm.request_date_input,
-			taskName:currentForm.request_details_input,
-			location:currentForm.request_location_input,
-			assignedVolunteer:"",
-			posted_date: posted_date,
+				category:currentForm.request_category_input,
+				coords:currentForm.request_location_coords,
+				date:currentForm.request_date_input,
+				taskName:currentForm.request_details_input,
+				location:currentForm.request_location_input,
+				assignedVolunteer:"",
+				posted_date: posted_date,
 
 			});
+			closeRequestModal();
 		}
 	};
 
@@ -93,6 +94,7 @@ function RequestModal (props) {
 
 	const formValidation = async () => {
 
+		console.log("reachy");
 		let request_selected_category = document.querySelector(".request-category-highlight");
 		let request_location_input = document.querySelector(".request-location-input").value;
 		let request_details_input = document.querySelector(".request-details-input").value;
@@ -164,7 +166,9 @@ function RequestModal (props) {
 	};
 
 	useEffect(()=>{
+
 		addRequest();
+
 	},[currentForm]);
 
 	return (

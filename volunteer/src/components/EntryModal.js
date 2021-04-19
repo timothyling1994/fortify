@@ -4,21 +4,21 @@ import react from "react";
 function EntryModal (props) {
 
 	let location = "";
-	let date_posted = "";
+	let posted_date = "";
 	let volunteer_date = "";
 	let volunteer_time = "";
 	let taskName="";
 
 	const initValues = () => {
-		for(let i =0; i< props.deliveryRequests.length;i++)
+		for(let i =0; i< props.requests.length;i++)
 		{
-			if(props.deliveryRequests[i].entryId == props.currentEntryId)
+			if(props.requests[i].entryId == props.currentEntryId)
 			{
-				location = props.deliveryRequests[i].location;
-				date_posted = props.deliveryRequests[i].date_posted;
-				volunteer_date = props.deliveryRequests[i].volunteer_date;
-				volunteer_time = props.deliveryRequests[i].volunteer_time;
-				taskName=props.deliveryRequests[i].taskName;
+				location = props.requests[i].location;
+				posted_date = props.requests[i].posted_date;
+				volunteer_date = props.requests[i].date;
+				volunteer_time = props.requests[i].volunteer_time;
+				taskName=props.requests[i].taskName;
 			}
 		}
 	};
@@ -36,8 +36,8 @@ function EntryModal (props) {
 				<div className="modal-taskName">{taskName}</div>
 				<div className="modal-location">{location}</div>
 				<div className="modal-date-container">
-					<div className="modal-date-posted">posted: {date_posted}</div>
-					<div className="modal-volunteer-date"> date: {volunteer_date} {volunteer_time}</div>
+					<div className="modal-date-posted">posted: {posted_date}</div>
+					<div className="modal-volunteer-date"> date: {volunteer_date}</div>
 				</div>
 				<div className="modal-btn-container">
 					<div className="modal-submit-btn">I Volunteer</div>

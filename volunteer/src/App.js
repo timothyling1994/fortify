@@ -19,7 +19,10 @@ function App() {
     query.onSnapshot((snapshot)=>{
       let requestObjArr = [];
       snapshot.forEach((doc)=>{
-        requestObjArr.push(doc.data());
+        let requestObj = doc.data();
+        requestObj.entryId = doc.id;
+        console.log(requestObj);
+        requestObjArr.push(requestObj);
       });
       setRequests(requestObjArr); 
     });
