@@ -56,7 +56,8 @@ function MapImage(props){
 					    },
 					    properties: {
 					      title: request.taskName,
-					      description: request.location
+					      description: request.location,
+					      entryId:request.entryId,
 					    }
 					})
 				});
@@ -68,7 +69,11 @@ function MapImage(props){
 
 				geojson.features.forEach(function(marker){
 					let el = document.createElement('div');
+					el.setAttribute("id","marker-"+marker.properties.entryId);
 					el.className="marker";
+					el.addEventListener("click",function(e){
+						props.scrollToId(e.target.id);
+					});
 		
 					new mapboxgl.Marker(el)
 					  .setLngLat(marker.geometry.coordinates)

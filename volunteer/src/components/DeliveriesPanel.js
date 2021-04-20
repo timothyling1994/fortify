@@ -12,6 +12,7 @@ function DeliveriesPanel (props) {
 	const [myDeliveriesAttributes,setMyDeliveriesAttributes] = useState(["my-deliveries-label"]);
 	const [displayEntryModal,setDisplayEntryModal] = useState(false);
 	const [currentEntryId,setCurrentEntryId] = useState("");
+	const [mounted,setMounted] = useState(false);
 
 	const toggleDeliveryDisplay = (value) => {
 		setShowDeliveryRequests(value);
@@ -35,6 +36,16 @@ function DeliveriesPanel (props) {
 		highlightDiv();
 	},[showDeliveryRequests]);
 
+	useEffect(()=>{
+		setMounted(true);
+	},[]);
+
+	useEffect(()=>{
+		if(mounted)
+		{
+			setScrollPosition();
+		}
+	},[props.scrollToEntry]);
 
 	const openEntryModal = (entryId) => {
 		setCurrentEntryId(entryId);
@@ -43,6 +54,15 @@ function DeliveriesPanel (props) {
 
 	const closeEntryModal = () => {
 		setDisplayEntryModal(false);
+	};
+
+	const setScrollPosition = () => {
+		
+		const panelEntryId = props.scrollToEntry[0].substring(7,);
+		const entryDiv = document.getElementById(panelEntryId);
+		const panel = document.querySelector(".DeliveriesPanel");
+		panel.scrollTop = entryDiv.offsetTop-(entryDiv.offsetHeight);
+
 	};	
 
 	return (
@@ -55,7 +75,7 @@ function DeliveriesPanel (props) {
 			<div className="delivery-details">
 				{showDeliveryRequests ? props.requests.map((entry)=>{
 					return (
-						<div className="entry" key={uniqid()} onClick={()=>{openEntryModal(entry.entryId)}}>
+						<div className="entry" key={entry.entryId} id={entry.entryId} onClick={()=>{openEntryModal(entry.entryId)}}>
 							<div className="entry-taskName-container">
 								<div className="entry-taskName">{entry.taskName}</div>
 							</div>

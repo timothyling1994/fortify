@@ -10,6 +10,7 @@ function App() {
 
   const [showRequestModal,setShowRequestModal] = useState(false);
   const [requests, setRequests] = useState([]);
+  const [scrollToEntry,setScrollToEntry] = useState([]);
   const requestsRef = useRef([]);
 
   const initFirestore = () => {
@@ -29,6 +30,11 @@ function App() {
   
   };
 
+  const scrollToId = (divId) => {
+    console.log("YEES:"+divId);
+    setScrollToEntry([divId]);
+  };
+
   useEffect(()=>{
     initFirestore();
   },[]);
@@ -38,8 +44,8 @@ function App() {
       {showRequestModal ? <RequestModal setShowRequestModal={setShowRequestModal}/> : null}
       <Header setShowRequestModal={setShowRequestModal}/>
       <div className="main-content">
-        <DeliveriesPanel requests={requests}/>
-        <MapImage requests={requests}/>
+        <DeliveriesPanel requests={requests} scrollToEntry={scrollToEntry}/>
+        <MapImage requests={requests} scrollToId={scrollToId}/>
       </div>
     </div>
   );
