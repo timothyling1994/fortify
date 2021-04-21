@@ -15,9 +15,10 @@ function DeliveriesPanel (props) {
 	const [requests,setRequests] = useState([]);
 	const [toggleSortByDate,setToggleSortByDate] = useState(false);
 	const [toggleSortByVolunteerDate,setToggleSortByVolunteerDate] = useState(false);
-	const [toggleCategoryFilter,setToggleCategoryFilter] = useState(false);
 
 	const dropDownStyle = {
+
+		//left: document.querySelector(".DeliveriesPanel").offsetWidth + "px",
 	};
 
 	const toggleDeliveryDisplay = (value) => {
@@ -104,47 +105,32 @@ function DeliveriesPanel (props) {
 		}
 	};
 
-	const showCategoryDropDown = () => {
-		console.log("THIS");
-		if(!toggleCategoryFilter)
+	const showAllCategories = () => {
+		if(props.requests.length !== 0)
 		{
-			const el = document.querySelector(".category-filter-dropdown");
-			el.style.display="block";
-			setToggleCategoryFilter((prev)=>!prev);
+			let arr = props.requests;
+			const sortedRequests = [...arr].sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
+			setRequests(sortedRequests);
+			setToggleSortByDate((prev)=> !prev);
+			document.querySelector(".category-filter").innerHTML = "Filter by Category";
 		}
-		else
-		{
-			const el = document.querySelector(".category-filter-dropdown");
-			el.style.display="none";
-			setToggleCategoryFilter((prev)=>!prev);
-		}
-	
-	};
+	}
 
 	const filterCategory = (category) => {
-		console.log(category);
-		switch(category){
-			case 'Groceries':
-				console.log("reached");
-				if(props.requests.length !== 0)
-				{
-					let arr = props.requests;
-					const filteredRequests = [...arr].filter(request=>request.category == category);
-					setRequests(filteredRequests);	
-				}
+	
+		if(category == 'Groceries' || category=='Medicine'|| category=='Dog Walking' || category =='Transportation' || category=='Assembly' || category=='Other')
+		{
 
-				break;
-			case 'Medicine':
-				break;
-			case 'Dog Walking':
-				break;
-			case 'Transportation':
-				break;
-			case 'Assembly':
-				break;
-			default :
-				break;
+			if(props.requests.length !== 0)
+			{
+				let arr = props.requests;
+				const filteredRequests = [...arr].filter(request=>request.category == category);
+				setRequests(filteredRequests);	
+				document.querySelector(".category-filter").innerHTML = "Filtered By:" + category;
+			}
 		}
+
+
 	};
 
 	useEffect(()=>{
@@ -171,7 +157,11 @@ function DeliveriesPanel (props) {
 	},[props.requests]);
 
 
-/*							<label className="category dog-walking-category" onClick={()=>{filterCategory("Dog Walking")}}>Dog Walking</div>
+/*<div className="category-filter-dropdown">
+							<div className="category groceries-category" onClick={()=>filterCategory("Groceries")}>Groceries</div>
+							<div className="category medicine-category" onClick={()=>filterCategory("Medicine")}>Medicine</div>
+						</div>	
+						<label className="category dog-walking-category" onClick={()=>{filterCategory("Dog Walking")}}>Dog Walking</div>
 							<div className="category transportation-category" onClick={()=>{filterCategory("Transportation")}}>Transportation</div>
 							<div className="category assembly-category" onClick={()=>{filterCategory("Assembly")}}>Assembly</div>
 							<div className="category other-category" onClick={()=>{filterCategory("Other")}}>Other</div>*/
@@ -186,7 +176,18 @@ function DeliveriesPanel (props) {
 			<div className="delivery-filter-row">
 					<div className="filter-options" onClick={sortByDate}>Sort by Date Posted</div>
 					<div className="filter-options" onClick={sortByVolunteerDate}>Sort by Volunteer Date</div>	
-					<div className="filter-options category-filter" onClick={showCategoryDropDown}>Filter by Category</div>	
+					<div className="category-filter-container">
+						<div className="category-filter">Filter by Category</div>
+						<div className="category-filter-dropdown" style={dropDownStyle}>
+								<div className="category" onClick={()=>{showAllCategories()}}>All</div>
+								<div className="category" onClick={()=>{filterCategory("Groceries")}}>Groceries</div>
+								<div className="category" onClick={()=>filterCategory("Medicine")}>Medicine</div>
+								<div className="category" onClick={()=>{filterCategory("Dog Walking")}}>Dog Walking</div>
+								<div className="category" onClick={()=>{filterCategory("Transportation")}}>Transportation</div>
+								<div className="category" onClick={()=>{filterCategory("Assembly")}}>Assembly</div>
+								<div className="category" onClick={()=>{filterCategory("Other")}}>Other</div>
+						</div>
+					</div>	
 			</div>
 			<div className="delivery-details">
 				{showDeliveryRequests ? requests.map((entry)=>{

@@ -114,17 +114,28 @@
   transform: translateY(4px);
 }
 
+.category-filter-container{
+  font-size:15px;
+  border-radius: 5px;
+  border:solid black 2px;
+  padding:0.25em;
+  margin-bottom:0.4em;
+  background-color: #ffec00;
+  box-shadow: 0 4px #999;
+}
+
+.category-filter-container:hover .category-filter-dropdown{
+  display:block;
+
+}
+
 .category-filter-dropdown{
   display:none;
   position:absolute;
   z-index:1;
-  background-color: #000000;
-  color:#ffffff;
+  background-color: #ffec00;
   font-size:25px;
-}
-
-.category{
-
+  border:solid black 2px;
 }
 
 .category:hover{
