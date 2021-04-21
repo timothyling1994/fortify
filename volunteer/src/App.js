@@ -22,7 +22,6 @@ function App() {
       snapshot.forEach((doc)=>{
         let requestObj = doc.data();
         requestObj.entryId = doc.id;
-        console.log(requestObj);
         requestObjArr.push(requestObj);
       });
       setRequests(requestObjArr); 
@@ -31,7 +30,6 @@ function App() {
   };
 
   const scrollToId = (divId) => {
-    console.log("YEES:"+divId);
     setScrollToEntry([divId]);
   };
 

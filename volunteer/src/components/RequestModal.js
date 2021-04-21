@@ -76,7 +76,7 @@ function RequestModal (props) {
 				posted_date: posted_date,
 
 			});
-			
+
 			closeRequestModal();
 		}
 	};
