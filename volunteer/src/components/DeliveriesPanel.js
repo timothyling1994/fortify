@@ -6,10 +6,11 @@ import firebase from "firebase";
 
 function DeliveriesPanel (props) {
 
-	const [showDeliveryRequests,setShowDeliveryRequests] = useState(true);
+	const [displayPanelTab,setDisplayPanelTab] = useState(0);
 	const [myDeliveries, setMyDeliveries] = useState([]);
 	const [requestAttributes,setRequestAttributes] = useState(["delivery-requests-label"]);
 	const [myDeliveriesAttributes,setMyDeliveriesAttributes] = useState(["my-deliveries-label"]);
+	const [myTasksAttributes,setMyTasksAttribute] = useState(["my-tasks-label"]);
 	const [displayEntryModal,setDisplayEntryModal] = useState(false);
 	const [currentEntryId,setCurrentEntryId] = useState("");
 	const [requests,setRequests] = useState([]);
@@ -21,21 +22,29 @@ function DeliveriesPanel (props) {
 		//left: document.querySelector(".DeliveriesPanel").offsetWidth + "px",
 	};
 
-	const toggleDeliveryDisplay = (value) => {
-		setShowDeliveryRequests(value);
+	const setDisplayPanel = (value) => {
+		setDisplayPanelTab(value);
 	};
 
 	const highlightDiv = () => {
 
-		if(showDeliveryRequests)
+		if(displayPanelTab == 0)
 		{
 			setRequestAttributes(["delivery-requests-label","highlight"]);
 			setMyDeliveriesAttributes(["my-deliveries-label"]);
+			setMyTasksAttribute(["my-tasks-label"]);
+		}
+		else if(displayPanelTab == 1)
+		{
+			setRequestAttributes(["delivery-requests-label"]);
+			setMyDeliveriesAttributes(["my-deliveries-label","highlight"]);
+			setMyTasksAttribute(["my-tasks-label"]);
 		}
 		else
 		{
 			setRequestAttributes(["delivery-requests-label"]);
-			setMyDeliveriesAttributes(["my-deliveries-label","highlight"]);
+			setMyDeliveriesAttributes(["my-deliveries-label"]);
+			setMyTasksAttribute(["my-tasks-label","highlight"]);
 		}
 	};
 
@@ -70,14 +79,39 @@ function DeliveriesPanel (props) {
 		{
 			if(toggleSortByDate)
 			{
-				let arr = props.requests;
+				let arr = [];
+				if(displayPanelTab === 0)
+				{
+					arr = props.requests;
+				}
+				else if (displayPanelTab === 1)
+				{
+					arr = props.myRequests;
+				}
+				else
+				{
+					arr = props.myTasks;
+				}
+	
 				const sortedRequests = [...arr].sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 				setRequests(sortedRequests);
 				setToggleSortByDate((prev)=> !prev);
 			}
 			else
 			{
-				let arr = props.requests;
+				let arr = [];
+				if(displayPanelTab === 0)
+				{
+					arr = props.requests;
+				}
+				else if (displayPanelTab === 1)
+				{
+					arr = props.myRequests;
+				}
+				else
+				{
+					arr = props.myTasks;
+				}
 				const sortedRequests = [...arr].sort((a,b)=> new Date(a.posted_date) - new Date(b.posted_date));
 				setRequests(sortedRequests);
 				setToggleSortByDate((prev)=> !prev);
@@ -90,14 +124,45 @@ function DeliveriesPanel (props) {
 		{
 			if(toggleSortByVolunteerDate)
 			{
-				let arr = props.requests;
-				const sortedRequests = [...arr].sort((a,b)=> new Date(b.date) - new Date(a.date));
-				setRequests(sortedRequests);
+
+				let arr = [];
+				console.log(displayPanelTab);
+				if(displayPanelTab === 0)
+				{
+					arr = props.requests;
+					const sortedRequests = [...arr].sort((a,b)=> new Date(b.date) - new Date(a.date));
+					setRequests(sortedRequests);
+				}
+				else if (displayPanelTab === 1)
+				{
+					arr = props.myRequests;
+					const sortedRequests = [...arr].sort((a,b)=> new Date(b.date) - new Date(a.date));
+					setRequests(sortedRequests);
+				}
+				else
+				{
+					arr = props.myTasks;
+					const sortedRequests = [...arr].sort((a,b)=> new Date(b.date) - new Date(a.date));
+					setRequests(sortedRequests);
+				}
+				
 				setToggleSortByVolunteerDate((prev)=> !prev);
 			}
 			else
 			{
-				let arr = props.requests;
+				let arr = [];
+				if(displayPanelTab === 0)
+				{
+					arr = props.requests;
+				}
+				else if (displayPanelTab === 1)
+				{
+					arr = props.myRequests;
+				}
+				else
+				{
+					arr = props.myTasks;
+				}
 				const sortedRequests = [...arr].sort((a,b)=> new Date(a.date) - new Date(b.date));
 				setRequests(sortedRequests);
 				setToggleSortByVolunteerDate((prev)=> !prev);
@@ -108,7 +173,19 @@ function DeliveriesPanel (props) {
 	const showAllCategories = () => {
 		if(props.requests.length !== 0)
 		{
-			let arr = props.requests;
+			let arr = [];
+			if(displayPanelTab === 0)
+			{
+				arr = props.requests;
+			}
+			else if (displayPanelTab === 1)
+			{
+				arr = props.myRequests;
+			}
+			else
+			{
+				arr = props.myTasks;
+			}
 			const sortedRequests = [...arr].sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 			setRequests(sortedRequests);
 			setToggleSortByDate((prev)=> !prev);
@@ -124,7 +201,19 @@ function DeliveriesPanel (props) {
 
 			if(props.requests.length !== 0)
 			{
-				let arr = props.requests;
+				let arr = [];
+				if(displayPanelTab === 0)
+				{
+					arr = props.requests;
+				}
+				else if (displayPanelTab === 1)
+				{
+					arr = props.myRequests;
+				}
+				else
+				{
+					arr = props.myTasks;
+				}
 				const filteredRequests = [...arr].filter(request=>request.category == category);
 				setRequests(filteredRequests);	
 				document.querySelector(".category-filter-container").style.backgroundColor = "#7bc62d";
@@ -135,9 +224,10 @@ function DeliveriesPanel (props) {
 
 	};
 
+
 	useEffect(()=>{
 		highlightDiv();
-	},[showDeliveryRequests]);
+	},[displayPanelTab]);
 
 	useEffect(()=>{
 		if(props.scrollToEntry.length !== 0)
@@ -146,14 +236,59 @@ function DeliveriesPanel (props) {
 		}
 	},[props.scrollToEntry]);
 
+	useEffect(()=>{
+
+		if(props.requests.length !== 0)
+		{
+			let arr = [];
+			if(displayPanelTab === 0)
+			{
+				arr = props.requests;
+				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
+				setRequests(sortedRequests);
+			}
+			else if (displayPanelTab === 1)
+			{
+				arr = props.myRequests;
+				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
+				setRequests(sortedRequests);
+			}
+			else
+			{
+				arr = props.myTasks;
+				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
+				setRequests(sortedRequests);
+			}
+		}
+
+		document.querySelector(".category-filter-container").style.backgroundColor = "#ffec00";
+		document.querySelector(".category-filter").innerHTML = "Filter by Category";
+
+	},[displayPanelTab])
 
 	useEffect(()=>{
 
 		if(props.requests.length !== 0)
 		{
-			let arr = props.requests;
-			const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
-			setRequests(sortedRequests);
+			let arr = [];
+			if(displayPanelTab === 0)
+			{
+				arr = props.requests;
+				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
+				setRequests(sortedRequests);
+			}
+			else if (displayPanelTab === 1)
+			{
+				arr = props.myRequests;
+				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
+				setRequests(sortedRequests);
+			}
+			else
+			{
+				arr = props.myTasks;
+				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
+				setRequests(sortedRequests);
+			}
 		}
 
 	},[props.requests]);
@@ -163,8 +298,9 @@ function DeliveriesPanel (props) {
 		<div className="DeliveriesPanel">
 			{displayEntryModal ? <EntryModal requests={props.requests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
 			<div className="delivery-btn-container">
-				<div className={requestAttributes.join(" ")} onClick={()=>{toggleDeliveryDisplay(true)}}>Task Requests</div>
-				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{toggleDeliveryDisplay(false)}}>My Tasks</div>
+				<div className={requestAttributes.join(" ")} onClick={()=>{setDisplayPanel(0)}}>All Requests</div>
+				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{setDisplayPanel(1)}}>My Requests</div>
+				<div className={myTasksAttributes.join(" ")} onClick={()=>{setDisplayPanel(2)}}>My Tasks</div>
 			</div>
 			<div className="delivery-filter-row">
 					<div className="filter-options" onClick={sortByDate}>Sort by Date Posted</div>
@@ -183,7 +319,7 @@ function DeliveriesPanel (props) {
 					</div>	
 			</div>
 			<div className="delivery-details">
-				{showDeliveryRequests ? requests.map((entry)=>{
+				{displayPanelTab == 0 ? requests.map((entry)=>{
 					return (
 						<div className="entry" key={entry.entryId} id={entry.entryId} onClick={()=>{openEntryModal(entry.entryId)}}>
 							<div className="entry-taskName-container">
@@ -196,7 +332,7 @@ function DeliveriesPanel (props) {
 							</div>
 						</div>
 					)
-				}) : props.myRequests.map((entry)=>{
+				}) : displayPanelTab == 1 ? requests.map((entry)=>{
 					return (
 						<div className="entry" key={entry.entryId} id={entry.entryId} onClick={()=>{openEntryModal(entry.entryId)}}>
 							<div className="entry-taskName-container">
@@ -209,7 +345,21 @@ function DeliveriesPanel (props) {
 							</div>
 						</div>
 					)
-				})}
+				}) : requests.map((entry)=>{ 
+					return (
+						<div className="entry" key={entry.entryId} id={entry.entryId} onClick={()=>{openEntryModal(entry.entryId)}}>
+							<div className="entry-taskName-container">
+								<div className="entry-taskName">{entry.taskName}</div>
+							</div>
+							<div className="entry-location">{entry.location}</div>
+							<div className="entry-date-container">
+								<div className="entry-date-posted">posted: {entry.posted_date}</div>
+								<div className="entry-volunteer-date"> date: {entry.date}</div>
+							</div>
+						</div>
+					)
+					})
+				}
 			</div>
 
 		</div>

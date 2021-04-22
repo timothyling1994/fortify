@@ -143,11 +143,12 @@
   color:#000000;
 }
 
-.delivery-requests-label, .my-deliveries-label{
-  width:50%;
+.delivery-requests-label, .my-deliveries-label, .my-tasks-label{
+  width:33%;
   border-bottom:solid black 2px;
   border-top:solid black 2px;
   text-align:center;
+  font-size:25px;
 }
 
 .delivery-requests-label{
@@ -156,6 +157,11 @@
 
 .my-deliveries-label{
    border-left:solid black 1px;
+   border-right:solid black 1px;
+}
+
+.my-tasks-label{
+  border-left:solid black 1px;
 }
 
 

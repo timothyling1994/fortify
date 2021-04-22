@@ -72,13 +72,13 @@ function RequestModal (props) {
 				date:currentForm.request_date_input,
 				taskName:currentForm.request_details_input,
 				location:currentForm.request_location_input,
-				posterId:"firebaseID",
+				posterId:"firebaseId",
 				volunteerId:"",
 				posted_date: posted_date,
 
 			}).then((docRef)=>{
 				console.log(docRef.id);
-				firebase.firestore().collection('users').doc('firebaseID').collection('my_requests').doc().set({
+				firebase.firestore().collection('users').doc('firebaseId').collection('my_requests').doc().set({
 					requestId: docRef.id,
 				});
 			});

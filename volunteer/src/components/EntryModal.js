@@ -45,6 +45,8 @@ function EntryModal (props) {
 
 		});
 
+		closeEntryModal();
+
 	};
 
 	initValues();

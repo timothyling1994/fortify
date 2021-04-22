@@ -19,18 +19,19 @@ function MapImage(props){
 	mapboxgl.workerClass = MapboxWorker;
 	mapboxgl.accessToken = 'pk.eyJ1IjoidGltb3RoeWxpbmcxOTk0IiwiYSI6ImNrbmZuOWFtbzFtM2YycG1pbTJkeWIwOXQifQ.Yhzp9YEOq_oqZPXQ28jKaw';
 
+	/*
 	useEffect(() => {
 
-		if(props.requests.length !== 0) 
+		//if(props.requests.length !== 0) 
 		{
 			setRenderMap(true);
 		}
 
-	}, [props.requests]);
+	}, [props.requests]);*/
 
 	useEffect(()=>{
 
-		if(renderMap == true)
+		//if(renderMap == true)
 		{
 
 			const map = new mapboxgl.Map({
@@ -40,46 +41,49 @@ function MapImage(props){
 					zoom: zoom
 			});
 			
-			map.on('load',function(){
+			if(props.requests.length > 0)
+			{
+				map.on('load',function(){
 
-				let featuresArr = [];
+					let featuresArr = [];
 
-				props.requests.forEach((request)=>{
-					featuresArr.push({
-						type: 'Feature',
-					    geometry: {
-					      type: 'Point',
-					      coordinates: request.coords
-					    },
-					    properties: {
-					      title: request.taskName,
-					      description: request.location,
-					      entryId:request.entryId,
-					    }
-					})
-				});
-
-				let geojson = {
-				  type: 'FeatureCollection',
-				  features: featuresArr
-				};
-
-				geojson.features.forEach(function(marker){
-					let el = document.createElement('div');
-					el.setAttribute("id","marker-"+marker.properties.entryId);
-					el.className="marker";
-					el.addEventListener("click",function(e){
-						props.scrollToId(e.target.id);
+					props.requests.forEach((request)=>{
+						featuresArr.push({
+							type: 'Feature',
+						    geometry: {
+						      type: 'Point',
+						      coordinates: request.coords
+						    },
+						    properties: {
+						      title: request.taskName,
+						      description: request.location,
+						      entryId:request.entryId,
+						    }
+						})
 					});
-		
-					new mapboxgl.Marker(el)
-					  .setLngLat(marker.geometry.coordinates)
-					  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-					    .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
-					  .addTo(map);
-				})
 
-			});
+					let geojson = {
+					  type: 'FeatureCollection',
+					  features: featuresArr
+					};
+
+					geojson.features.forEach(function(marker){
+						let el = document.createElement('div');
+						el.setAttribute("id","marker-"+marker.properties.entryId);
+						el.className="marker";
+						el.addEventListener("click",function(e){
+							props.scrollToId(e.target.id);
+						});
+			
+						new mapboxgl.Marker(el)
+						  .setLngLat(marker.geometry.coordinates)
+						  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+						    .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+						  .addTo(map);
+					})
+
+				});
+			}
 
 			map.on('move', () => {
 				setLng(map.getCenter().lng.toFixed(4));
@@ -95,12 +99,13 @@ function MapImage(props){
 			};
 		}
 
-	},[renderMap,props.requests]);
+	},[props.requests]);
 
+	//{renderMap ? <div className="MapImage" ref={mapContainer}></div> : null}
 	return(
 		<div>
 			<div className="display">lat:{lat} long:{lng} zoom:{zoom}</div>
-			{renderMap ? <div className="MapImage" ref={mapContainer}></div> : null}
+			<div className="MapImage" ref={mapContainer}></div>
 		</div>
 	);
 }
