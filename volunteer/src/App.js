@@ -10,6 +10,7 @@ function App() {
 
   const [showRequestModal,setShowRequestModal] = useState(false);
   const [requests, setRequests] = useState([]);
+  const [myRequests,setMyRequests] = useState([]);
   const [scrollToEntry,setScrollToEntry] = useState([]);
   const requestsRef = useRef([]);
 
@@ -25,6 +26,26 @@ function App() {
         requestObjArr.push(requestObj);
       });
       setRequests(requestObjArr); 
+    });
+
+
+    let users_query = firebase.firestore().collection('users').doc('firebaseId').collection('my_tasks');
+    users_query.onSnapshot((snapshot)=>{
+      let myRequestsObjArr = [];
+      snapshot.forEach((doc)=>{
+        let requestId = doc.data().requestId;
+        firebase.firestore().collection('requests').doc(requestId).get().then((doc)=>
+        {
+          console.log(doc.data());
+          if(doc.exists)
+          {
+            let requestObj = doc.data();
+            requestObj.entryId = requestId;
+            myRequestsObjArr.push(requestObj);
+          }
+        })
+      });
+      setMyRequests(myRequestsObjArr); 
     });
   
   };
@@ -42,7 +63,7 @@ function App() {
       {showRequestModal ? <RequestModal setShowRequestModal={setShowRequestModal}/> : null}
       <Header setShowRequestModal={setShowRequestModal}/>
       <div className="main-content">
-        <DeliveriesPanel requests={requests} scrollToEntry={scrollToEntry}/>
+        <DeliveriesPanel requests={requests} myRequests={myRequests} scrollToEntry={scrollToEntry}/>
         <MapImage requests={requests} scrollToId={scrollToId}/>
       </div>
     </div>

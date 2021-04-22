@@ -1,4 +1,5 @@
 import react from "react";
+import firebase from "firebase";
 
 
 function EntryModal (props) {
@@ -27,6 +28,25 @@ function EntryModal (props) {
 		props.closeEntryModal();
 	};
 
+	const acceptEntry = () => {
+		firebase.firestore().collection('requests').doc(props.currentEntryId).update({
+			
+			volunteerId:"firebaseId",
+
+		}).then(()=>{
+			console.log("Document successfully updated.");
+		}).catch((error)=>{
+			console.error("Error updating document: ", error);
+		});
+
+		firebase.firestore().collection('users').doc('firebaseId').collection('my_tasks').doc().set({
+			
+			requestId: props.currentEntryId,
+
+		});
+
+	};
+
 	initValues();
 	
 
@@ -40,7 +60,7 @@ function EntryModal (props) {
 					<div className="modal-volunteer-date"> date: {volunteer_date}</div>
 				</div>
 				<div className="modal-btn-container">
-					<div className="modal-submit-btn">I Volunteer</div>
+					<div className="modal-submit-btn" onClick={acceptEntry}>I Volunteer</div>
 					<div className="modal-cancel-btn" onClick={closeEntryModal}>Cancel</div>
 				</div>
 			</div>

@@ -112,6 +112,7 @@ function DeliveriesPanel (props) {
 			const sortedRequests = [...arr].sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 			setRequests(sortedRequests);
 			setToggleSortByDate((prev)=> !prev);
+			document.querySelector(".category-filter-container").style.backgroundColor = "#ffec00";
 			document.querySelector(".category-filter").innerHTML = "Filter by Category";
 		}
 	}
@@ -126,6 +127,7 @@ function DeliveriesPanel (props) {
 				let arr = props.requests;
 				const filteredRequests = [...arr].filter(request=>request.category == category);
 				setRequests(filteredRequests);	
+				document.querySelector(".category-filter-container").style.backgroundColor = "#7bc62d";
 				document.querySelector(".category-filter").innerHTML = "Filtered By:" + category;
 			}
 		}
@@ -156,15 +158,6 @@ function DeliveriesPanel (props) {
 
 	},[props.requests]);
 
-
-/*<div className="category-filter-dropdown">
-							<div className="category groceries-category" onClick={()=>filterCategory("Groceries")}>Groceries</div>
-							<div className="category medicine-category" onClick={()=>filterCategory("Medicine")}>Medicine</div>
-						</div>	
-						<label className="category dog-walking-category" onClick={()=>{filterCategory("Dog Walking")}}>Dog Walking</div>
-							<div className="category transportation-category" onClick={()=>{filterCategory("Transportation")}}>Transportation</div>
-							<div className="category assembly-category" onClick={()=>{filterCategory("Assembly")}}>Assembly</div>
-							<div className="category other-category" onClick={()=>{filterCategory("Other")}}>Other</div>*/
 
 	return (
 		<div className="DeliveriesPanel">
@@ -203,7 +196,20 @@ function DeliveriesPanel (props) {
 							</div>
 						</div>
 					)
-				}) : null}
+				}) : props.myRequests.map((entry)=>{
+					return (
+						<div className="entry" key={entry.entryId} id={entry.entryId} onClick={()=>{openEntryModal(entry.entryId)}}>
+							<div className="entry-taskName-container">
+								<div className="entry-taskName">{entry.taskName}</div>
+							</div>
+							<div className="entry-location">{entry.location}</div>
+							<div className="entry-date-container">
+								<div className="entry-date-posted">posted: {entry.posted_date}</div>
+								<div className="entry-volunteer-date"> date: {entry.date}</div>
+							</div>
+						</div>
+					)
+				})}
 			</div>
 
 		</div>

@@ -66,16 +66,24 @@ function RequestModal (props) {
 			let today = new Date();
 			let posted_date = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+(today.getDate());
 
-			firebase.firestore().collection('requests').doc().set({
+			firebase.firestore().collection('requests').add({
 				category:currentForm.request_category_input,
 				coords:currentForm.request_location_coords,
 				date:currentForm.request_date_input,
 				taskName:currentForm.request_details_input,
 				location:currentForm.request_location_input,
-				assignedVolunteer:"",
+				posterId:"firebaseID",
+				volunteerId:"",
 				posted_date: posted_date,
 
+			}).then((docRef)=>{
+				console.log(docRef.id);
+				firebase.firestore().collection('users').doc('firebaseID').collection('my_requests').doc().set({
+					requestId: docRef.id,
+				});
 			});
+
+		
 
 			closeRequestModal();
 		}
@@ -144,10 +152,7 @@ function RequestModal (props) {
 		}
 		else
 		{
-			if(request_selected_category == null)
-			{
-				invalid_form('Please select category!');
-			}
+
 			if(request_location_input == '')
 			{
 				invalid_form('Invalid Address!');
@@ -161,6 +166,10 @@ function RequestModal (props) {
 			if(request_date_input == '')
 			{
 				invalid_form('Invalid Date!');
+			}
+			if(request_selected_category == null)
+			{
+				invalid_form('Please select category!');
 			}
 
 		}	

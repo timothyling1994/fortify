@@ -44,9 +44,6 @@ function MapImage(props){
 
 				let featuresArr = [];
 
-				console.log("mapimage.js");
-				console.log(props.requests);
-
 				props.requests.forEach((request)=>{
 					featuresArr.push({
 						type: 'Feature',
