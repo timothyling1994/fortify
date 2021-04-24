@@ -130,22 +130,21 @@ function DeliveriesPanel (props) {
 				if(displayPanelTab === 0)
 				{
 					arr = props.requests;
-					const sortedRequests = [...arr].sort((a,b)=> new Date(b.date) - new Date(a.date));
-					setRequests(sortedRequests);
+				
 				}
 				else if (displayPanelTab === 1)
 				{
 					arr = props.myRequests;
-					const sortedRequests = [...arr].sort((a,b)=> new Date(b.date) - new Date(a.date));
-					setRequests(sortedRequests);
+		
 				}
 				else
 				{
+					console.log(displayPanelTab);
 					arr = props.myTasks;
-					const sortedRequests = [...arr].sort((a,b)=> new Date(b.date) - new Date(a.date));
-					setRequests(sortedRequests);
 				}
-				
+
+				const sortedRequests = [...arr].sort((a,b)=> new Date(b.date) - new Date(a.date));
+				setRequests(sortedRequests);
 				setToggleSortByVolunteerDate((prev)=> !prev);
 			}
 			else
@@ -154,15 +153,18 @@ function DeliveriesPanel (props) {
 				if(displayPanelTab === 0)
 				{
 					arr = props.requests;
+					
 				}
 				else if (displayPanelTab === 1)
 				{
 					arr = props.myRequests;
+
 				}
 				else
 				{
 					arr = props.myTasks;
 				}
+
 				const sortedRequests = [...arr].sort((a,b)=> new Date(a.date) - new Date(b.date));
 				setRequests(sortedRequests);
 				setToggleSortByVolunteerDate((prev)=> !prev);
@@ -225,9 +227,6 @@ function DeliveriesPanel (props) {
 	};
 
 
-	useEffect(()=>{
-		highlightDiv();
-	},[displayPanelTab]);
 
 	useEffect(()=>{
 		if(props.scrollToEntry.length !== 0)
@@ -237,6 +236,8 @@ function DeliveriesPanel (props) {
 	},[props.scrollToEntry]);
 
 	useEffect(()=>{
+
+		highlightDiv();
 
 		if(props.requests.length !== 0)
 		{
@@ -291,7 +292,7 @@ function DeliveriesPanel (props) {
 			}
 		}
 
-	},[props.requests]);
+	},[props.requests,props.myRequests,props.myTasks]);
 
 
 	return (

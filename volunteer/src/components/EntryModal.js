@@ -1,5 +1,6 @@
 import react from "react";
 import firebase from "firebase";
+import { withRouter } from "react-router-dom";
 
 
 function EntryModal (props) {
@@ -9,6 +10,8 @@ function EntryModal (props) {
 	let volunteer_date = "";
 	let volunteer_time = "";
 	let taskName="";
+	let posterId="";
+	let entryId="";
 
 	const initValues = () => {
 		for(let i =0; i< props.requests.length;i++)
@@ -20,6 +23,8 @@ function EntryModal (props) {
 				volunteer_date = props.requests[i].date;
 				volunteer_time = props.requests[i].volunteer_time;
 				taskName=props.requests[i].taskName;
+				posterId=props.requests[i].posterId;
+				entryId = props.requests[i].entryId;
 			}
 		}
 	};
@@ -48,6 +53,21 @@ function EntryModal (props) {
 		closeEntryModal();
 
 	};
+	const addChat = () =>{
+		firebase.firestore().collection('users').doc('volunteer_firebaseId').collection('my_chats').doc().set({
+			posterId: posterId,
+			entryId: entryId,
+			volunteerId:"volunteer_firebaseId",
+		});
+
+		firebase.firestore().collection('users').doc('firebaseId').collection('my_chats').doc().set({
+			posterId: posterId,
+			entryId: entryId,
+			volunteerId:"volunteer_firebaseId",
+		});
+
+		props.history.push("/chat");
+	};
 
 	initValues();
 	
@@ -63,6 +83,7 @@ function EntryModal (props) {
 				</div>
 				<div className="modal-btn-container">
 					<div className="modal-submit-btn" onClick={acceptEntry}>I Volunteer</div>
+					<div className="modal-chat-btn" onClick={addChat}>Chat with Organizer</div>
 					<div className="modal-cancel-btn" onClick={closeEntryModal}>Cancel</div>
 				</div>
 			</div>
@@ -70,4 +91,4 @@ function EntryModal (props) {
 	);
 };
 
-export default EntryModal; 
+export default withRouter(EntryModal); 

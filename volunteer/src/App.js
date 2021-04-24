@@ -2,8 +2,10 @@ import './App.css';
 import Header from "./components/Header.js";
 import MapImage from "./components/MapImage.js";
 import DeliveriesPanel from "./components/DeliveriesPanel.js";
+import Chat from "./components/Chat.js";
 import {useState,useEffect,useMemo,useRef} from "react";
 import RequestModal from "./components/RequestModal.js";
+import { BrowserRouter,Switch,Route } from "react-router-dom";
 import firebase from "firebase";
 
 function App() {
@@ -37,7 +39,7 @@ function App() {
         let requestId = doc.data().requestId;
         firebase.firestore().collection('requests').doc(requestId).get().then((doc)=>
         {
-          console.log(doc.data());
+          //console.log(doc.data());
           if(doc.exists)
           {
             let requestObj = doc.data();
@@ -56,7 +58,7 @@ function App() {
         let requestId = doc.data().requestId;
         firebase.firestore().collection('requests').doc(requestId).get().then((doc)=>
         {
-          console.log(doc.data());
+          //console.log(doc.data());
           if(doc.exists)
           {
             let requestObj = doc.data();
@@ -81,11 +83,19 @@ function App() {
   return (
     <div className="App">
       {showRequestModal ? <RequestModal setShowRequestModal={setShowRequestModal}/> : null}
-      <Header setShowRequestModal={setShowRequestModal}/>
-      <div className="main-content">
-        <DeliveriesPanel requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
-        <MapImage requests={requests} scrollToId={scrollToId}/>
-      </div>
+      <BrowserRouter>
+        <Header setShowRequestModal={setShowRequestModal}/>
+        <Switch>
+          <Route exact path="/" render={() => (
+            <div className="main-content">
+              <DeliveriesPanel requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
+              <MapImage requests={requests} scrollToId={scrollToId}/>
+            </div>)
+          }/>
+          <Route exact path="/chat" render={() => (<Chat/>)}/>
+
+        </Switch>
+      </BrowserRouter>    
     </div>
   );
 }
