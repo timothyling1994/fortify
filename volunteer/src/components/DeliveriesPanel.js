@@ -15,7 +15,7 @@ function DeliveriesPanel (props) {
 	const [currentEntryId,setCurrentEntryId] = useState("");
 	const [requests,setRequests] = useState([]);
 	const [toggleSortByDate,setToggleSortByDate] = useState(false);
-	const [toggleSortByVolunteerDate,setToggleSortByVolunteerDate] = useState(false);
+	const [toggleSortByVolunteerDate,setToggleSortByVolunteerDate] = useState(true);
 
 	const dropDownStyle = {
 

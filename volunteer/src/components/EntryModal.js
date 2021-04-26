@@ -54,15 +54,13 @@ function EntryModal (props) {
 
 	};
 	const addChat = () =>{
-		firebase.firestore().collection('users').doc('volunteer_firebaseId').collection('my_chats').doc().set({
+		firebase.firestore().collection('users').doc('volunteer_firebaseId').collection('my_chats').doc(entryId).set({
 			posterId: posterId,
-			entryId: entryId,
 			volunteerId:"volunteer_firebaseId",
 		});
 
-		firebase.firestore().collection('users').doc('firebaseId').collection('my_chats').doc().set({
+		firebase.firestore().collection('users').doc('firebaseId').collection('my_chats').doc(entryId).set({
 			posterId: posterId,
-			entryId: entryId,
 			volunteerId:"volunteer_firebaseId",
 		});
 

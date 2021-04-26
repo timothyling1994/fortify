@@ -207,10 +207,6 @@
   border-top:solid black 3px;
 }
 
-.entry:active{
-
-}
-
 .entry:hover{
   background-color: #ffbf00;
 }
@@ -472,17 +468,34 @@
 }
 
 .Chat{
+  display:flex;
   width:100vw;
   height:100vh;
 }
 
 .chat-panel{
-  width:25vw;
+  width:35vw;
   height:100%;
-  border-right:solid black 2px;
   font-size:30px;
+  overflow:scroll;
 }
 
 .chat-panel-header{
+  display:block;
+  width:100%;
   text-align:center;
+}
+
+.chat-groups{
+  display:flex;
+  flex-wrap:wrap;
+}
+
+.chat-window{
+  width:65vw;
+}
+.chat-window-top-bar{
+  width:100%;
+  text-align:center; 
+  border-bottom:solid black 2px;
 }
