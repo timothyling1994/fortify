@@ -1,13 +1,11 @@
 import React from "react";
 import {useState,useEffect} from "react";
-import uniqid from "uniqid";
 import EntryModal from "./EntryModal.js"
-import firebase from "firebase";
 
 function DeliveriesPanel (props) {
 
 	const [displayPanelTab,setDisplayPanelTab] = useState(0);
-	const [myDeliveries, setMyDeliveries] = useState([]);
+	//const [myDeliveries, setMyDeliveries] = useState([]);
 	const [requestAttributes,setRequestAttributes] = useState(["delivery-requests-label"]);
 	const [myDeliveriesAttributes,setMyDeliveriesAttributes] = useState(["my-deliveries-label"]);
 	const [myTasksAttributes,setMyTasksAttribute] = useState(["my-tasks-label"]);
@@ -28,13 +26,13 @@ function DeliveriesPanel (props) {
 
 	const highlightDiv = () => {
 
-		if(displayPanelTab == 0)
+		if(displayPanelTab === 0)
 		{
 			setRequestAttributes(["delivery-requests-label","highlight"]);
 			setMyDeliveriesAttributes(["my-deliveries-label"]);
 			setMyTasksAttribute(["my-tasks-label"]);
 		}
-		else if(displayPanelTab == 1)
+		else if(displayPanelTab === 1)
 		{
 			setRequestAttributes(["delivery-requests-label"]);
 			setMyDeliveriesAttributes(["my-deliveries-label","highlight"]);
@@ -63,12 +61,17 @@ function DeliveriesPanel (props) {
 		const panelEntryId = props.scrollToEntry[0].substring(7,);
 		const entryDiv = document.getElementById(panelEntryId);
 
-		panel.scrollTop = entryDiv.offsetTop-(entryDiv.offsetHeight);
+		//double check this
+		if(entryDiv !== null)
+		{
+			panel.scrollTop = entryDiv.offsetTop-(entryDiv.offsetHeight);
 
-		entryDiv.classList.add("temp-highlight");
-		setTimeout(function(){
-			entryDiv.classList.remove("temp-highlight")
-		},1000);
+			entryDiv.classList.add("temp-highlight");
+			setTimeout(function(){
+				entryDiv.classList.remove("temp-highlight")
+			},1000);
+		}
+
 	};
 
 	//sorting array uses same array reference, which doesn't cause react re-render. You need to use spread operator to create new reference
@@ -198,7 +201,7 @@ function DeliveriesPanel (props) {
 
 	const filterCategory = (category) => {
 	
-		if(category == 'Groceries' || category=='Medicine'|| category=='Dog Walking' || category =='Transportation' || category=='Assembly' || category=='Other')
+		if(category === 'Groceries' || category==='Medicine'|| category==='Dog Walking' || category ==='Transportation' || category==='Assembly' || category==='Other')
 		{
 
 			if(props.requests.length !== 0)
@@ -216,7 +219,7 @@ function DeliveriesPanel (props) {
 				{
 					arr = props.myTasks;
 				}
-				const filteredRequests = [...arr].filter(request=>request.category == category);
+				const filteredRequests = [...arr].filter(request=>request.category === category);
 				setRequests(filteredRequests);	
 				document.querySelector(".category-filter-container").style.backgroundColor = "#7bc62d";
 				document.querySelector(".category-filter").innerHTML = "Filtered By:" + category;
@@ -320,7 +323,7 @@ function DeliveriesPanel (props) {
 					</div>	
 			</div>
 			<div className="delivery-details">
-				{displayPanelTab == 0 ? requests.map((entry)=>{
+				{displayPanelTab === 0 ? requests.map((entry)=>{
 					return (
 						<div className="entry" key={entry.entryId} id={entry.entryId} onClick={()=>{openEntryModal(entry.entryId)}}>
 							<div className="entry-taskName-container">
@@ -333,7 +336,7 @@ function DeliveriesPanel (props) {
 							</div>
 						</div>
 					)
-				}) : displayPanelTab == 1 ? requests.map((entry)=>{
+				}) : displayPanelTab === 1 ? requests.map((entry)=>{
 					return (
 						<div className="entry" key={entry.entryId} id={entry.entryId} onClick={()=>{openEntryModal(entry.entryId)}}>
 							<div className="entry-taskName-container">

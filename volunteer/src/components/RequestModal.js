@@ -1,11 +1,11 @@
-import react from "react";
+//import react from "react";
 import "flatpickr/dist/themes/material_green.css";
 import Flatpickr from "react-flatpickr";
 import {useState,useEffect} from "react";
 
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
+//import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
+//import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 import uniqid from "uniqid";
 import {ToastContainer,toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +15,6 @@ import firebase from "firebase";
 function RequestModal (props) {
 
 	const [requestDate,setRequestDate] = useState(new Date());
-	const [validForm,setValidForm] = useState(false);
 	const [currentForm,setCurrentForm] = useState({});
 
 	const invalid_form = (message) => toast.error(message, {
@@ -62,7 +61,6 @@ function RequestModal (props) {
 
 		if(Object.keys(currentForm).length !== 0)
 		{
-			let id = uniqid();
 			let today = new Date();
 			let posted_date = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+(today.getDate());
 
@@ -126,7 +124,7 @@ function RequestModal (props) {
 
 		    for (let i=0; i<match.features.length;i++)
 		    {
-		    	if (match.features[i].place_name == request_location_input)
+		    	if (match.features[i].place_name === request_location_input)
 		    	{
 		    		isExactMatch = true;
 		    		request_location_coords = [...match.features[i].geometry.coordinates];
@@ -141,7 +139,6 @@ function RequestModal (props) {
 						request_location_coords,
 					});
 
-		    		setValidForm(true);
 		    	}
 		    }
 
@@ -153,21 +150,21 @@ function RequestModal (props) {
 		else
 		{
 
-			if(request_location_input == '')
+			if(request_location_input === '')
 			{
 				invalid_form('Invalid Address!');
 			}
 
-			if(request_details_input == '')
+			if(request_details_input === '')
 			{
 				invalid_form('Invalid Details!');
 			}
 
-			if(request_date_input == '')
+			if(request_date_input === '')
 			{
 				invalid_form('Invalid Date!');
 			}
-			if(request_selected_category == null)
+			if(request_selected_category === null)
 			{
 				invalid_form('Please select category!');
 			}

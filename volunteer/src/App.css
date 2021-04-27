@@ -499,3 +499,45 @@
   text-align:center; 
   border-bottom:solid black 2px;
 }
+
+.chat-window-messages{
+  display:flex;
+  flex-wrap:wrap;
+  align-items: flex-start;
+  overflow:scroll;
+}
+.chat-message-row{
+  margin-top:0.5em;
+  width:100%;
+}
+
+.chat-message{
+  display:inline-block;
+  padding:15px;
+  border-radius:30px;
+  margin-bottom:2px;
+  font-size:20px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.me{
+  background: #0084ff;
+  color:#fff;
+  float:right;
+  margin-right:0.5em;
+}
+
+.him{
+  background:#eee;
+  float:left;
+  margin-left:0.5em;
+}
+
+.chat-text-bar{
+  margin:0.5em;
+  position:absolute;
+  bottom:0;
+  font-size:40px;
+  border-radius:10px;
+  width:60vw;
+}

@@ -8,8 +8,10 @@ const Chat = (props) => {
 	const [chatGroups, setChatGroups] = useState([]);
 	const [showChat,setShowChat]=useState(false);
 	const [currentChat,setCurrentChat]=useState({});
+	const [currentChatMessages,setCurrentChatMessages] = useState([]);
 
 	const chatGroupRef = useRef([]);
+	const messageRef = useRef([]);
 
 	const initPanel = () => {
 
@@ -43,7 +45,7 @@ const Chat = (props) => {
 	const setCurrentEntry = (entryId) => {
 
 		chatGroups.forEach((entry)=>{
-			if(entry.entryId==entryId)
+			if(entry.entryId===entryId)
 			{
 				setCurrentChat(entry);
 			}
@@ -52,24 +54,57 @@ const Chat = (props) => {
 		setShowChat(true);
 	};
 
+	const displayMessage = (message) => {
+
+		let messagesArr = [...messageRef.current];
+		messagesArr.push(message);
+		setCurrentChatMessages(messagesArr);
+		messageRef.current = messagesArr;
+
+	};
+
 	const loadMessages = () => { 
-		console.log(currentChat.entryId);
+
+		console.log("loading messages");
 		let query = firebase.firestore()
-                  .collection('users').doc('firebaseId').collection("my_chats").doc("GTSEdZdm17XuMQJtPRf5").collection('messages').limit(12);
-                  //.orderBy('timestamp', 'desc')
+                  .collection('users').doc('firebaseId').collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(12);
+              
 
         query.onSnapshot(function(snapshot) {
-		    snapshot.docChanges().forEach(function(change) {
+        	if(!snapshot.metadata.hasPendingWrites)
+        	{
+        		console.log(1);
+			    snapshot.docChanges().forEach(function(change) {
 
-		      if (change.type === 'removed') {
-		      } else {
-		       	let message = change.doc.data();
-		        console.log(message);
-		      
-		      }
-		    });
+			      if (change.type === 'removed') {
+			      } else {
+			       	let message = change.doc.data();
+			       	console.log("displaying");
+			        displayMessage(message);    
+			      }
+			    });
+        	}	
 	  	});
 	};
+
+	const saveMessage = (e) => {
+		if(e.key=="Enter")
+		{
+			let message = document.querySelector(".chat-text-bar");
+			console.log(message.value);
+			firebase.firestore().collection("users").doc("firebaseId").collection("my_chats").doc(currentChat.entryId).collection('messages').add({
+				recipient: "volunteer_firebaseId",
+				sender:"firebaseId",
+				text:message.value,
+				timestamp:firebase.firestore.FieldValue.serverTimestamp()
+			}).catch(function(error){
+				console.error('Error writing new message to database',error);
+			});
+
+			message.value = "";
+			//console.log(skill_input.value);
+		}
+	};	
 
 	useEffect(()=>{
 		initPanel();
@@ -78,7 +113,6 @@ const Chat = (props) => {
 	useEffect(()=>{
 		if(showChat)
 		{
-			console.log("reach");
 			loadMessages();
 		}
 	},[showChat]);
@@ -100,7 +134,8 @@ const Chat = (props) => {
 								<div className="entry-date-posted">posted: {chatGroup.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {chatGroup.date}</div>
 							</div>
-						</div>)
+						</div>
+					)
 				})}
 				</div>
 			</div>
@@ -112,11 +147,19 @@ const Chat = (props) => {
 						<div className="chat-window-top-bar-pic"></div>
 					</div>
 					<div className="chat-window-messages">
-					</div>
-				</div>
-				: null
+						{currentChatMessages ? currentChatMessages.map((msg)=>{
+							let classAttributes = ["chat-message"];
 
-			}
+							return (
+								<div className="chat-message-row" key={uniqid()}>
+									<div className="chat-message me">{msg.text}</div>
+								</div>
+							)
+						}):null}	
+					</div>
+					<input className="chat-text-bar" onKeyDown={(e)=>saveMessage(e)}></input>
+				</div>
+				: null}
 		</div>
 	);
 };

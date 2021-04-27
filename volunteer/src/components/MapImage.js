@@ -1,11 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
-import Icon from "maki/icons/marker-15.svg";
-import firebase from "firebase";
 
 
 function MapImage(props){
@@ -14,26 +12,12 @@ function MapImage(props){
 	const [lng, setLng] = useState(-122.44);
 	const [lat, setLat] = useState(37.76);
 	const [zoom, setZoom] = useState(11.8);
-	const [renderMap,setRenderMap] = useState(false);
 
 	mapboxgl.workerClass = MapboxWorker;
 	mapboxgl.accessToken = 'pk.eyJ1IjoidGltb3RoeWxpbmcxOTk0IiwiYSI6ImNrbmZuOWFtbzFtM2YycG1pbTJkeWIwOXQifQ.Yhzp9YEOq_oqZPXQ28jKaw';
 
-	/*
-	useEffect(() => {
-
-		//if(props.requests.length !== 0) 
-		{
-			setRenderMap(true);
-		}
-
-	}, [props.requests]);*/
 
 	useEffect(()=>{
-
-		//if(renderMap == true)
-		{
-
 			const map = new mapboxgl.Map({
 					container: mapContainer.current,
 					style: 'mapbox://styles/mapbox/streets-v11',
@@ -97,11 +81,10 @@ function MapImage(props){
 					map.remove()
 				}
 			};
-		}
+
 
 	},[props.requests]);
 
-	//{renderMap ? <div className="MapImage" ref={mapContainer}></div> : null}
 	return(
 		<div>
 			<div className="display">lat:{lat} long:{lng} zoom:{zoom}</div>

@@ -1,4 +1,3 @@
-import react from "react";
 import firebase from "firebase";
 import { withRouter } from "react-router-dom";
 
@@ -8,7 +7,6 @@ function EntryModal (props) {
 	let location = "";
 	let posted_date = "";
 	let volunteer_date = "";
-	let volunteer_time = "";
 	let taskName="";
 	let posterId="";
 	let entryId="";
@@ -16,12 +14,11 @@ function EntryModal (props) {
 	const initValues = () => {
 		for(let i =0; i< props.requests.length;i++)
 		{
-			if(props.requests[i].entryId == props.currentEntryId)
+			if(props.requests[i].entryId === props.currentEntryId)
 			{
 				location = props.requests[i].location;
 				posted_date = props.requests[i].posted_date;
 				volunteer_date = props.requests[i].date;
-				volunteer_time = props.requests[i].volunteer_time;
 				taskName=props.requests[i].taskName;
 				posterId=props.requests[i].posterId;
 				entryId = props.requests[i].entryId;

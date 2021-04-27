@@ -3,7 +3,7 @@ import Header from "./components/Header.js";
 import MapImage from "./components/MapImage.js";
 import DeliveriesPanel from "./components/DeliveriesPanel.js";
 import Chat from "./components/Chat.js";
-import {useState,useEffect,useMemo,useRef} from "react";
+import {useState,useEffect} from "react";
 import RequestModal from "./components/RequestModal.js";
 import { BrowserRouter,Switch,Route } from "react-router-dom";
 import firebase from "firebase";
