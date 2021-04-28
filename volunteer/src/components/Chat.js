@@ -9,6 +9,7 @@ const Chat = (props) => {
 	const [showChat,setShowChat]=useState(false);
 	const [currentChat,setCurrentChat]=useState({});
 	const [currentChatMessages,setCurrentChatMessages] = useState([]);
+	const [firestoreSnapshot,setFirestoreSnapshot] = useState([]);
 
 	const chatGroupRef = useRef([]);
 	const messageRef = useRef([]);
@@ -24,14 +25,11 @@ const Chat = (props) => {
 				
 					firebase.firestore().collection('requests').doc(requestId).get().then((doc)=>
 					{
-					  //console.log(doc.data());
+
 					  if(doc.exists)
 					  {
-					  	//console.log(doc.data());
 					    let requestObj = {...doc.data()};
 					    requestObj.entryId = requestId;
-					    //console.log("chatGroups");
-					    //console.log(chatGroups);
 					    let newRequestArr = [...chatGroupRef.current];
 					    newRequestArr.push(requestObj);
 					    setChatGroups(newRequestArr);
@@ -54,33 +52,27 @@ const Chat = (props) => {
 		setShowChat(true);
 	};
 
-	const displayMessage = (message) => {
-
-		let messagesArr = [...messageRef.current];
-		messagesArr.push(message);
-		setCurrentChatMessages(messagesArr);
-		messageRef.current = messagesArr;
-
-	};
-
 	const loadMessages = () => { 
 
 		console.log("loading messages");
 		let query = firebase.firestore()
-                  .collection('users').doc('firebaseId').collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(12);
+                  .collection('users').doc('firebaseId').collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
               
 
         query.onSnapshot(function(snapshot) {
         	if(!snapshot.metadata.hasPendingWrites)
         	{
-        		console.log(1);
 			    snapshot.docChanges().forEach(function(change) {
 
 			      if (change.type === 'removed') {
 			      } else {
+
 			       	let message = change.doc.data();
-			       	console.log("displaying");
-			        displayMessage(message);    
+			       	let copyArr = [...messageRef.current];
+			       	copyArr.push(message);
+			       	console.log(message);
+					setFirestoreSnapshot(copyArr);
+					messageRef.current = copyArr;
 			      }
 			    });
         	}	
@@ -117,6 +109,21 @@ const Chat = (props) => {
 		}
 	},[showChat]);
 
+	useEffect(()=>{
+
+		console.log("reach");
+		if(firestoreSnapshot.length !== 0)
+		{
+			firestoreSnapshot.sort((a,b) => { 
+				return (a.timestamp - b.timestamp);
+			});
+
+			setCurrentChatMessages(firestoreSnapshot);
+		}
+
+
+	},[firestoreSnapshot]);
+
 	return (
 
 		<div className="Chat">
@@ -148,7 +155,7 @@ const Chat = (props) => {
 					</div>
 					<div className="chat-window-messages">
 						{currentChatMessages ? currentChatMessages.map((msg)=>{
-							let classAttributes = ["chat-message"];
+							//let classAttributes = ["chat-message"];
 
 							return (
 								<div className="chat-message-row" key={uniqid()}>

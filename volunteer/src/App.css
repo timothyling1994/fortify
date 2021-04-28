@@ -91,7 +91,7 @@
   width:35vw;
   height:100%;
   font-size:27px;
-  overflow:scroll;
+  overflow:auto;
 }
 
 .delivery-btn-container{
@@ -470,14 +470,16 @@
 .Chat{
   display:flex;
   width:100vw;
-  height:100vh;
+  height:90vh;
+
 }
 
 .chat-panel{
   width:35vw;
   height:100%;
   font-size:30px;
-  overflow:scroll;
+  overflow:auto;
+  border-right:solid black 1px;
 }
 
 .chat-panel-header{
@@ -493,9 +495,12 @@
 
 .chat-window{
   width:65vw;
+  height:100%;
 }
+
 .chat-window-top-bar{
   width:100%;
+  height:10vh;
   text-align:center; 
   border-bottom:solid black 2px;
 }
@@ -504,10 +509,12 @@
   display:flex;
   flex-wrap:wrap;
   align-items: flex-start;
-  overflow:scroll;
+  overflow-y:auto;
+  height:70vh;
+
 }
 .chat-message-row{
-  margin-top:0.5em;
+  margin-top:0.25em;
   width:100%;
 }
 
@@ -534,10 +541,12 @@
 }
 
 .chat-text-bar{
-  margin:0.5em;
+
   position:absolute;
   bottom:0;
+  height: 7vh;
   font-size:40px;
   border-radius:10px;
-  width:60vw;
+  width:63vw;
+  margin:0.1em;
 }
