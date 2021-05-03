@@ -16,6 +16,8 @@ const Chat = (props) => {
 
 	const initPanel = () => {
 
+		chatGroupRef.current = [];
+
 		let myChats_query = firebase.firestore().collection('users').doc('firebaseId').collection('my_chats');
 		myChats_query.onSnapshot((snapshot)=>{
 			
@@ -40,14 +42,15 @@ const Chat = (props) => {
 		});
 	};
 
-	const setCurrentEntry = (entryId) => {
+	const setCurrentEntry = (event, entryId) => {
 
 		setShowChat([false]);
+		removeHighlight();
+		highlightDiv(event);
 
 		chatGroups.forEach((entry)=>{
 			if(entry.entryId===entryId)
 			{
-				console.log(entry);
 				setCurrentChat(entry);
 				setShowChat([true]);
 			}
@@ -58,7 +61,6 @@ const Chat = (props) => {
 
 	const loadMessages = () => { 
 
-		console.log("loading messages");
 		messageRef.current = [];
 		let query = firebase.firestore()
                   .collection('users').doc('firebaseId').collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
@@ -109,13 +111,28 @@ const Chat = (props) => {
 
 	};
 
+	const highlightDiv = (event) => {
+
+		event.target.closest(".entry").classList.add("highlight");
+		
+	};
+
+	const removeHighlight = () => {
+		const nodeList = document.querySelectorAll(".entry");
+		nodeList.forEach((node)=>{
+			if(node.classList.contains("highlight"))
+			{
+				node.classList.remove("highlight");
+			}
+		});
+	}
+
 	useEffect(()=>{
 		initPanel();
 	},[]);
 
 	useEffect(()=>{
 
-		console.log("how manty");
 		if(showChat[0])
 		{
 			loadMessages();
@@ -144,7 +161,7 @@ const Chat = (props) => {
 				<div className="chat-groups">
 				{chatGroups.map((chatGroup) => {
 					return (
-						<div className="entry" key={chatGroup.entryId} id={chatGroup.entryId} onClick={()=>{setCurrentEntry(chatGroup.entryId)}}>
+						<div className="entry" key={chatGroup.entryId} id={chatGroup.entryId} onClick={(e)=>{setCurrentEntry(e,chatGroup.entryId)}}>
 							<div className="entry-taskName-container">
 								<div className="entry-taskName">{chatGroup.taskName}</div>
 							</div>
