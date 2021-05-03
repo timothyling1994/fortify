@@ -6,7 +6,7 @@ import uniqid from "uniqid";
 const Chat = (props) => {
 
 	const [chatGroups, setChatGroups] = useState([]);
-	const [showChat,setShowChat]=useState(false);
+	const [showChat,setShowChat]=useState([false]);
 	const [currentChat,setCurrentChat]=useState({});
 	const [currentChatMessages,setCurrentChatMessages] = useState([]);
 	const [firestoreSnapshot,setFirestoreSnapshot] = useState([]);
@@ -42,19 +42,24 @@ const Chat = (props) => {
 
 	const setCurrentEntry = (entryId) => {
 
+		setShowChat([false]);
+
 		chatGroups.forEach((entry)=>{
 			if(entry.entryId===entryId)
 			{
+				console.log(entry);
 				setCurrentChat(entry);
+				setShowChat([true]);
 			}
 		});
 
-		setShowChat(true);
+	
 	};
 
 	const loadMessages = () => { 
 
 		console.log("loading messages");
+		messageRef.current = [];
 		let query = firebase.firestore()
                   .collection('users').doc('firebaseId').collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
               
@@ -65,12 +70,13 @@ const Chat = (props) => {
 			    snapshot.docChanges().forEach(function(change) {
 
 			      if (change.type === 'removed') {
-			      } else {
+			      
+			      }
+			      else {
 
 			       	let message = change.doc.data();
 			       	let copyArr = [...messageRef.current];
 			       	copyArr.push(message);
-			       	console.log(message);
 					setFirestoreSnapshot(copyArr);
 					messageRef.current = copyArr;
 			      }
@@ -83,7 +89,6 @@ const Chat = (props) => {
 		if(e.key=="Enter")
 		{
 			let message = document.querySelector(".chat-text-bar");
-			console.log(message.value);
 			firebase.firestore().collection("users").doc("firebaseId").collection("my_chats").doc(currentChat.entryId).collection('messages').add({
 				recipient: "volunteer_firebaseId",
 				sender:"firebaseId",
@@ -94,16 +99,24 @@ const Chat = (props) => {
 			});
 
 			message.value = "";
-			//console.log(skill_input.value);
 		}
-	};	
+	};
+
+	const setScrollHeight = () => {
+		const chat_window = document.querySelector(".chat-window-messages");
+		console.log(chat_window.scrollHeight);
+		chat_window.scrollTop = (chat_window.getBoundingClientRect().height);
+
+	};
 
 	useEffect(()=>{
 		initPanel();
 	},[]);
 
 	useEffect(()=>{
-		if(showChat)
+
+		console.log("how manty");
+		if(showChat[0])
 		{
 			loadMessages();
 		}
@@ -111,7 +124,6 @@ const Chat = (props) => {
 
 	useEffect(()=>{
 
-		console.log("reach");
 		if(firestoreSnapshot.length !== 0)
 		{
 			firestoreSnapshot.sort((a,b) => { 
@@ -119,8 +131,8 @@ const Chat = (props) => {
 			});
 
 			setCurrentChatMessages(firestoreSnapshot);
+			setScrollHeight();
 		}
-
 
 	},[firestoreSnapshot]);
 
@@ -147,7 +159,7 @@ const Chat = (props) => {
 				</div>
 			</div>
 
-			{showChat ? 
+			{showChat[0] ? 
 				<div className="chat-window">
 					<div className="chat-window-top-bar">
 						<div className="chat-window-top-bar-user">{currentChat.entryId}</div>
