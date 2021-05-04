@@ -105,7 +105,6 @@ function RequestModal (props) {
 
 	const formValidation = async () => {
 
-		console.log("reachy");
 		let request_selected_category = document.querySelector(".request-category-highlight");
 		let request_location_input = document.querySelector(".request-location-input").value;
 		let request_details_input = document.querySelector(".request-details-input").value;

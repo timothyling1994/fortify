@@ -9,7 +9,7 @@ function Header (props) {
 
 	return (
 		<div className="Header">
-			<Link to={"/"} className="link"><div className="title">Volunteer.Me</div></Link>
+			<Link to={"/home"} className="link"><div className="title">Volunteer.Me</div></Link>
 			<div className="header-btn-container">
 				<div className="request-help-btn" onClick={openRequestModal}> Request Help</div>
 				<Link to={"/chat"} className="link">

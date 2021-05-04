@@ -15,11 +15,6 @@ function DeliveriesPanel (props) {
 	const [toggleSortByDate,setToggleSortByDate] = useState(false);
 	const [toggleSortByVolunteerDate,setToggleSortByVolunteerDate] = useState(true);
 
-	const dropDownStyle = {
-
-		//left: document.querySelector(".DeliveriesPanel").offsetWidth + "px",
-	};
-
 	const setDisplayPanel = (value) => {
 		setDisplayPanelTab(value);
 	};
@@ -311,7 +306,7 @@ function DeliveriesPanel (props) {
 					<div className="filter-options" onClick={sortByVolunteerDate}>Sort by Volunteer Date</div>	
 					<div className="category-filter-container">
 						<div className="category-filter">Filter by Category</div>
-						<div className="category-filter-dropdown" style={dropDownStyle}>
+						<div className="category-filter-dropdown">
 								<div className="category" onClick={()=>{showAllCategories()}}>All</div>
 								<div className="category" onClick={()=>{filterCategory("Groceries")}}>Groceries</div>
 								<div className="category" onClick={()=>filterCategory("Medicine")}>Medicine</div>

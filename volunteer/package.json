@@ -8,6 +8,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "firebase": "^8.4.1",
+    "firebaseui": "^4.8.0",
     "maki": "^2.1.0",
     "mapbox-gl": "^2.2.0",
     "react": "^17.0.2",
