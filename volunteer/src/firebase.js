@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
-//import "firebase/firestore";
+import "firebase/auth";
+import "firebase/firestore";
 import * as firebaseui from 'firebaseui';
+import { withRouter } from "react-router-dom";
 
 
 const app = firebase.initializeApp({
@@ -19,10 +21,11 @@ let ui = new firebaseui.auth.AuthUI(firebase.auth());
 let uiConfig = {
 callbacks: {
   signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+  	console.log("SUCCESS");
     // User successfully signed in.
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.
-
+    //history.push("/");
     return false;
   },
   uiShown: function() {
@@ -47,7 +50,6 @@ privacyPolicyUrl: '<your-privacy-policy-url>'
 };
 
 const startFirebaseUI = (elementId) => {
-	console.log(elementId);
 	ui.start(elementId, uiConfig);
 };
 

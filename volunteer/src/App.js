@@ -9,7 +9,7 @@ import Login from "./components/Login.js";
 import { BrowserRouter,Switch,Route } from "react-router-dom";
 import firebase from "firebase";
 import {startFirebaseUI}from './firebase.js';
-import { AuthProvider } from "./auth.js";
+import AuthProvider from "./auth.js";
 import PrivateRoute from "./PrivateRoute.js";
 //import firebaseui from "firebaseui";
 
@@ -85,25 +85,27 @@ function App() {
   },[]);
 
   return (
-    <div className="App">
-      <AuthProvider>
-      {showRequestModal ? <RequestModal setShowRequestModal={setShowRequestModal}/> : null}
-        <BrowserRouter>
-          <Header setShowRequestModal={setShowRequestModal}/>
-          <Switch>
+    <AuthProvider>
+      <div className="App">
+      
+        {showRequestModal ? <RequestModal setShowRequestModal={setShowRequestModal}/> : null}
+          <BrowserRouter>
+            <Header setShowRequestModal={setShowRequestModal}/>
+            <Switch>
 
-            <PrivateRoute exact path="/" render={() => (
-              <div className="main-content">
-                <DeliveriesPanel requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
-                <MapImage requests={requests} scrollToId={scrollToId}/>
-              </div>)
-            }/>
-            <Route exact path="/login" render={() => (<Login/>)}/>
-            <Route exact path="/chat" render={() => (<Chat/>)}/>
-          </Switch>
-        </BrowserRouter>  
-      </AuthProvider>  
-    </div>
+              <PrivateRoute exact path="/" component={
+                  <div className="main-content">
+                    <DeliveriesPanel requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
+                    <MapImage requests={requests} scrollToId={scrollToId}/>
+                  </div>
+              }/>
+              <Route exact path="/login" render={() => (<Login/>)}/>
+              <Route exact path="/chat" render={() => (<Chat/>)}/>
+            </Switch>
+          </BrowserRouter>  
+      
+      </div>
+    </AuthProvider>  
   );
 }
 
