@@ -16,16 +16,16 @@ const app = firebase.initializeApp({
 });
 
 
-let ui = new firebaseui.auth.AuthUI(firebase.auth());
+let ui = new firebaseui.auth.AuthUI(app.auth());
 
-let uiConfig = {
+export const uiConfig = {
 callbacks: {
   signInSuccessWithAuthResult: function(authResult, redirectUrl) {
   	console.log("SUCCESS");
     // User successfully signed in.
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.
-    //history.push("/");
+    history.push("/");
     return false;
   },
   uiShown: function() {

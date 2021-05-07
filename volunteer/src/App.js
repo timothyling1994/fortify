@@ -92,7 +92,6 @@ function App() {
           <BrowserRouter>
             <Header setShowRequestModal={setShowRequestModal}/>
             <Switch>
-
               <PrivateRoute exact path="/" component={
                   <div className="main-content">
                     <DeliveriesPanel requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
