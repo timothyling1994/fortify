@@ -6,11 +6,12 @@ import Chat from "./components/Chat.js";
 import {useState,useEffect} from "react";
 import RequestModal from "./components/RequestModal.js";
 import Login from "./components/Login.js";
-import { BrowserRouter,Switch,Route } from "react-router-dom";
+import { Router,Switch,Route } from "react-router-dom";
 import firebase from "firebase";
 import {startFirebaseUI}from './firebase.js';
-import AuthProvider from "./auth.js";
+import {AuthProvider} from "./auth.js";
 import PrivateRoute from "./PrivateRoute.js";
+import history from './history.js';
 //import firebaseui from "firebaseui";
 
 function App() {
@@ -84,27 +85,40 @@ function App() {
     initFirestore();
   },[]);
 
-  return (
-    <AuthProvider>
-      <div className="App">
-      
-        {showRequestModal ? <RequestModal setShowRequestModal={setShowRequestModal}/> : null}
-          <BrowserRouter>
-            <Header setShowRequestModal={setShowRequestModal}/>
-            <Switch>
-              <PrivateRoute exact path="/" component={
+  /*<PrivateRoute exact path="/home" component={
                   <div className="main-content">
                     <DeliveriesPanel requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
                     <MapImage requests={requests} scrollToId={scrollToId}/>
                   </div>
               }/>
-              <Route exact path="/login" render={() => (<Login/>)}/>
-              <Route exact path="/chat" render={() => (<Chat/>)}/>
+
+               <Route exact path="/login" render={() => (<Login/>)}/>
+  */
+
+  return (
+  
+      <div className="App">
+        <AuthProvider>
+        {showRequestModal ? <RequestModal setShowRequestModal={setShowRequestModal}/> : null}
+          <Router history={history}>
+            <Header setShowRequestModal={setShowRequestModal}/>
+            <Switch>
+              <Route exact path="/login"> 
+                <Login/>
+              </Route>
+              <PrivateRoute exact path="/home">
+                <div className="main-content">
+                    <DeliveriesPanel requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
+                    <MapImage requests={requests} scrollToId={scrollToId}/>
+                </div>
+              </PrivateRoute>
+              <PrivateRoute exact path="/chat">
+                <Chat/>
+              </PrivateRoute>
             </Switch>
-          </BrowserRouter>  
-      
-      </div>
-    </AuthProvider>  
+          </Router>  
+        </AuthProvider>
+      </div>  
   );
 }
 

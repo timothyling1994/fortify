@@ -3,6 +3,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import * as firebaseui from 'firebaseui';
 import { withRouter } from "react-router-dom";
+import history from './history.js';
 
 
 const app = firebase.initializeApp({
@@ -25,7 +26,7 @@ callbacks: {
     // User successfully signed in.
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.
-    history.push("/");
+    history.push("/home");
     return false;
   },
   uiShown: function() {
