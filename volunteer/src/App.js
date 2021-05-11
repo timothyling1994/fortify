@@ -17,7 +17,7 @@ import { AuthContext } from "./auth.js";
 
 function App() {
 
-  const [currentUser,setCurrentUser] = useState();
+  const [currentUser,setCurrentUser] = useState(null);
   
   const [requests, setRequests] = useState([]);
   const [myRequests,setMyRequests] = useState([]);
@@ -40,7 +40,7 @@ function App() {
     });
 
 
-    let myRequests_query = firebase.firestore().collection('users').doc('firebaseId').collection('my_requests');
+    let myRequests_query = firebase.firestore().collection('users').doc(currentUser.token).collection('my_requests');
     myRequests_query.onSnapshot((snapshot)=>{
       let myRequestsObjArr = [];
       snapshot.forEach((doc)=>{
@@ -59,7 +59,7 @@ function App() {
       setMyRequests(myRequestsObjArr); 
     });
 
-    let myTasks_query = firebase.firestore().collection('users').doc('firebaseId').collection('my_tasks');
+    let myTasks_query = firebase.firestore().collection('users').doc(currentUser.token).collection('my_tasks');
     myTasks_query.onSnapshot((snapshot)=>{
       let myTasksObjArr = [];
       snapshot.forEach((doc)=>{
@@ -96,8 +96,11 @@ function App() {
 
 
   useEffect(()=>{
-    callFirestore();
-  },[]);
+    if(currentUser !== null)
+    {
+      callFirestore();
+    }
+  },[currentUser]);
 
 
   return (

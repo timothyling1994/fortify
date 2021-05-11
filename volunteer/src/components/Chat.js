@@ -223,12 +223,25 @@ const Chat = (props) => {
 					<div className="chat-window-messages">
 						{currentChatMessages ? currentChatMessages.map((msg)=>{
 							//let classAttributes = ["chat-message"];
-
-							return (
+							console.log(msg);
+							if(msg.sender === props.currentUser.token)
+							{
+								return (
 								<div className="chat-message-row" key={uniqid()}>
 									<div className="chat-message me">{msg.text}</div>
 								</div>
-							)
+								)
+							}
+							else
+							{
+								return (
+								<div className="chat-message-row" key={uniqid()}>
+									<div className="chat-message him">{msg.text}</div>
+								</div>
+								)
+							}
+
+						
 						}):null}	
 					</div>
 					<input className="chat-text-bar" onKeyDown={(e)=>saveMessage(e)}></input>

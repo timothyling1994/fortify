@@ -556,7 +556,7 @@
 .chat-window-messages{
   display:flex;
   flex-wrap:wrap;
-  align-items: flex-start;
+  align-content: flex-start;
   overflow-y:auto;
   height:70vh;
 
