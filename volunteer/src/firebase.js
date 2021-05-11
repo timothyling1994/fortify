@@ -4,6 +4,7 @@ import "firebase/firestore";
 import * as firebaseui from 'firebaseui';
 import { withRouter } from "react-router-dom";
 import history from './history.js';
+import App from './App.js';
 
 
 const app = firebase.initializeApp({
@@ -17,12 +18,18 @@ const app = firebase.initializeApp({
 });
 
 
+
 let ui = new firebaseui.auth.AuthUI(app.auth());
 
 export const uiConfig = {
 callbacks: {
   signInSuccessWithAuthResult: function(authResult, redirectUrl) {
   	console.log("SUCCESS");
+  	console.log(app.auth().currentUser);
+
+  	//let user = app.auth().currentUser;
+  	//App.setUser(user.displayName,user.email,user.photoURL,user.getToken);
+
     // User successfully signed in.
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.

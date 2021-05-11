@@ -295,7 +295,7 @@ function DeliveriesPanel (props) {
 
 	return (
 		<div className="DeliveriesPanel">
-			{displayEntryModal ? <EntryModal requests={props.requests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
+			{displayEntryModal ? <EntryModal currentUser={props.currentUser}requests={props.requests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
 			<div className="delivery-btn-container">
 				<div className={requestAttributes.join(" ")} onClick={()=>{setDisplayPanel(0)}}>All Requests</div>
 				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{setDisplayPanel(1)}}>My Requests</div>

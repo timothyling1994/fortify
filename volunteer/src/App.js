@@ -1,9 +1,9 @@
 import './App.css';
 import Header from "./components/Header.js";
-import MapImage from "./components/MapImage.js";
-import DeliveriesPanel from "./components/DeliveriesPanel.js";
+
 import Chat from "./components/Chat.js";
-import {useState,useEffect} from "react";
+import Home from "./components/Home.js";
+import {useState,useEffect,useContext} from "react";
 import RequestModal from "./components/RequestModal.js";
 import Login from "./components/Login.js";
 import { Router,Switch,Route } from "react-router-dom";
@@ -12,18 +12,21 @@ import {startFirebaseUI}from './firebase.js';
 import {AuthProvider} from "./auth.js";
 import PrivateRoute from "./PrivateRoute.js";
 import history from './history.js';
+import { AuthContext } from "./auth.js";
 //import firebaseui from "firebaseui";
 
 function App() {
 
-  const [showRequestModal,setShowRequestModal] = useState(false);
+  const [currentUser,setCurrentUser] = useState();
+  
   const [requests, setRequests] = useState([]);
   const [myRequests,setMyRequests] = useState([]);
   const [myTasks,setMyTasks] = useState([]);
+
+  const [showRequestModal,setShowRequestModal] = useState(false);
   const [scrollToEntry,setScrollToEntry] = useState([]);
 
-  const initFirestore = () => {
-    //requestsRef.current = [];
+  const callFirestore = () => {
     
     let query = firebase.firestore().collection('requests');
     query.onSnapshot((snapshot)=>{
@@ -81,25 +84,27 @@ function App() {
     setScrollToEntry([divId]);
   };
 
+  const setUser = (displayName,email,photoURL,token) => {
+    console.log(token);
+    setCurrentUser({
+      displayName,
+      email,
+      photoURL,
+      token,
+    });
+  };
+
+
   useEffect(()=>{
-    initFirestore();
+    callFirestore();
   },[]);
 
-  /*<PrivateRoute exact path="/home" component={
-                  <div className="main-content">
-                    <DeliveriesPanel requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
-                    <MapImage requests={requests} scrollToId={scrollToId}/>
-                  </div>
-              }/>
-
-               <Route exact path="/login" render={() => (<Login/>)}/>
-  */
 
   return (
   
       <div className="App">
         <AuthProvider>
-        {showRequestModal ? <RequestModal setShowRequestModal={setShowRequestModal}/> : null}
+        {showRequestModal ? <RequestModal currentUser={currentUser} setShowRequestModal={setShowRequestModal}/> : null}
           <Router history={history}>
             <Header setShowRequestModal={setShowRequestModal}/>
             <Switch>
@@ -107,13 +112,10 @@ function App() {
                 <Login/>
               </Route>
               <PrivateRoute exact path="/home">
-                <div className="main-content">
-                    <DeliveriesPanel requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
-                    <MapImage requests={requests} scrollToId={scrollToId}/>
-                </div>
+                <Home currentUser={currentUser} requests={requests} setUser={setUser} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry} scrollToId={scrollToId}/>
               </PrivateRoute>
               <PrivateRoute exact path="/chat">
-                <Chat/>
+                <Chat currentUser={currentUser}/>
               </PrivateRoute>
             </Switch>
           </Router>  

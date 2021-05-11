@@ -31,9 +31,10 @@ function EntryModal (props) {
 	};
 
 	const acceptEntry = () => {
+
 		firebase.firestore().collection('requests').doc(props.currentEntryId).update({
 			
-			volunteerId:"firebaseId",
+			volunteerId:props.currentUser.token,
 
 		}).then(()=>{
 			console.log("Document successfully updated.");
@@ -41,7 +42,7 @@ function EntryModal (props) {
 			console.error("Error updating document: ", error);
 		});
 
-		firebase.firestore().collection('users').doc('firebaseId').collection('my_tasks').doc().set({
+		firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_tasks').doc().set({
 			
 			requestId: props.currentEntryId,
 
@@ -51,14 +52,14 @@ function EntryModal (props) {
 
 	};
 	const addChat = () =>{
-		firebase.firestore().collection('users').doc('volunteer_firebaseId').collection('my_chats').doc(entryId).set({
+		firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_chats').doc(entryId).set({
 			posterId: posterId,
-			volunteerId:"volunteer_firebaseId",
+			volunteerId:props.currentUser.token,
 		});
 
-		firebase.firestore().collection('users').doc('firebaseId').collection('my_chats').doc(entryId).set({
+		firebase.firestore().collection('users').doc(posterId).collection('my_chats').doc(entryId).set({
 			posterId: posterId,
-			volunteerId:"volunteer_firebaseId",
+			volunteerId:props.currentUser.token,
 		});
 
 		props.history.push("/chat");

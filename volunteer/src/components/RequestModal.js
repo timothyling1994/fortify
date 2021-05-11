@@ -68,19 +68,21 @@ function RequestModal (props) {
 			let today = new Date();
 			let posted_date = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+(today.getDate());
 
+			console.log("token:"+props.currentUser.token);
+
 			firebase.firestore().collection('requests').add({
 				category:currentForm.request_category_input,
 				coords:currentForm.request_location_coords,
 				date:currentForm.request_date_input,
 				taskName:currentForm.request_details_input,
 				location:currentForm.request_location_input,
-				posterId:"firebaseId",
+				posterId:props.currentUser.token,
 				volunteerId:"",
 				posted_date: posted_date,
 
 			}).then((docRef)=>{
-				console.log(docRef.id);
-				firebase.firestore().collection('users').doc('firebaseId').collection('my_requests').doc().set({
+				//console.log(docRef.id);
+				firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_requests').doc().set({
 					requestId: docRef.id,
 				});
 			});

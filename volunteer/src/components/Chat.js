@@ -18,7 +18,7 @@ const Chat = (props) => {
 
 		chatGroupRef.current = [];
 
-		let myChats_query = firebase.firestore().collection('users').doc('firebaseId').collection('my_chats');
+		let myChats_query = firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_chats');
 		myChats_query.onSnapshot((snapshot)=>{
 			
 			snapshot.forEach((doc)=>{
@@ -51,10 +51,25 @@ const Chat = (props) => {
 		chatGroups.forEach((entry)=>{
 			if(entry.entryId===entryId)
 			{
-				setCurrentChat(entry);
-				setShowChat([true]);
+				console.log(entry);
+				firebase.firestore().collection("users").doc(props.currentUser.token).collection("my_chats").doc(entry.entryId).get().then((doc)=>{
+					if(doc.exists){
+						//let posterId = doc.data().posterId;
+						let volunteerId = doc.data().volunteerId;
+						entry.volunteerId = volunteerId;
+						setCurrentChat(entry);
+						setShowChat([true]);
+					}
+					else
+					{
+						console.log("No such document!");
+					}
+				});
+				
 			}
 		});
+
+
 
 	
 	};
@@ -63,7 +78,7 @@ const Chat = (props) => {
 
 		messageRef.current = [];
 		let query = firebase.firestore()
-                  .collection('users').doc('firebaseId').collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
+                  .collection('users').doc(props.currentUser.token).collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
               
 
         query.onSnapshot(function(snapshot) {
@@ -90,10 +105,33 @@ const Chat = (props) => {
 	const saveMessage = (e) => {
 		if(e.key=="Enter")
 		{
+
 			let message = document.querySelector(".chat-text-bar");
-			firebase.firestore().collection("users").doc("firebaseId").collection("my_chats").doc(currentChat.entryId).collection('messages').add({
-				recipient: "volunteer_firebaseId",
-				sender:"firebaseId",
+
+			let recipient = "";
+
+			if(props.currentUser.token == currentChat.posterId)
+			{
+				recipient = currentChat.volunteerId;
+			}
+			else
+			{
+				recipient = currentChat.posterId;
+			}
+
+			firebase.firestore().collection("users").doc(props.currentUser.token).collection("my_chats").doc(currentChat.entryId).collection('messages').add({
+				recipient: recipient,
+				sender:props.currentUser.token,
+				text:message.value,
+				timestamp:firebase.firestore.FieldValue.serverTimestamp()
+			}).catch(function(error){
+				console.error('Error writing new message to database',error);
+			});
+
+
+			firebase.firestore().collection("users").doc(recipient).collection("my_chats").doc(currentChat.entryId).collection('messages').add({
+				recipient: recipient,
+				sender:props.currentUser.token,
 				text:message.value,
 				timestamp:firebase.firestore.FieldValue.serverTimestamp()
 			}).catch(function(error){
