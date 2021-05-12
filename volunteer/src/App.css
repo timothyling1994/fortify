@@ -598,3 +598,25 @@
   width:63vw;
   margin:0.1em;
 }
+
+.Leaderboard{
+  display:flex;
+  flex-wrap:wrap;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-content:flex-start;
+  font-size:50px;
+}
+
+.leaderboard-container{
+  width:100%;
+  text-align: center;
+  font-size:40px;
+  padding:0.25em;
+}
+
+.details-container{
+  display:block;
+  border:solid black 2px;
+}

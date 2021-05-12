@@ -3,17 +3,15 @@ import Header from "./components/Header.js";
 
 import Chat from "./components/Chat.js";
 import Home from "./components/Home.js";
-import {useState,useEffect,useContext} from "react";
+import {useState,useEffect} from "react";
 import RequestModal from "./components/RequestModal.js";
 import Login from "./components/Login.js";
 import { Router,Switch,Route } from "react-router-dom";
 import firebase from "firebase";
-import {startFirebaseUI}from './firebase.js';
 import {AuthProvider} from "./auth.js";
 import PrivateRoute from "./PrivateRoute.js";
+import Leaderboard from "./components/Leaderboard.js";
 import history from './history.js';
-import { AuthContext } from "./auth.js";
-//import firebaseui from "firebaseui";
 
 function App() {
 
@@ -120,6 +118,9 @@ function App() {
               <PrivateRoute exact path="/chat">
                 <Chat currentUser={currentUser}/>
               </PrivateRoute>
+              <Route exact path="/leaderboard"> 
+                <Leaderboard/>
+              </Route>
             </Switch>
           </Router>  
         </AuthProvider>
