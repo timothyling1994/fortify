@@ -1,5 +1,7 @@
 import firebase from "firebase";
 import { withRouter } from "react-router-dom";
+import {ToastContainer,toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function EntryModal (props) {
@@ -10,6 +12,24 @@ function EntryModal (props) {
 	let taskName="";
 	let posterId="";
 	let entryId="";
+	let volunteers_accepted = 0;
+	let volunteers_needed = 0;
+	let entry_status="";
+	let volunteersArr = [];
+
+	const invalid_form = (message) => toast.error(message, {
+		position: "top-right",
+		autoClose: 3000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		draggable: true,
+		progress: undefined,
+	});
+
+	let styles = {
+		fontSize: '20px',
+		fontFamily: 'Noto Sans, sans-serif',
+	}
 
 	const initValues = () => {
 		for(let i =0; i< props.requests.length;i++)
@@ -22,6 +42,10 @@ function EntryModal (props) {
 				taskName=props.requests[i].taskName;
 				posterId=props.requests[i].posterId;
 				entryId = props.requests[i].entryId;
+				volunteers_accepted = props.requests[i].volunteers_accepted;
+				volunteers_needed = props.requests[i].volunteers_needed;
+				entry_status = props.requests[i].status;
+				volunteersArr = [...props.requests[i].volunteerId];
 			}
 		}
 	};
@@ -30,25 +54,56 @@ function EntryModal (props) {
 		props.closeEntryModal();
 	};
 
+//have to group volunteerIds for multiple volunteers
+
 	const acceptEntry = () => {
 
-		firebase.firestore().collection('requests').doc(props.currentEntryId).update({
-			
-			volunteerId:props.currentUser.token,
+		let status = "";
 
-		}).then(()=>{
-			console.log("Document successfully updated.");
-		}).catch((error)=>{
-			console.error("Error updating document: ", error);
-		});
+		if(entry_status === "accepted")
+		{
+			invalid_form('All volunteer spots have been already filled!');
+		}
+		else if(volunteersArr.includes(props.currentUser.token))
+		{
+			invalid_form('You already accepted this task!');
+		}
+		else
+		{
+			if(volunteers_accepted+1 === volunteers_needed)
+			{
+				status="accepted";
+			}
+			else
+			{
+				status="pending";
+			}
 
-		firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_tasks').doc().set({
-			
-			requestId: props.currentEntryId,
+			let temp = [...volunteersArr];
+			temp.push(props.currentUser.token);
 
-		});
+			firebase.firestore().collection('requests').doc(props.currentEntryId).update({
+				
+				status:status,
+				volunteers_accepted: volunteers_accepted + 1,
+				volunteerId:temp,
 
-		closeEntryModal();
+			}).then(()=>{
+				console.log("Document successfully updated.");
+			}).catch((error)=>{
+				console.error("Error updating document: ", error);
+			});
+
+			firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_tasks').doc().set({
+				
+				requestId: props.currentEntryId,
+
+			});
+
+			closeEntryModal();
+		}
+
+	
 
 	};
 	const addChat = () =>{
@@ -70,6 +125,7 @@ function EntryModal (props) {
 
 	return (
 		<div className="EntryModal">
+			<ToastContainer style={styles}/>
 			<div className="modal-container">
 				<div className="modal-taskName">{taskName}</div>
 				<div className="modal-location">{location}</div>

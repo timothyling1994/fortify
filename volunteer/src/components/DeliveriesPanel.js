@@ -329,7 +329,10 @@ function DeliveriesPanel (props) {
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
-							<div className="entry-status">{entry.status}</div>
+							{entry.status === "pending" ? <div className="entry-status pending">{entry.status}</div> : 
+							<div className="entry-status accepted">{entry.status}</div>}
+			
+							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed}</div>
 						</div>
 					)
 				}) : displayPanelTab === 1 ? requests.map((entry)=>{
@@ -343,7 +346,9 @@ function DeliveriesPanel (props) {
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
-							<div className="entry-status">{entry.status}</div>
+							{entry.status === "pending" ? <div className="entry-status pending">{entry.status}</div> : 
+							<div className="entry-status accepted">{entry.status}</div>}
+							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed}</div>
 						</div>
 					)
 				}) : requests.map((entry)=>{ 
@@ -357,7 +362,9 @@ function DeliveriesPanel (props) {
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
-							<div className="entry-status">{entry.status}</div>
+							{entry.status === "pending" ? <div className="entry-status pending">{entry.status}</div> : 
+							<div className="entry-status accepted">{entry.status}</div>}
+							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed}</div>
 						</div>
 					)
 					})
