@@ -243,6 +243,19 @@
   width:50%;
 }
 
+.entry-status{
+  font-size: 0.75em;
+  border: solid black 2px;
+  margin: 0.25em;
+  border-radius:30px;
+  padding-top:0.15em;
+  padding-bottom:0.15em;
+  padding-left:0.5em;
+  padding-right:0.5em;
+  color:black;
+
+}
+
 .highlight{
   background-color: #ffbf00;
 }

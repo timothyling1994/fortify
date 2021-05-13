@@ -329,6 +329,7 @@ function DeliveriesPanel (props) {
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
+							<div className="entry-status">{entry.status}</div>
 						</div>
 					)
 				}) : displayPanelTab === 1 ? requests.map((entry)=>{
@@ -342,6 +343,7 @@ function DeliveriesPanel (props) {
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
+							<div className="entry-status">{entry.status}</div>
 						</div>
 					)
 				}) : requests.map((entry)=>{ 
@@ -355,6 +357,7 @@ function DeliveriesPanel (props) {
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
+							<div className="entry-status">{entry.status}</div>
 						</div>
 					)
 					})

@@ -79,6 +79,7 @@ function RequestModal (props) {
 				posterId:props.currentUser.token,
 				volunteerId:"",
 				posted_date: posted_date,
+				status:"pending"
 
 			}).then((docRef)=>{
 				//console.log(docRef.id);
@@ -87,7 +88,7 @@ function RequestModal (props) {
 				});
 			});
 
-		
+
 
 			closeRequestModal();
 		}
