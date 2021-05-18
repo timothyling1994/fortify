@@ -60,7 +60,7 @@ function EntryModal (props) {
 
 		let status = "";
 
-		if(entry_status === "accepted")
+		if(entry_status === "filled")
 		{
 			invalid_form('All volunteer spots have been already filled!');
 		}
@@ -72,12 +72,14 @@ function EntryModal (props) {
 		{
 			if(volunteers_accepted+1 === volunteers_needed)
 			{
-				status="accepted";
+				status="filled";
 			}
 			else
 			{
-				status="pending";
+				status="open";
 			}
+
+			console.log(status);
 
 			let temp = [...volunteersArr];
 			temp.push(props.currentUser.token);
@@ -107,17 +109,31 @@ function EntryModal (props) {
 
 	};
 	const addChat = () =>{
-		firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_chats').doc(entryId).set({
-			posterId: posterId,
-			volunteerId:props.currentUser.token,
-		});
 
-		firebase.firestore().collection('users').doc(posterId).collection('my_chats').doc(entryId).set({
-			posterId: posterId,
-			volunteerId:props.currentUser.token,
-		});
+	let docRef = firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_chats').doc(entryId);
 
-		props.history.push("/chat");
+	docRef.get().then((doc)=>{
+		if(doc.exists)
+		{
+			//console.log("you already are in communication with organizer!");
+			invalid_form("You are already in communication with organizer!");
+		}
+		else
+		{
+			firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_chats').doc(entryId).set({
+				posterId: posterId,
+				volunteerId:props.currentUser.token,
+			});
+
+			firebase.firestore().collection('users').doc(posterId).collection('my_chats').doc(entryId).set({
+				posterId: posterId,
+				volunteerId:props.currentUser.token,
+			});
+
+			props.history.push("/chat");
+		}
+	});
+
 	};
 
 	initValues();
@@ -132,6 +148,10 @@ function EntryModal (props) {
 				<div className="modal-date-container">
 					<div className="modal-date-posted">posted: {posted_date}</div>
 					<div className="modal-volunteer-date"> date: {volunteer_date}</div>
+				</div>
+				<div className="entry-status-details">
+					<div className="entry-status">Volunteers {entry_status}</div> : 	
+					<div className="entry-volunteer-num">{volunteers_accepted}/{volunteers_needed} Volunteers Needed</div>
 				</div>
 				<div className="modal-btn-container">
 					<div className="modal-submit-btn" onClick={acceptEntry}>I Volunteer</div>

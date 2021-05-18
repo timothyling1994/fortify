@@ -79,7 +79,9 @@ function RequestModal (props) {
 				posterId:props.currentUser.token,
 				volunteerId:"",
 				posted_date: posted_date,
-				status:"pending"
+				volunteers_accepted:0,
+				volunteers_needed: 2,
+				status:"open"
 
 			}).then((docRef)=>{
 				//console.log(docRef.id);

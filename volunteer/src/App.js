@@ -16,11 +16,9 @@ import history from './history.js';
 function App() {
 
   const [currentUser,setCurrentUser] = useState(null);
-  
   const [requests, setRequests] = useState([]);
   const [myRequests,setMyRequests] = useState([]);
   const [myTasks,setMyTasks] = useState([]);
-
   const [showRequestModal,setShowRequestModal] = useState(false);
   const [scrollToEntry,setScrollToEntry] = useState([]);
 

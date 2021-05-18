@@ -44,6 +44,8 @@ const Chat = (props) => {
 
 	const setCurrentEntry = (event, entryId) => {
 
+		//console.log(event);
+
 		setShowChat([false]);
 		removeHighlight();
 		highlightDiv(event);
@@ -51,7 +53,7 @@ const Chat = (props) => {
 		chatGroups.forEach((entry)=>{
 			if(entry.entryId===entryId)
 			{
-				console.log(entry);
+				//console.log(entry);
 				firebase.firestore().collection("users").doc(props.currentUser.token).collection("my_chats").doc(entry.entryId).get().then((doc)=>{
 					if(doc.exists){
 						//let posterId = doc.data().posterId;
@@ -67,16 +69,13 @@ const Chat = (props) => {
 				});
 				
 			}
-		});
-
-
-
-	
+		});	
 	};
 
 	const loadMessages = () => { 
 
 		messageRef.current = [];
+		//console.log("loading:"+currentChat.entryId);
 		let query = firebase.firestore()
                   .collection('users').doc(props.currentUser.token).collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
               
@@ -84,6 +83,7 @@ const Chat = (props) => {
         query.onSnapshot(function(snapshot) {
         	if(!snapshot.metadata.hasPendingWrites)
         	{
+
 			    snapshot.docChanges().forEach(function(change) {
 
 			      if (change.type === 'removed') {
@@ -94,10 +94,11 @@ const Chat = (props) => {
 			       	let message = change.doc.data();
 			       	let copyArr = [...messageRef.current];
 			       	copyArr.push(message);
-					setFirestoreSnapshot(copyArr);
+					//setFirestoreSnapshot(copyArr);
 					messageRef.current = copyArr;
 			      }
 			    });
+			    setFirestoreSnapshot([...messageRef.current]);
         	}	
 	  	});
 	};
@@ -144,7 +145,6 @@ const Chat = (props) => {
 
 	const setScrollHeight = () => {
 		const chat_window = document.querySelector(".chat-window-messages");
-		console.log(chat_window.scrollHeight);
 		chat_window.scrollTop = (chat_window.getBoundingClientRect().height);
 
 	};
@@ -167,6 +167,7 @@ const Chat = (props) => {
 
 	useEffect(()=>{
 		initPanel();
+	
 	},[]);
 
 	useEffect(()=>{
@@ -184,9 +185,12 @@ const Chat = (props) => {
 			firestoreSnapshot.sort((a,b) => { 
 				return (a.timestamp - b.timestamp);
 			});
-
 			setCurrentChatMessages(firestoreSnapshot);
 			setScrollHeight();
+		}
+		else
+		{
+			setCurrentChatMessages(firestoreSnapshot);
 		}
 
 	},[firestoreSnapshot]);
@@ -223,7 +227,7 @@ const Chat = (props) => {
 					<div className="chat-window-messages">
 						{currentChatMessages ? currentChatMessages.map((msg)=>{
 							//let classAttributes = ["chat-message"];
-							console.log(msg);
+							//console.log(msg);
 							if(msg.sender === props.currentUser.token)
 							{
 								return (

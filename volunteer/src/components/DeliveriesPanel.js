@@ -329,10 +329,10 @@ function DeliveriesPanel (props) {
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
-							{entry.status === "pending" ? <div className="entry-status pending">{entry.status}</div> : 
-							<div className="entry-status accepted">{entry.status}</div>}
+							{entry.status === "open" ? <div className="entry-status open">Volunteers {entry.status}</div> : 
+							<div className="entry-status filled">Volunteers {entry.status}</div>}
 			
-							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed}</div>
+							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed} Volunteers Needed</div>
 						</div>
 					)
 				}) : displayPanelTab === 1 ? requests.map((entry)=>{
@@ -346,9 +346,9 @@ function DeliveriesPanel (props) {
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
-							{entry.status === "pending" ? <div className="entry-status pending">{entry.status}</div> : 
-							<div className="entry-status accepted">{entry.status}</div>}
-							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed}</div>
+							{entry.status === "open" ? <div className="entry-status open">Volunteers {entry.status}</div> : 
+							<div className="entry-status filled">Volunteers {entry.status}</div>}
+							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed} Volunteers Needed</div>
 						</div>
 					)
 				}) : requests.map((entry)=>{ 
@@ -362,9 +362,9 @@ function DeliveriesPanel (props) {
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
 								<div className="entry-volunteer-date"> date: {entry.date}</div>
 							</div>
-							{entry.status === "pending" ? <div className="entry-status pending">{entry.status}</div> : 
-							<div className="entry-status accepted">{entry.status}</div>}
-							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed}</div>
+							{entry.status === "open" ? <div className="entry-status open">Volunteers {entry.status}</div> : 
+							<div className="entry-status filled">Volunteers {entry.status}</div>}
+							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed} Volunteers Needed</div>
 						</div>
 					)
 					})
