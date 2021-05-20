@@ -180,18 +180,11 @@ const Chat = (props) => {
 
 	useEffect(()=>{
 
-		if(firestoreSnapshot.length !== 0)
-		{
-			firestoreSnapshot.sort((a,b) => { 
-				return (a.timestamp - b.timestamp);
-			});
-			setCurrentChatMessages(firestoreSnapshot);
-			setScrollHeight();
-		}
-		else
-		{
-			setCurrentChatMessages(firestoreSnapshot);
-		}
+		firestoreSnapshot.sort((a,b) => { 
+			return (a.timestamp - b.timestamp);
+		});
+		setCurrentChatMessages(firestoreSnapshot);
+		setScrollHeight();
 
 	},[firestoreSnapshot]);
 

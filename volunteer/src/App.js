@@ -94,9 +94,19 @@ function App() {
   useEffect(()=>{
     if(currentUser !== null)
     {
+      console.log("calling firestore");
       callFirestore();
     }
+    else
+    {
+      console.log("current user is false");
+    }
   },[currentUser]);
+
+  useEffect(()=>{
+    console.log("requests");
+    console.log(requests);
+  },[requests]);
 
 
   return (

@@ -272,6 +272,8 @@ function DeliveriesPanel (props) {
 			let arr = [];
 			if(displayPanelTab === 0)
 			{
+				console.log("REQUEST");
+				console.log(props.requests);
 				arr = props.requests;
 				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 				setRequests(sortedRequests);
@@ -295,7 +297,7 @@ function DeliveriesPanel (props) {
 
 	return (
 		<div className="DeliveriesPanel">
-			{displayEntryModal ? <EntryModal currentUser={props.currentUser}requests={props.requests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
+			{displayEntryModal ? <EntryModal currentUser={props.currentUser} requests={props.requests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
 			<div className="delivery-btn-container">
 				<div className={requestAttributes.join(" ")} onClick={()=>{setDisplayPanel(0)}}>All Requests</div>
 				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{setDisplayPanel(1)}}>My Requests</div>
@@ -309,7 +311,7 @@ function DeliveriesPanel (props) {
 						<div className="category-filter-dropdown">
 								<div className="category" onClick={()=>{showAllCategories()}}>All</div>
 								<div className="category" onClick={()=>{filterCategory("Groceries")}}>Groceries</div>
-								<div className="category" onClick={()=>filterCategory("Medicine")}>Medicine</div>
+								<div className="category" onClick={()=>{filterCategory("Medicine")}}>Medicine</div>
 								<div className="category" onClick={()=>{filterCategory("Dog Walking")}}>Dog Walking</div>
 								<div className="category" onClick={()=>{filterCategory("Transportation")}}>Transportation</div>
 								<div className="category" onClick={()=>{filterCategory("Assembly")}}>Assembly</div>
