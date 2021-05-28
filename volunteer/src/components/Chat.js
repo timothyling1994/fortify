@@ -69,7 +69,8 @@ const Chat = (props) => {
 				});
 				
 			}
-		});	
+		});
+
 	};
 
 	const loadMessages = () => { 
@@ -175,6 +176,7 @@ const Chat = (props) => {
 		if(showChat[0])
 		{
 			loadMessages();
+			setScrollHeight();
 		}
 	},[showChat]);
 
@@ -184,7 +186,7 @@ const Chat = (props) => {
 			return (a.timestamp - b.timestamp);
 		});
 		setCurrentChatMessages(firestoreSnapshot);
-		setScrollHeight();
+	
 
 	},[firestoreSnapshot]);
 
