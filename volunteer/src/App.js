@@ -3,25 +3,26 @@ import Header from "./components/Header.js";
 
 import Chat from "./components/Chat.js";
 import Home from "./components/Home.js";
-import {useState,useEffect} from "react";
+import {useState,useEffect,useContext} from "react";
 import RequestModal from "./components/RequestModal.js";
 import Login from "./components/Login.js";
 import { Router,Switch,Route } from "react-router-dom";
 import firebase from "firebase";
-import {AuthProvider} from "./auth.js";
 import PrivateRoute from "./PrivateRoute.js";
 import Leaderboard from "./components/Leaderboard.js";
 import history from './history.js';
+import { AuthContext, AuthProvider } from "./auth.js";
 
 function App() {
 
-  const [currentUser,setCurrentUser] = useState(null);
+  const [currentUser1,setcurrentUser1] = useState(null);
   const [requests, setRequests] = useState([]);
   const [myRequests,setMyRequests] = useState([]);
   const [myTasks,setMyTasks] = useState([]);
   const [showRequestModal,setShowRequestModal] = useState(false);
   const [scrollToEntry,setScrollToEntry] = useState([]);
 
+  /*
   const callFirestore = () => {
     
     let query = firebase.firestore().collection('requests');
@@ -36,7 +37,7 @@ function App() {
     });
 
 
-    let myRequests_query = firebase.firestore().collection('users').doc(currentUser.token).collection('my_requests');
+    let myRequests_query = firebase.firestore().collection('users').doc(currentUser1.token).collection('my_requests');
     myRequests_query.onSnapshot((snapshot)=>{
       let myRequestsObjArr = [];
       snapshot.forEach((doc)=>{
@@ -55,7 +56,7 @@ function App() {
       setMyRequests(myRequestsObjArr); 
     });
 
-    let myTasks_query = firebase.firestore().collection('users').doc(currentUser.token).collection('my_tasks');
+    let myTasks_query = firebase.firestore().collection('users').doc(currentUser1.token).collection('my_tasks');
     myTasks_query.onSnapshot((snapshot)=>{
       let myTasksObjArr = [];
       snapshot.forEach((doc)=>{
@@ -74,25 +75,27 @@ function App() {
       setMyTasks(myTasksObjArr); 
     });
   
-  };
+  };*/
 
   const scrollToId = (divId) => {
     setScrollToEntry([divId]);
   };
 
+  /*
   const setUser = (displayName,email,photoURL,token) => {
+    console.log("setting user");
     console.log(token);
-    setCurrentUser({
+    setcurrentUser1({
       displayName,
       email,
       photoURL,
       token,
     });
-  };
+  };*/
 
-
+  /*
   useEffect(()=>{
-    if(currentUser !== null)
+    if(currentUser1 !== null)
     {
       console.log("calling firestore");
       callFirestore();
@@ -101,30 +104,44 @@ function App() {
     {
       console.log("current user is false");
     }
-  },[currentUser]);
+  },[currentUser1]);
 
   useEffect(()=>{
     console.log("requests");
     console.log(requests);
-  },[requests]);
+  },[requests]);*/
 
 
   return (
   
       <div className="App">
         <AuthProvider>
-        {showRequestModal ? <RequestModal currentUser={currentUser} setShowRequestModal={setShowRequestModal}/> : null}
+        {showRequestModal ? 
+          <AuthContext.Consumer>
+            { user => (<RequestModal user={user} setShowRequestModal={setShowRequestModal}/> )}
+          </AuthContext.Consumer>
+          : null
+        }
           <Router history={history}>
             <Header setShowRequestModal={setShowRequestModal}/>
             <Switch>
               <Route exact path="/login"> 
                 <Login/>
               </Route>
-              <PrivateRoute exact path="/home">
-                <Home currentUser={currentUser} requests={requests} setUser={setUser} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry} scrollToId={scrollToId}/>
-              </PrivateRoute>
+
+              <AuthContext.Consumer>
+                { user => (
+
+                  <PrivateRoute exact path="/home">
+                    <Home requests={requests} user={user} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry} scrollToId={scrollToId}/>
+                  </PrivateRoute>
+
+                )}
+              
+              </AuthContext.Consumer>
+
               <PrivateRoute exact path="/chat">
-                <Chat currentUser={currentUser}/>
+                <Chat/>
               </PrivateRoute>
               <Route exact path="/leaderboard"> 
                 <Leaderboard/>
