@@ -11,6 +11,8 @@ function Home (props){
 	const [requests, setRequests] = useState([]);
   	const [myRequests,setMyRequests] = useState([]);
   	const [myTasks,setMyTasks] = useState([]);
+  	const [scrollToEntry,setScrollToEntry] = useState([]);
+
 
 	const callFirestore = () => {
     
@@ -70,7 +72,7 @@ function Home (props){
 
   	setCurrentUser(props.user);
 
-  },[props.user]);
+  },[]);
 
   useEffect(()=>{
 
@@ -83,33 +85,10 @@ function Home (props){
   },[currentUser]);
 
 
-	/*
-	const currentUser = useContext(AuthContext);
-	console.log(currentUser);
-
-	useEffect(()=>{
-		if(currentUser.currentUser !== null)
-		{
-			console.log("CHANGED");
-			let user = currentUser.currentUser;
-			//console.log(user.displayName);	    
-
-		    props.setUser(user.displayName,user.email,user.photoURL,user.uid);
-		}
-		else
-		{
-			console.log("current user is null");
-		}
-	},[]);*/
-
-
-
-
-
 	return (
 		<div className="Home">
-	        <DeliveriesPanel currentUser={props.user} requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={props.scrollToEntry}/>
-	        <MapImage requests={props.requests} scrollToId={props.scrollToId}/>
+	        <DeliveriesPanel currentUser={props.user} requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
+	        <MapImage requests={requests} setScrollToEntry={setScrollToEntry}/>
 	    </div>
 	);
 };

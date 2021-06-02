@@ -56,7 +56,7 @@ function MapImage(props){
 						el.setAttribute("id","marker-"+marker.properties.entryId);
 						el.className="marker";
 						el.addEventListener("click",function(e){
-							props.scrollToId(e.target.id);
+							props.setScrollToEntry([e.target.id]);
 						});
 			
 						new mapboxgl.Marker(el)
