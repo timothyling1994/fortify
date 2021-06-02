@@ -16,16 +16,6 @@ import { AuthContext, AuthProvider } from "./auth.js";
 function App() {
 
   const [showRequestModal,setShowRequestModal] = useState(false);
-  //const [scrollToEntry,setScrollToEntry] = useState([]);
-
-  /*
-  const scrollToId = (divId) => {
-    setScrollToEntry([divId]);
-  };*/
-
-
-
-
 
   return (
   

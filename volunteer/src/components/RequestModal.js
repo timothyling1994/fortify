@@ -17,6 +17,8 @@ import CancerResearch from "../cancer_research.jpg";
 
 function RequestModal (props) {
 
+	console.log(props.user);
+
 	const [requestDate,setRequestDate] = useState(new Date());
 	const [currentForm,setCurrentForm] = useState({});
 	const [donationOptions,setDonationOptions] = useState(false);
@@ -68,7 +70,7 @@ function RequestModal (props) {
 			let today = new Date();
 			let posted_date = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+(today.getDate());
 
-			console.log("token:"+props.currentUser.token);
+			console.log("token:"+props.user.currentUser.uid);
 
 			firebase.firestore().collection('requests').add({
 				category:currentForm.request_category_input,
@@ -76,7 +78,7 @@ function RequestModal (props) {
 				date:currentForm.request_date_input,
 				taskName:currentForm.request_details_input,
 				location:currentForm.request_location_input,
-				posterId:props.currentUser.token,
+				posterId:props.user.currentUser.uid,
 				volunteerId:"",
 				posted_date: posted_date,
 				volunteers_accepted:0,
@@ -85,7 +87,7 @@ function RequestModal (props) {
 
 			}).then((docRef)=>{
 				//console.log(docRef.id);
-				firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_requests').doc().set({
+				firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection('my_requests').doc().set({
 					requestId: docRef.id,
 				});
 			});
