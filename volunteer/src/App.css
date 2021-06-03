@@ -115,6 +115,8 @@
   border-radius: 5px;
   border:solid black 2px;
   padding:0.25em;
+  margin-left:0.4em;
+  margin-right:0.4em;
   margin-bottom:0.4em;
   background-color: #ffec00;
   box-shadow: 0 4px #999;
@@ -132,6 +134,8 @@
   border-radius: 5px;
   border:solid black 2px;
   padding:0.25em;
+  margin-left:0.4em;
+  margin-right:0.4em;
   margin-bottom:0.4em;
   background-color: #ffec00;
   box-shadow: 0 4px #999;
