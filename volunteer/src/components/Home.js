@@ -25,10 +25,11 @@ function Home (props){
 	        requestObjArr.push(requestObj);
 	      });
 	      setRequests(requestObjArr); 
+	      console.log("all requests");
+	      console.log(requestObjArr);
 	    });
 
-
-	    let myRequests_query = firebase.firestore().collection('users').doc(currentUser.token).collection('my_requests');
+	    let myRequests_query = firebase.firestore().collection('users').doc(currentUser.currentUser.uid).collection('my_requests');
 	    myRequests_query.onSnapshot((snapshot)=>{
 	      let myRequestsObjArr = [];
 	      snapshot.forEach((doc)=>{
@@ -45,9 +46,11 @@ function Home (props){
 	        })
 	      });
 	      setMyRequests(myRequestsObjArr); 
+	      console.log("my requests");
+	      console.log(myRequestsObjArr);
 	    });
 
-	    let myTasks_query = firebase.firestore().collection('users').doc(currentUser.token).collection('my_tasks');
+	    let myTasks_query = firebase.firestore().collection('users').doc(currentUser.currentUser.uid).collection('my_tasks');
 	    myTasks_query.onSnapshot((snapshot)=>{
 	      let myTasksObjArr = [];
 	      snapshot.forEach((doc)=>{
@@ -64,18 +67,26 @@ function Home (props){
 	        })
 	      });
 	      setMyTasks(myTasksObjArr); 
+	      console.log("my tasks");
+	      console.log(myTasksObjArr);
 	    });
 	  
   };
 
   useEffect(()=>{
 
-  	setCurrentUser(props.user);
+  	console.log(props.user);
+  	if(props.user !== null) 
+  	{
+  		setCurrentUser(props.user);
+  	}
 
-  },[]);
+  },[props.user]);
 
   useEffect(()=>{
 
+  	console.log("CURRENT USER USE EFFECT");
+  	console.log(currentUser);
   	if(currentUser !== null)
   	{
   		console.log("calling firestore");

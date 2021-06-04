@@ -4,7 +4,6 @@ const Paypal = (props) => {
 
 	const paypal = useRef(); 
 
-
 	useEffect(()=>{
 		window.paypal.Buttons({
 			createOrder: (data,actions,err)=>{

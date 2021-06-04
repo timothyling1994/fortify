@@ -239,6 +239,7 @@ function DeliveriesPanel (props) {
 
 		if(props.requests.length !== 0)
 		{
+
 			let arr = [];
 			if(displayPanelTab === 0)
 			{
@@ -249,6 +250,7 @@ function DeliveriesPanel (props) {
 			else if (displayPanelTab === 1)
 			{
 				arr = props.myRequests;
+				console.log(arr);
 				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 				setRequests(sortedRequests);
 			}
