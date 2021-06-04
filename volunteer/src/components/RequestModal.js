@@ -9,6 +9,7 @@ import {useState,useEffect} from "react";
 import uniqid from "uniqid";
 import {ToastContainer,toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Paypal from "./Paypal.js";
 import firebase from "firebase";
 import CharityWater from "../charitywater.jpg";
 import AfricanWildLife from "../african-wildlife.jpg";
@@ -189,6 +190,35 @@ function RequestModal (props) {
 
 	},[currentForm]);
 
+	/*
+	<div> 
+								<form className="charity-form">
+									<div className="charity-form-container">
+										<div className="charity-form-btn-container">
+											<input type="radio" name="charity" className="charity-options" value="charity: water"/>
+										</div>
+										<img src = {CharityWater} className="charity-options-pic"></img>
+									</div>
+									<div className="charity-form-container">
+										<div className="charity-form-btn-container">
+											<input type="radio" name="charity" className="charity-options" value="Cancer Research Institute"/>
+										</div>
+										<img src = {CancerResearch} className="charity-options-pic"></img>
+									</div>
+									<div className="charity-form-container">
+										<div className="charity-form-btn-container">
+											<input type="radio" name="charity" className="charity-options" value="Africa Wildlife Foundation"/>
+										</div>
+										<img src = {AfricanWildLife} className="charity-options-pic"></img>
+									</div>
+								</form>
+								<div className="donation-amount-container">
+									<div className="donation-amount-label">Donation Amount: $ </div>
+									<input type="number" min="5" className="donation-amount"/>
+								</div>
+							</div>
+	*/
+
 	return (
 		<div className="RequestModal">
 			<ToastContainer style={styles}/>
@@ -230,33 +260,8 @@ function RequestModal (props) {
 				</div>
 				<div className="charity-container">
 					{
-						donationOptions ? 
-							<div> 
-								<form className="charity-form">
-									<div className="charity-form-container">
-										<div className="charity-form-btn-container">
-											<input type="radio" name="charity" className="charity-options" value="charity: water"/>
-										</div>
-										<img src = {CharityWater} className="charity-options-pic"></img>
-									</div>
-									<div className="charity-form-container">
-										<div className="charity-form-btn-container">
-											<input type="radio" name="charity" className="charity-options" value="Cancer Research Institute"/>
-										</div>
-										<img src = {CancerResearch} className="charity-options-pic"></img>
-									</div>
-									<div className="charity-form-container">
-										<div className="charity-form-btn-container">
-											<input type="radio" name="charity" className="charity-options" value="Africa Wildlife Foundation"/>
-										</div>
-										<img src = {AfricanWildLife} className="charity-options-pic"></img>
-									</div>
-								</form>
-								<div className="donation-amount-container">
-									<div className="donation-amount-label">Donation Amount: $ </div>
-									<input type="number" min="5" className="donation-amount"/>
-								</div>
-							</div>
+						donationOptions ? <Paypal/>
+							
 							: null
 					}
 				</div>
