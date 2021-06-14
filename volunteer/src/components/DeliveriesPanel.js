@@ -1,6 +1,8 @@
 import React from "react";
 import {useState,useEffect} from "react";
-import EntryModal from "./EntryModal.js"
+import EntryModal from "./EntryModal.js";
+import Paypal from "./Paypal.js";
+import ConfirmCompletionModal from "./ConfirmCompletionModal.js";
 
 function DeliveriesPanel (props) {
 
@@ -11,9 +13,12 @@ function DeliveriesPanel (props) {
 	const [myTasksAttributes,setMyTasksAttribute] = useState(["my-tasks-label"]);
 	const [displayEntryModal,setDisplayEntryModal] = useState(false);
 	const [currentEntryId,setCurrentEntryId] = useState("");
+	const [currentTaskCompletedEntry,setCurrentTaskCompletedEntry] = useState("");
 	const [requests,setRequests] = useState([]);
+	
 	const [toggleSortByDate,setToggleSortByDate] = useState(false);
 	const [toggleSortByVolunteerDate,setToggleSortByVolunteerDate] = useState(true);
+	const [displayCompletionModal,setDisplayCompletionModal] = useState(false);
 
 	const setDisplayPanel = (value) => {
 		setDisplayPanelTab(value);
@@ -300,6 +305,7 @@ function DeliveriesPanel (props) {
 	return (
 		<div className="DeliveriesPanel">
 			{displayEntryModal ? <EntryModal currentUser={props.currentUser} requests={props.requests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
+			{displayCompletionModal ? <ConfirmCompletionModal currentTaskCompletedEntry = {currentTaskCompletedEntry} setDisplayCompletionModal={setDisplayCompletionModal}/> : null}
 			<div className="delivery-btn-container">
 				<div className={requestAttributes.join(" ")} onClick={()=>{setDisplayPanel(0)}}>All Requests</div>
 				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{setDisplayPanel(1)}}>My Requests</div>
@@ -353,6 +359,12 @@ function DeliveriesPanel (props) {
 							{entry.status === "open" ? <div className="entry-status open">Volunteers {entry.status}</div> : 
 							<div className="entry-status filled">Volunteers {entry.status}</div>}
 							<div className="entry-volunteer-num">{entry.volunteers_accepted}/{entry.volunteers_needed} Volunteers Needed</div>
+							<div className="task-complete-container">
+								{entry.completed ? 
+									<div className="task-completed-btn"> Task Completed! </div> : 
+									<div className="task-complete-btn" onClick={(e)=>{e.stopPropagation();setCurrentTaskCompletedEntry({entryId:entry.entryId,taskName:entry.taskName,location:entry.location});setDisplayCompletionModal(true)}}>Task Completed?</div>
+								}
+							</div>
 						</div>
 					)
 				}) : requests.map((entry)=>{ 

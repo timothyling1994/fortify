@@ -74,6 +74,7 @@ function RequestModal (props) {
 			console.log("token:"+props.user.currentUser.uid);
 
 			firebase.firestore().collection('requests').add({
+				
 				category:currentForm.request_category_input,
 				coords:currentForm.request_location_coords,
 				date:currentForm.request_date_input,
@@ -84,7 +85,8 @@ function RequestModal (props) {
 				posted_date: posted_date,
 				volunteers_accepted:0,
 				volunteers_needed: 2,
-				status:"open"
+				status:"open",
+				completed:false,
 
 			}).then((docRef)=>{
 				//console.log(docRef.id);

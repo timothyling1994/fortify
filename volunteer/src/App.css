@@ -279,6 +279,32 @@
   color:green;
 }
 
+.task-complete-container{
+  width:100%;
+  margin: 0.5em;
+}
+
+.task-complete-btn{
+  text-align:center;
+  border: solid black 2px;
+  background-color:#00abfb;
+}
+
+.task-completed-btn{
+  text-align:center;
+  border: solid black 2px;
+  background-color:#7bc62d;
+}
+
+.task-complete-btn:hover{
+  
+}
+
+.confirm-header{
+  width: 100%;
+  text-align: center;
+}
+
 .entry-status-details{
   padding-top:1em;
 }
@@ -297,7 +323,7 @@
   50%{background-color:rgb(255,191,0,1)}
 }
 
-.EntryModal,.RequestModal{
+.EntryModal,.RequestModal,.ConfirmCompletionModal{
   position: fixed;
   z-index: 2;
   left: 0;
@@ -321,7 +347,7 @@
   width:50%;
 }
 
-.request-modal-container{
+.request-modal-container,.ConfirmCompletionContainer{
   display:flex;
   flex-direction: row;
   flex-wrap:wrap;
@@ -336,6 +362,7 @@
 }
 
 .modal-taskName{
+  width: 100%;
   text-align:center;
   padding:0.5em;
   font-size:40px;
@@ -659,4 +686,17 @@
 .details-container{
   display:block;
   border:solid black 2px;
+}
+
+.confirm-btn-row{
+  display:flex;
+  justify-content: center;
+  width:100%;
+  margin: 0.5em;
+}
+
+.confirm-completion-btn, .cancel-completion-btn{
+  padding:0.4em;
+  margin:0.5em;
+  border: solid black 2px;
 }
