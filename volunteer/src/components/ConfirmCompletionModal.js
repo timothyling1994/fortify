@@ -4,7 +4,7 @@ import Paypal from "./Paypal.js";
 
 const ConfirmCompletionModal = (props) => {
 
-	const [isDonating,setIsDonating] = useState(true);
+	//const [isDonating,setIsDonating] = useState(false);
 
 	const completeTask = () => { 
 
@@ -22,16 +22,18 @@ const ConfirmCompletionModal = (props) => {
 				<div className="confirm-header">Confirm the completion of this task</div>
 				<div className="modal-taskName">{props.currentTaskCompletedEntry.taskName}</div>
 				<div className="modal-location">{props.currentTaskCompletedEntry.location}</div>
-				<div className="modal-donation-amount">${props.currentTaskCompletedEntry.donation}</div>
 				<div className="charity-container">
 					{
-						isDonating ? <Paypal donationAmount={props.currentTaskCompletedEntry.donation}/>
-							
+						props.currentTaskCompletedEntry.isDonating ? 
+							<div>
+								<div className="modal-donation-amount">${props.currentTaskCompletedEntry.donation}</div>
+								<Paypal currentUser={props.currentUser} currentTask = {props.currentTaskCompletedEntry.entryId} donationAmount={props.currentTaskCompletedEntry.donation} setDisplayCompletionModal={props.setDisplayCompletionModal}/>
+							</div>
 							: null
 					}
 				</div>
 				<div className="confirm-btn-row">
-					<div className="confirm-completion-btn" onClick={()=>{completeTask()}}>Confirm</div>
+					{props.currentTaskCompletedEntry.isDonating ? null : <div className="confirm-completion-btn" onClick={()=>{completeTask()}}>Confirm</div>}
 					<div className="cancel-completion-btn" onClick={()=>{props.setDisplayCompletionModal(false)}}>Cancel</div>
 				</div>
 

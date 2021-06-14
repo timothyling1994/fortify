@@ -7,6 +7,7 @@ import ConfirmCompletionModal from "./ConfirmCompletionModal.js";
 function DeliveriesPanel (props) {
 
 	const [displayPanelTab,setDisplayPanelTab] = useState(0);
+	//console.log("displayPanelTab:"+displayPanelTab);
 	//const [myDeliveries, setMyDeliveries] = useState([]);
 	const [requestAttributes,setRequestAttributes] = useState(["delivery-requests-label"]);
 	const [myDeliveriesAttributes,setMyDeliveriesAttributes] = useState(["my-deliveries-label"]);
@@ -287,12 +288,16 @@ function DeliveriesPanel (props) {
 			}
 			else if (displayPanelTab === 1)
 			{
+				console.log("REQUEST1");
+				console.log(props.myRequests);
 				arr = props.myRequests;
 				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 				setRequests(sortedRequests);
 			}
 			else
 			{
+				console.log("REQUEST2");
+				console.log(props.myTasks);
 				arr = props.myTasks;
 				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 				setRequests(sortedRequests);
@@ -305,7 +310,7 @@ function DeliveriesPanel (props) {
 	return (
 		<div className="DeliveriesPanel">
 			{displayEntryModal ? <EntryModal currentUser={props.currentUser} requests={props.requests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
-			{displayCompletionModal ? <ConfirmCompletionModal currentTaskCompletedEntry = {currentTaskCompletedEntry} setDisplayCompletionModal={setDisplayCompletionModal}/> : null}
+			{displayCompletionModal ? <ConfirmCompletionModal currentUser={props.currentUser} currentTaskCompletedEntry = {currentTaskCompletedEntry} setDisplayCompletionModal={setDisplayCompletionModal}/> : null}
 			<div className="delivery-btn-container">
 				<div className={requestAttributes.join(" ")} onClick={()=>{setDisplayPanel(0)}}>All Requests</div>
 				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{setDisplayPanel(1)}}>My Requests</div>
@@ -365,7 +370,7 @@ function DeliveriesPanel (props) {
 							<div className="task-complete-container">
 								{entry.completed ? 
 									<div className="task-completed-btn"> Task Completed! </div> : 
-									<div className="task-complete-btn" onClick={(e)=>{e.stopPropagation();setCurrentTaskCompletedEntry({entryId:entry.entryId,taskName:entry.taskName,location:entry.location,donation:entry.donation_amount});setDisplayCompletionModal(true)}}>Task Completed?</div>
+									<div className="task-complete-btn" onClick={(e)=>{e.stopPropagation();setCurrentTaskCompletedEntry({entryId:entry.entryId,taskName:entry.taskName,location:entry.location,isDonating:entry.isDonating, donation:entry.donation_amount});setDisplayCompletionModal(true)}}>Task Completed?</div>
 								}
 							</div>
 						</div>

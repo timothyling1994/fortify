@@ -281,38 +281,16 @@ function RequestModal (props) {
 						<input type="radio" name="donation" value="no" onClick={()=>{setDonationOptions(false)}}/><div className="donation-options">No</div>
 					</form>
 				</div>
-				<div>
+				
 					{donationOptions ?
-							<div>  
-								<form className="charity-form">
-									<div className="charity-form-container">
-										<div className="charity-form-btn-container">
-											<input type="radio" name="charity" className="charity-options" value="charity: water"/>
-										</div>
-										<img src = {CharityWater} className="charity-options-pic"></img>
-									</div>
-									<div className="charity-form-container">
-										<div className="charity-form-btn-container">
-											<input type="radio" name="charity" className="charity-options" value="Cancer Research Institute"/>
-										</div>
-										<img src = {CancerResearch} className="charity-options-pic"></img>
-									</div>
-									<div className="charity-form-container">
-										<div className="charity-form-btn-container">
-											<input type="radio" name="charity" className="charity-options" value="Africa Wildlife Foundation"/>
-										</div>
-										<img src = {AfricanWildLife} className="charity-options-pic"></img>
-									</div>
-								</form>
 								<div className="donation-amount-container">
-									<div className="donation-amount-label">Donation Amount: $ </div>
+									<div className="donation-amount-label">Amount: $ </div>
 									<input type="number" min="5" className="donation-amount"/>
 								</div>
-							</div>
 							:
 							null
 					}
-				</div>
+				
 				<div className="request-main-category-container">
 					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">

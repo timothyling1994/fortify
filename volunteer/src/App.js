@@ -21,12 +21,13 @@ function App() {
   
       <div className="App">
         <AuthProvider>
-        {showRequestModal ? 
-          <AuthContext.Consumer>
-            { user => (<RequestModal user={user} setShowRequestModal={setShowRequestModal}/> )}
-          </AuthContext.Consumer>
-          : null
-        }
+          {
+            showRequestModal ? 
+            <AuthContext.Consumer>
+              { user => (<RequestModal user={user} setShowRequestModal={setShowRequestModal}/> )}
+            </AuthContext.Consumer>
+            : null
+          }
           <Router history={history}>
             <Header setShowRequestModal={setShowRequestModal}/>
             <Switch>

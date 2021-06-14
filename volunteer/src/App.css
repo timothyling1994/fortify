@@ -483,7 +483,7 @@
 .donation-amount-container{
   display:flex;
   width:100%;
-  justify-content: center;
+ 
 }
 
 .charity-container{
@@ -505,7 +505,7 @@
   width:100%;
   padding:0.25em;
 }
-.request-location-label,.request-details-label,.request-date-label,.donation-option-label{
+.request-location-label,.request-details-label,.request-date-label,.donation-option-label,.donation-amount-label{
   text-align:right;
   font-size:30px;
   width:5em;
