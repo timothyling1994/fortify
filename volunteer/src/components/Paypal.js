@@ -15,7 +15,7 @@ const Paypal = (props) => {
 							description: "Test",
 							amount: {
 								currency_code: "USD",
-								value: 600.00
+								value: props.donationAmount,
 							}
 						}
 					]

@@ -334,6 +334,7 @@ function DeliveriesPanel (props) {
 							<div className="entry-taskName-container">
 								<div className="entry-taskName">{entry.taskName}</div>
 							</div>
+							<div className="entry-donation">{entry.donation_amount > 0 ? "$" + entry.donation_amount : "FREE"}</div>
 							<div className="entry-location">{entry.location}</div>
 							<div className="entry-date-container">
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
@@ -351,6 +352,8 @@ function DeliveriesPanel (props) {
 							<div className="entry-taskName-container">
 								<div className="entry-taskName">{entry.taskName}</div>
 							</div>
+
+							<div className="entry-donation">{entry.donation_amount > 0 ? "$" + entry.donation_amount : "FREE"}</div>
 							<div className="entry-location">{entry.location}</div>
 							<div className="entry-date-container">
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>
@@ -362,7 +365,7 @@ function DeliveriesPanel (props) {
 							<div className="task-complete-container">
 								{entry.completed ? 
 									<div className="task-completed-btn"> Task Completed! </div> : 
-									<div className="task-complete-btn" onClick={(e)=>{e.stopPropagation();setCurrentTaskCompletedEntry({entryId:entry.entryId,taskName:entry.taskName,location:entry.location});setDisplayCompletionModal(true)}}>Task Completed?</div>
+									<div className="task-complete-btn" onClick={(e)=>{e.stopPropagation();setCurrentTaskCompletedEntry({entryId:entry.entryId,taskName:entry.taskName,location:entry.location,donation:entry.donation_amount});setDisplayCompletionModal(true)}}>Task Completed?</div>
 								}
 							</div>
 						</div>
@@ -373,6 +376,7 @@ function DeliveriesPanel (props) {
 							<div className="entry-taskName-container">
 								<div className="entry-taskName">{entry.taskName}</div>
 							</div>
+							<div className="entry-donation">{entry.donation_amount > 0 ? "$" + entry.donation_amount : "FREE"}</div>
 							<div className="entry-location">{entry.location}</div>
 							<div className="entry-date-container">
 								<div className="entry-date-posted">posted: {entry.posted_date}</div>

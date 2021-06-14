@@ -74,7 +74,7 @@ function RequestModal (props) {
 			console.log("token:"+props.user.currentUser.uid);
 
 			firebase.firestore().collection('requests').add({
-				
+
 				category:currentForm.request_category_input,
 				coords:currentForm.request_location_coords,
 				date:currentForm.request_date_input,
@@ -87,6 +87,8 @@ function RequestModal (props) {
 				volunteers_needed: 2,
 				status:"open",
 				completed:false,
+				isDonating:donationOptions,
+				donation_amount:parseInt(currentForm.donation_amount),
 
 			}).then((docRef)=>{
 				//console.log(docRef.id);
@@ -119,6 +121,19 @@ function RequestModal (props) {
 		let request_location_input = document.querySelector(".request-location-input").value;
 		let request_details_input = document.querySelector(".request-details-input").value;
 		let request_date_input = document.querySelector(".request-date-input").value;
+		let donation_amount;
+		
+		if(donationOptions)
+		{
+			donation_amount = document.querySelector(".donation-amount").value;
+			console.log(donation_amount);
+		}
+		else
+		{
+			donation_amount = "0";
+		}
+
+		
 		let request_location_coords = [];
 
 		if(request_location_input !== '' && request_details_input !== '' && request_date_input !== '' && request_selected_category !== null)
@@ -150,6 +165,7 @@ function RequestModal (props) {
 						request_date_input,
 						request_category_input,
 						request_location_coords,
+						donation_amount,
 					});
 
 		    	}
@@ -180,6 +196,11 @@ function RequestModal (props) {
 			if(request_selected_category === null)
 			{
 				invalid_form('Please select category!');
+			}
+
+			if(donationOptions && donation_amount === "")
+			{
+				invalid_form('Please enter donation amount!');
 			}
 
 		}	
@@ -260,11 +281,36 @@ function RequestModal (props) {
 						<input type="radio" name="donation" value="no" onClick={()=>{setDonationOptions(false)}}/><div className="donation-options">No</div>
 					</form>
 				</div>
-				<div className="charity-container">
-					{
-						donationOptions ? <Paypal/>
-							
-							: null
+				<div>
+					{donationOptions ?
+							<div>  
+								<form className="charity-form">
+									<div className="charity-form-container">
+										<div className="charity-form-btn-container">
+											<input type="radio" name="charity" className="charity-options" value="charity: water"/>
+										</div>
+										<img src = {CharityWater} className="charity-options-pic"></img>
+									</div>
+									<div className="charity-form-container">
+										<div className="charity-form-btn-container">
+											<input type="radio" name="charity" className="charity-options" value="Cancer Research Institute"/>
+										</div>
+										<img src = {CancerResearch} className="charity-options-pic"></img>
+									</div>
+									<div className="charity-form-container">
+										<div className="charity-form-btn-container">
+											<input type="radio" name="charity" className="charity-options" value="Africa Wildlife Foundation"/>
+										</div>
+										<img src = {AfricanWildLife} className="charity-options-pic"></img>
+									</div>
+								</form>
+								<div className="donation-amount-container">
+									<div className="donation-amount-label">Donation Amount: $ </div>
+									<input type="number" min="5" className="donation-amount"/>
+								</div>
+							</div>
+							:
+							null
 					}
 				</div>
 				<div className="request-main-category-container">
