@@ -1,7 +1,6 @@
 import React from "react";
 import {useState,useEffect} from "react";
 import EntryModal from "./EntryModal.js";
-import Paypal from "./Paypal.js";
 import ConfirmCompletionModal from "./ConfirmCompletionModal.js";
 
 function DeliveriesPanel (props) {

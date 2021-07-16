@@ -1,17 +1,18 @@
 import './App.css';
-import Header from "./components/Header.js";
 
-import Chat from "./components/Chat.js";
-import Home from "./components/Home.js";
-import {useState,useEffect,useContext} from "react";
-import RequestModal from "./components/RequestModal.js";
-import Login from "./components/Login.js";
-import { Router,Switch,Route } from "react-router-dom";
+import { useState, useEffect, useContext} from "react";
+import { Router, Switch, Route } from "react-router-dom";
+import { AuthContext, AuthProvider } from "./auth.js";
+import history from './history.js';
 import firebase from "firebase";
 import PrivateRoute from "./PrivateRoute.js";
+
+import Login from "./components/Login.js";
+import Header from "./components/Header.js";
+import Home from "./components/Home.js";
+import Chat from "./components/Chat.js";
+import RequestModal from "./components/RequestModal.js";
 import Leaderboard from "./components/Leaderboard.js";
-import history from './history.js';
-import { AuthContext, AuthProvider } from "./auth.js";
 
 function App() {
 
@@ -21,38 +22,61 @@ function App() {
   
       <div className="App">
         <AuthProvider>
-          {
-            showRequestModal ? 
-            <AuthContext.Consumer>
-              { user => (<RequestModal user={user} setShowRequestModal={setShowRequestModal}/> )}
-            </AuthContext.Consumer>
-            : null
-          }
           <Router history={history}>
-            <Header setShowRequestModal={setShowRequestModal}/>
+
             <Switch>
-              <Route exact path="/login"> 
+
+              <Route path="/login"> 
                 <Login/>
               </Route>
 
               <AuthContext.Consumer>
-                { user => (
-
-                  <PrivateRoute exact path="/home">
-                    <Home user={user}/>
-                  </PrivateRoute>
-
-                )}
+                { userContext =>
+          
+                    (<PrivateRoute exact path="/home" user={userContext}>
+                      <Header setShowRequestModal={setShowRequestModal}/>
+                      <Home user={userContext}/>
+                    </PrivateRoute>)
+                  
+                }
               
               </AuthContext.Consumer>
 
-              <PrivateRoute exact path="/chat">
-                <Chat/>
-              </PrivateRoute>
-              <Route exact path="/leaderboard"> 
-                <Leaderboard/>
-              </Route>
+              <AuthContext.Consumer>
+                { userContext => (
+
+                  <PrivateRoute exact path="/chat">
+                    <Header setShowRequestModal={setShowRequestModal}/>
+                    <Chat user={userContext}/>
+                  </PrivateRoute>
+                )}
+              </AuthContext.Consumer>
+
+              <AuthContext.Consumer>
+                { userContext => (
+                  <PrivateRoute exact path="/leaderboard">
+                    <Header setShowRequestModal={setShowRequestModal}/>
+                    <Leaderboard user={userContext}/>
+                  </PrivateRoute>
+                )}
+              </AuthContext.Consumer>
+
             </Switch>
+
+          {
+            showRequestModal ? 
+            <AuthContext.Consumer>
+              { userContext => (
+                <PrivateRoute path="/">
+                  <RequestModal user={userContext} setShowRequestModal={setShowRequestModal}/>
+                </PrivateRoute>
+
+              )}
+
+            </AuthContext.Consumer>
+            : null
+          }
+
           </Router>  
         </AuthProvider>
       </div>  

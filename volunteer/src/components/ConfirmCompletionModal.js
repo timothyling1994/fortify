@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import firebase from "firebase";
-import Paypal from "./Paypal.js";
+//import Paypal from "./Paypal.js";
 
 const ConfirmCompletionModal = (props) => {
 
@@ -15,6 +15,8 @@ const ConfirmCompletionModal = (props) => {
 		props.setDisplayCompletionModal(false)
 	};	
 
+	//<Paypal currentUser={props.currentUser} currentTask = {props.currentTaskCompletedEntry.entryId} donationAmount={props.currentTaskCompletedEntry.donation} setDisplayCompletionModal={props.setDisplayCompletionModal}/>
+
 	return (
 	
 		<div className="ConfirmCompletionModal">
@@ -27,7 +29,7 @@ const ConfirmCompletionModal = (props) => {
 						props.currentTaskCompletedEntry.isDonating ? 
 							<div>
 								<div className="modal-donation-amount">${props.currentTaskCompletedEntry.donation}</div>
-								<Paypal currentUser={props.currentUser} currentTask = {props.currentTaskCompletedEntry.entryId} donationAmount={props.currentTaskCompletedEntry.donation} setDisplayCompletionModal={props.setDisplayCompletionModal}/>
+								
 							</div>
 							: null
 					}

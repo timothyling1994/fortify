@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import app from "../firebase.js";
 
 
 function Header (props) {
@@ -7,6 +8,14 @@ function Header (props) {
 	const openRequestModal = ()=>{
 	
 		props.setShowRequestModal(true);
+	};
+
+	const logOut = () => {
+		app.auth().signOut().then(() => {
+		  console.log("Successful log out!");
+		}).catch((error) => {
+		  console.error("Error in logging out:"+error);
+		});
 	};
 
 	return (
@@ -42,6 +51,8 @@ function Header (props) {
 				
 					</div>
 				</Link>
+
+				<div className="log-out" onClick={logOut}>Log Out</div>
 			</div>
 		</div>
 	);
