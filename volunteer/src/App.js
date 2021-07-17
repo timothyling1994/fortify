@@ -14,6 +14,8 @@ import Chat from "./components/Chat.js";
 import RequestModal from "./components/RequestModal.js";
 import Leaderboard from "./components/Leaderboard.js";
 
+/*             <Header setShowRequestModal={setShowRequestModal}/>
+                      <Home user={userContext}/>*/
 function App() {
 
   const [showRequestModal,setShowRequestModal] = useState(false);
@@ -33,9 +35,7 @@ function App() {
               <AuthContext.Consumer>
                 { userContext =>
           
-                    (<PrivateRoute exact path="/home" user={userContext}>
-                      <Header setShowRequestModal={setShowRequestModal}/>
-                      <Home user={userContext}/>
+                    (<PrivateRoute exact path="/home" children={{header: <Header user={userContext}/>,home:<Home user={userContext}/>}}>
                     </PrivateRoute>)
                   
                 }

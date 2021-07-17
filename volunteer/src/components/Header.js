@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import app from "../firebase.js";
+import history from '../history.js';
 
 
 function Header (props) {
@@ -13,6 +14,7 @@ function Header (props) {
 	const logOut = () => {
 		app.auth().signOut().then(() => {
 		  console.log("Successful log out!");
+		  history.push("/login");
 		}).catch((error) => {
 		  console.error("Error in logging out:"+error);
 		});

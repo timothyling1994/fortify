@@ -27,7 +27,7 @@ function Home (props){
 	      setRequests(requestObjArr); 
 	    });
 
-	    let myRequests_query = firebase.firestore().collection('users').doc(currentUser.currentUser.uid).collection('my_requests');
+	    let myRequests_query = firebase.firestore().collection('users').doc(currentUser.uid).collection('my_requests');
 	    myRequests_query.onSnapshot((snapshot)=>{
 	      let myRequestsObjArr = [];
 	      snapshot.forEach((doc)=>{
@@ -46,7 +46,7 @@ function Home (props){
 	      setMyRequests(myRequestsObjArr); 
 	    });
 
-	    let myTasks_query = firebase.firestore().collection('users').doc(currentUser.currentUser.uid).collection('my_tasks');
+	    let myTasks_query = firebase.firestore().collection('users').doc(currentUser.uid).collection('my_tasks');
 	    myTasks_query.onSnapshot((snapshot)=>{
 	      let myTasksObjArr = [];
 	      snapshot.forEach((doc)=>{
@@ -81,7 +81,7 @@ function Home (props){
 
   	console.log("CURRENT USER USE EFFECT");
   	console.log(currentUser);
-  	if(currentUser !== null && currentUser.currentUser !== null)
+  	if(currentUser !== null)
   	{
   		console.log("calling firestore");
   		callFirestore();
