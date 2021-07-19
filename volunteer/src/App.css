@@ -92,7 +92,7 @@
   height:90vh;
   width:100vw;
 }
-.DeliveriesPanel{
+.TaskPanel{
   display:flex;
   align-content: flex-start;
   flex-wrap:wrap;
@@ -102,7 +102,7 @@
   overflow:auto;
 }
 
-.delivery-btn-container{
+.task-btn-container{
   display:flex;
   align-items:center;
   justify-content: center;
@@ -111,7 +111,7 @@
   padding:0.25em 0em 0em 0em;
 }
 
-.delivery-filter-row{
+.task-filter-row{
   display:flex;
   justify-content: space-between;
   width:100%;
@@ -168,7 +168,7 @@
   color:#000000;
 }
 
-.delivery-requests-label, .my-deliveries-label, .my-tasks-label{
+.requests-label, .my-requests-label, .my-tasks-label{
   width:33%;
   border-bottom:solid black 2px;
   border-top:solid black 2px;
@@ -176,7 +176,7 @@
   font-size:25px;
 }
 
-.delivery-requests-label{
+.requests-label{
    border-right:solid black 1px;
 }
 
@@ -205,7 +205,7 @@
   font-size:15px;
   text-align: center;
 }
-.delivery-details{
+.task-details{
   display:flex;
   flex-wrap:wrap;
   width:100%;

@@ -1,6 +1,6 @@
 import React from "react";
 import MapImage from "./MapImage.js";
-import DeliveriesPanel from "./DeliveriesPanel.js";
+import TaskPanel from "./TaskPanel.js";
 import {useState,useEffect,useContext} from "react";
 import { AuthContext } from "../auth.js";
 import firebase from "firebase";
@@ -93,7 +93,7 @@ function Home (props){
 
 	return (
 		<div className="Home">
-	        <DeliveriesPanel currentUser={currentUser} requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
+	        <TaskPanel currentUser={currentUser} requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
 	        <MapImage requests={requests} setScrollToEntry={setScrollToEntry}/>
 	    </div>
 	);

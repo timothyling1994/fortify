@@ -3,14 +3,14 @@ import {useState,useEffect} from "react";
 import EntryModal from "./EntryModal.js";
 import ConfirmCompletionModal from "./ConfirmCompletionModal.js";
 
-function DeliveriesPanel (props) {
+function TaskPanel (props) {
 
 	const [displayPanelTab,setDisplayPanelTab] = useState(0);
-	//console.log("displayPanelTab:"+displayPanelTab);
-	//const [myDeliveries, setMyDeliveries] = useState([]);
-	const [requestAttributes,setRequestAttributes] = useState(["delivery-requests-label"]);
-	const [myDeliveriesAttributes,setMyDeliveriesAttributes] = useState(["my-deliveries-label"]);
+
+	const [requestAttributes,setRequestAttributes] = useState(["requests-label"]);
+	const [myRequestsAttributes,setMyRequestsAttributes] = useState(["my-requests-label"]);
 	const [myTasksAttributes,setMyTasksAttribute] = useState(["my-tasks-label"]);
+
 	const [displayEntryModal,setDisplayEntryModal] = useState(false);
 	const [currentEntryId,setCurrentEntryId] = useState("");
 	const [currentTaskCompletedEntry,setCurrentTaskCompletedEntry] = useState("");
@@ -28,20 +28,20 @@ function DeliveriesPanel (props) {
 
 		if(displayPanelTab === 0)
 		{
-			setRequestAttributes(["delivery-requests-label","highlight"]);
-			setMyDeliveriesAttributes(["my-deliveries-label"]);
+			setRequestAttributes(["requests-label","highlight"]);
+			setMyRequestsAttributes(["my-requests-label"]);
 			setMyTasksAttribute(["my-tasks-label"]);
 		}
 		else if(displayPanelTab === 1)
 		{
-			setRequestAttributes(["delivery-requests-label"]);
-			setMyDeliveriesAttributes(["my-deliveries-label","highlight"]);
+			setRequestAttributes(["requests-label"]);
+			setMyRequestsAttributes(["my-requests-label","highlight"]);
 			setMyTasksAttribute(["my-tasks-label"]);
 		}
 		else
 		{
-			setRequestAttributes(["delivery-requests-label"]);
-			setMyDeliveriesAttributes(["my-deliveries-label"]);
+			setRequestAttributes(["requests-label"]);
+			setMyRequestsAttributes(["my-requests-label"]);
 			setMyTasksAttribute(["my-tasks-label","highlight"]);
 		}
 	};
@@ -57,7 +57,7 @@ function DeliveriesPanel (props) {
 
 	const setScrollPosition = () => {
 		
-		const panel = document.querySelector(".DeliveriesPanel");
+		const panel = document.querySelector(".TaskPanel");
 		const panelEntryId = props.scrollToEntry[0].substring(7,);
 		const entryDiv = document.getElementById(panelEntryId);
 
@@ -307,15 +307,15 @@ function DeliveriesPanel (props) {
 
 
 	return (
-		<div className="DeliveriesPanel">
+		<div className="TaskPanel">
 			{displayEntryModal ? <EntryModal currentUser={props.currentUser} requests={props.requests} currentEntryId={currentEntryId} closeEntryModal={closeEntryModal}/> : null}
 			{displayCompletionModal ? <ConfirmCompletionModal currentUser={props.currentUser} currentTaskCompletedEntry = {currentTaskCompletedEntry} setDisplayCompletionModal={setDisplayCompletionModal}/> : null}
-			<div className="delivery-btn-container">
+			<div className="task-btn-container">
 				<div className={requestAttributes.join(" ")} onClick={()=>{setDisplayPanel(0)}}>All Requests</div>
-				<div className={myDeliveriesAttributes.join(" ")} onClick={()=>{setDisplayPanel(1)}}>My Requests</div>
+				<div className={myRequestsAttributes.join(" ")} onClick={()=>{setDisplayPanel(1)}}>My Requests</div>
 				<div className={myTasksAttributes.join(" ")} onClick={()=>{setDisplayPanel(2)}}>My Tasks</div>
 			</div>
-			<div className="delivery-filter-row">
+			<div className="task-filter-row">
 					<div className="filter-options" onClick={sortByDate}>Sort by Date Posted</div>
 					<div className="filter-options" onClick={sortByVolunteerDate}>Sort by Volunteer Date</div>	
 					<div className="category-filter-container">
@@ -331,7 +331,7 @@ function DeliveriesPanel (props) {
 						</div>
 					</div>	
 			</div>
-			<div className="delivery-details">
+			<div className="task-details">
 				{displayPanelTab === 0 ? requests.map((entry)=>{
 					return (
 						<div className="entry" key={entry.entryId} id={entry.entryId} onClick={()=>{openEntryModal(entry.entryId)}}>
@@ -399,4 +399,4 @@ function DeliveriesPanel (props) {
 	)
 };
 
-export default DeliveriesPanel; 
+export default TaskPanel; 
