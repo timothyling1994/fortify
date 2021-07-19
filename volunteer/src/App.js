@@ -20,49 +20,7 @@ function App() {
 
   const [showRequestModal,setShowRequestModal] = useState(false);
 
-  return (
-  
-      <div className="App">
-        <AuthProvider>
-          <Router history={history}>
-
-            <Switch>
-
-              <Route path="/login"> 
-                <Login/>
-              </Route>
-
-              <AuthContext.Consumer>
-                { userContext =>
-          
-                    (<PrivateRoute exact path="/home" user ={userContext} children={{header: <Header setShowRequestModal={setShowRequestModal} user={userContext}/>,home:<Home user={userContext}/>}}>
-                    </PrivateRoute>)
-                }
-              
-              </AuthContext.Consumer>
-
-              <AuthContext.Consumer>
-                { userContext => (
-
-                  <PrivateRoute exact path="/chat">
-                    <Header setShowRequestModal={setShowRequestModal}/>
-                    <Chat user={userContext}/>
-                  </PrivateRoute>
-                )}
-              </AuthContext.Consumer>
-
-              <AuthContext.Consumer>
-                { userContext => (
-                  <PrivateRoute exact path="/leaderboard">
-                    <Header setShowRequestModal={setShowRequestModal}/>
-                    <Leaderboard user={userContext}/>
-                  </PrivateRoute>
-                )}
-              </AuthContext.Consumer>
-
-            </Switch>
-
-          {
+  /*          {
             showRequestModal ? 
             <AuthContext.Consumer>
               { userContext => (
@@ -71,8 +29,32 @@ function App() {
 
             </AuthContext.Consumer>
             : null
-          }
+          }*/
 
+  return (
+  
+      <div className="App">
+        <AuthProvider>
+          <Router history={history}>
+            <AuthContext.Consumer>
+            {
+              userContext =>
+
+              <Switch>
+
+              <Route path="/login"> 
+                <Login/>
+              </Route>
+
+              <PrivateRoute exact path="/chat" user ={userContext} children={{header: <Header setShowRequestModal={setShowRequestModal} user={userContext}/>,chat:<Chat user={userContext}/>}}>
+              </PrivateRoute>
+
+              <PrivateRoute exact path="/home" user ={userContext} children={{header: <Header setShowRequestModal={setShowRequestModal} user={userContext}/>,home:<Home user={userContext}/>}}>
+              </PrivateRoute>
+
+              </Switch>
+            }
+            </AuthContext.Consumer>
           </Router>  
         </AuthProvider>
       </div>  

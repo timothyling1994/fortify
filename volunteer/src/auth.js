@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
       
     	console.log("auth state changed");
       console.log(user);
+      
       if(user)
       {
         setCurrentUser(user);

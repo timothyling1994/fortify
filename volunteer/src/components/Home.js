@@ -27,14 +27,14 @@ function Home (props){
 	      setRequests(requestObjArr); 
 	    });
 
-	    let myRequests_query = firebase.firestore().collection('users').doc(currentUser.uid).collection('my_requests');
+
+	    let myRequests_query = firebase.firestore().collection('users').doc(currentUser.currentUser.uid).collection('my_requests');
 	    myRequests_query.onSnapshot((snapshot)=>{
 	      let myRequestsObjArr = [];
 	      snapshot.forEach((doc)=>{
 	        let requestId = doc.data().requestId;
 	        firebase.firestore().collection('requests').doc(requestId).get().then((doc)=>
 	        {
-	          //console.log(doc.data());
 	          if(doc.exists)
 	          {
 	            let requestObj = doc.data();
@@ -43,10 +43,11 @@ function Home (props){
 	          }
 	        })
 	      });
-	      setMyRequests(myRequestsObjArr); 
+	      setMyRequests(myRequestsObjArr);
+	      console.log(myRequestsObjArr); 
 	    });
 
-	    let myTasks_query = firebase.firestore().collection('users').doc(currentUser.uid).collection('my_tasks');
+	    let myTasks_query = firebase.firestore().collection('users').doc(currentUser.currentUser.uid).collection('my_tasks');
 	    myTasks_query.onSnapshot((snapshot)=>{
 	      let myTasksObjArr = [];
 	      snapshot.forEach((doc)=>{

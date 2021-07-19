@@ -4,18 +4,20 @@ import { AuthContext } from "./auth.js";
 
 const PrivateRoute = (props) => {
 
-  console.log(props.user);
+  console.log(props.user.currentUser);
+  console.log(props.children);
 
   return (
     <div>
       {
-        !(props.user.currentUser == undefined || props.user.currentUser == null) ? 
+        !(props.user.currentUser == null) ? 
           <div>
           {
-            //props.children.map()
+            Object.keys(props.children).map(function(keyName,keyIndex){
+                return props.children[keyName]
+            })
           }
-          {props.children.header}
-          {props.children.home}
+
           </div> : 
         
           <Redirect to={"/login"} />

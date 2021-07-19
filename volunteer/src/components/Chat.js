@@ -5,6 +5,7 @@ import uniqid from "uniqid";
 
 const Chat = (props) => {
 
+
 	const [chatGroups, setChatGroups] = useState([]);
 	const [showChat,setShowChat]=useState([false]);
 	const [currentChat,setCurrentChat]=useState({});
@@ -18,7 +19,7 @@ const Chat = (props) => {
 
 		chatGroupRef.current = [];
 
-		let myChats_query = firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_chats');
+		let myChats_query = firebase.firestore().collection('users').doc(props.user.token).collection('my_chats');
 		myChats_query.onSnapshot((snapshot)=>{
 			
 			snapshot.forEach((doc)=>{
