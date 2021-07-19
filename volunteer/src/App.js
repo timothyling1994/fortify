@@ -35,9 +35,8 @@ function App() {
               <AuthContext.Consumer>
                 { userContext =>
           
-                    (<PrivateRoute exact path="/home" children={{header: <Header user={userContext}/>,home:<Home user={userContext}/>}}>
+                    (<PrivateRoute exact path="/home" user ={userContext} children={{header: <Header setShowRequestModal={setShowRequestModal} user={userContext}/>,home:<Home user={userContext}/>}}>
                     </PrivateRoute>)
-                  
                 }
               
               </AuthContext.Consumer>
@@ -67,10 +66,7 @@ function App() {
             showRequestModal ? 
             <AuthContext.Consumer>
               { userContext => (
-                <PrivateRoute path="/">
                   <RequestModal user={userContext} setShowRequestModal={setShowRequestModal}/>
-                </PrivateRoute>
-
               )}
 
             </AuthContext.Consumer>

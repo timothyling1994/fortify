@@ -7,7 +7,7 @@ import history from '../history.js';
 function Header (props) {
 
 	const openRequestModal = ()=>{
-	
+		console.log(props);
 		props.setShowRequestModal(true);
 	};
 

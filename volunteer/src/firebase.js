@@ -4,7 +4,6 @@ import * as firebaseui from 'firebaseui';
 import "firebase/firestore";
 
 import { withRouter } from "react-router-dom";
-import history from './history.js';
 
 import App from './App.js';
 
@@ -53,7 +52,7 @@ const uiConfig = {
       // User successfully signed in.
       // Return type determines whether we continue the redirect automatically
       // or whether we leave that to developer to handle.
-      history.push("/home");
+      
       return false;
     },
     uiShown: function() {
