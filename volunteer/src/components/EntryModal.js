@@ -17,6 +17,8 @@ function EntryModal (props) {
 	let entry_status="";
 	let volunteersArr = [];
 
+	console.log(props.currentUser.currentUser.uid);
+
 	const invalid_form = (message) => toast.error(message, {
 		position: "top-right",
 		autoClose: 3000,
@@ -32,6 +34,8 @@ function EntryModal (props) {
 	}
 
 	const initValues = () => {
+		console.log("initValues");
+		console.log(props.currentEntryId);
 		for(let i =0; i< props.requests.length;i++)
 		{
 			if(props.requests[i].entryId === props.currentEntryId)
@@ -64,7 +68,7 @@ function EntryModal (props) {
 		{
 			invalid_form('All volunteer spots have been already filled!');
 		}
-		else if(volunteersArr.includes(props.currentUser.token))
+		else if(volunteersArr.includes(props.currentUser.currentUser.uid))
 		{
 			invalid_form('You already accepted this task!');
 		}
@@ -79,10 +83,13 @@ function EntryModal (props) {
 				status="open";
 			}
 
-			console.log(status);
 
 			let temp = [...volunteersArr];
-			temp.push(props.currentUser.token);
+			temp.push(props.currentUser.currentUser.uid);
+
+			console.log(status);
+			console.log(volunteers_accepted);
+			console.log(temp);
 
 			firebase.firestore().collection('requests').doc(props.currentEntryId).update({
 				
@@ -96,7 +103,7 @@ function EntryModal (props) {
 				console.error("Error updating document: ", error);
 			});
 
-			firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_tasks').doc().set({
+			firebase.firestore().collection('users').doc(props.currentUser.currentUser.uid).collection('my_tasks').doc().set({
 				
 				requestId: props.currentEntryId,
 
@@ -110,7 +117,7 @@ function EntryModal (props) {
 	};
 	const addChat = () =>{
 
-	let docRef = firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_chats').doc(entryId);
+	let docRef = firebase.firestore().collection('users').doc(props.currentUser.currentUser.uid).collection('my_chats').doc(entryId);
 
 	docRef.get().then((doc)=>{
 		if(doc.exists)
@@ -120,14 +127,14 @@ function EntryModal (props) {
 		}
 		else
 		{
-			firebase.firestore().collection('users').doc(props.currentUser.token).collection('my_chats').doc(entryId).set({
+			firebase.firestore().collection('users').doc(props.currentUser.currentUser.uid).collection('my_chats').doc(entryId).set({
 				posterId: posterId,
-				volunteerId:props.currentUser.token,
+				volunteerId:props.currentUser.currentUser.uid,
 			});
 
 			firebase.firestore().collection('users').doc(posterId).collection('my_chats').doc(entryId).set({
 				posterId: posterId,
-				volunteerId:props.currentUser.token,
+				volunteerId:props.currentUser.currentUser.uid,
 			});
 
 			props.history.push("/chat");

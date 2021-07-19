@@ -5,6 +5,7 @@ import uniqid from "uniqid";
 
 const Chat = (props) => {
 
+	console.log(props);
 
 	const [chatGroups, setChatGroups] = useState([]);
 	const [showChat,setShowChat]=useState([false]);
@@ -19,7 +20,7 @@ const Chat = (props) => {
 
 		chatGroupRef.current = [];
 
-		let myChats_query = firebase.firestore().collection('users').doc(props.user.token).collection('my_chats');
+		let myChats_query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection('my_chats');
 		myChats_query.onSnapshot((snapshot)=>{
 			
 			snapshot.forEach((doc)=>{
@@ -55,11 +56,12 @@ const Chat = (props) => {
 			if(entry.entryId===entryId)
 			{
 				//console.log(entry);
-				firebase.firestore().collection("users").doc(props.currentUser.token).collection("my_chats").doc(entry.entryId).get().then((doc)=>{
+				firebase.firestore().collection("users").doc(props.user.currentUser.uid).collection("my_chats").doc(entry.entryId).get().then((doc)=>{
 					if(doc.exists){
 						//let posterId = doc.data().posterId;
 						let volunteerId = doc.data().volunteerId;
 						entry.volunteerId = volunteerId;
+						console.log(entry);
 						setCurrentChat(entry);
 						setShowChat([true]);
 					}
@@ -79,7 +81,7 @@ const Chat = (props) => {
 		messageRef.current = [];
 		//console.log("loading:"+currentChat.entryId);
 		let query = firebase.firestore()
-                  .collection('users').doc(props.currentUser.token).collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
+                  .collection('users').doc(props.user.currentUser.uid).collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
               
 
         query.onSnapshot(function(snapshot) {
@@ -101,6 +103,7 @@ const Chat = (props) => {
 			      }
 			    });
 			    setFirestoreSnapshot([...messageRef.current]);
+			    console.log([...messageRef.current]);
         	}	
 	  	});
 	};
@@ -113,7 +116,7 @@ const Chat = (props) => {
 
 			let recipient = "";
 
-			if(props.currentUser.token == currentChat.posterId)
+			if(props.user.currentUser.uid == currentChat.posterId)
 			{
 				recipient = currentChat.volunteerId;
 			}
@@ -122,9 +125,9 @@ const Chat = (props) => {
 				recipient = currentChat.posterId;
 			}
 
-			firebase.firestore().collection("users").doc(props.currentUser.token).collection("my_chats").doc(currentChat.entryId).collection('messages').add({
+			firebase.firestore().collection("users").doc(props.user.currentUser.uid).collection("my_chats").doc(currentChat.entryId).collection('messages').add({
 				recipient: recipient,
-				sender:props.currentUser.token,
+				sender:props.user.currentUser.uid,
 				text:message.value,
 				timestamp:firebase.firestore.FieldValue.serverTimestamp()
 			}).catch(function(error){
@@ -134,7 +137,7 @@ const Chat = (props) => {
 
 			firebase.firestore().collection("users").doc(recipient).collection("my_chats").doc(currentChat.entryId).collection('messages').add({
 				recipient: recipient,
-				sender:props.currentUser.token,
+				sender:props.user.currentUser.uid,
 				text:message.value,
 				timestamp:firebase.firestore.FieldValue.serverTimestamp()
 			}).catch(function(error){
@@ -168,9 +171,12 @@ const Chat = (props) => {
 	}
 
 	useEffect(()=>{
-		initPanel();
+		if(props.user !== null)
+		{
+			initPanel();
+		}
 	
-	},[]);
+	},[props.user]);
 
 	useEffect(()=>{
 
@@ -224,7 +230,7 @@ const Chat = (props) => {
 						{currentChatMessages ? currentChatMessages.map((msg)=>{
 							//let classAttributes = ["chat-message"];
 							//console.log(msg);
-							if(msg.sender === props.currentUser.token)
+							if(msg.sender === props.user.currentUser.uid)
 							{
 								return (
 								<div className="chat-message-row" key={uniqid()}>

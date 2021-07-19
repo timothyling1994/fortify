@@ -93,7 +93,7 @@ function Home (props){
 
 	return (
 		<div className="Home">
-	        <DeliveriesPanel currentUser={props.user} requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
+	        <DeliveriesPanel currentUser={currentUser} requests={requests} myRequests={myRequests} myTasks={myTasks} scrollToEntry={scrollToEntry}/>
 	        <MapImage requests={requests} setScrollToEntry={setScrollToEntry}/>
 	    </div>
 	);
