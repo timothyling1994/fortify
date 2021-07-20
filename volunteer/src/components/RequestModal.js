@@ -94,6 +94,7 @@ function RequestModal (props) {
 				//console.log(docRef.id);
 				firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection('my_requests').doc().set({
 					requestId: docRef.id,
+					requestsRef: firebase.firestore().doc("requests/"+docRef.id)
 				});
 			});
 

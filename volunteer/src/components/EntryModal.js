@@ -106,6 +106,7 @@ function EntryModal (props) {
 			firebase.firestore().collection('users').doc(props.currentUser.currentUser.uid).collection('my_tasks').doc().set({
 				
 				requestId: props.currentEntryId,
+				requestsRef: firebase.firestore().doc("requests/"+props.currentEntryId)
 
 			});
 

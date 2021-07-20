@@ -4,9 +4,6 @@ import { AuthContext } from "./auth.js";
 
 const PrivateRoute = (props) => {
 
-  console.log(props.user.currentUser);
-  console.log(props.children);
-
   return (
     <div>
       {
