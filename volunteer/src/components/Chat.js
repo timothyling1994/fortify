@@ -5,8 +5,6 @@ import uniqid from "uniqid";
 
 const Chat = (props) => {
 
-	console.log(props);
-
 	const [chatGroups, setChatGroups] = useState([]);
 	const [showChat,setShowChat]=useState([false]);
 	const [currentChat,setCurrentChat]=useState({});
@@ -61,7 +59,6 @@ const Chat = (props) => {
 						//let posterId = doc.data().posterId;
 						let volunteerId = doc.data().volunteerId;
 						entry.volunteerId = volunteerId;
-						console.log(entry);
 						setCurrentChat(entry);
 						setShowChat([true]);
 					}
@@ -79,17 +76,20 @@ const Chat = (props) => {
 	const loadMessages = () => { 
 
 		messageRef.current = [];
-		//console.log("loading:"+currentChat.entryId);
+		
 		let query = firebase.firestore()
                   .collection('users').doc(props.user.currentUser.uid).collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
               
 
         query.onSnapshot(function(snapshot) {
+        	console.log("snapshot changed!!!!");
+        	console.log(snapshot);
         	if(!snapshot.metadata.hasPendingWrites)
         	{
 
 			    snapshot.docChanges().forEach(function(change) {
 
+			    	console.log("how many times");
 			      if (change.type === 'removed') {
 			      
 			      }
@@ -182,7 +182,7 @@ const Chat = (props) => {
 
 		if(showChat[0])
 		{
-			loadMessages();
+			//loadMessages();
 			setScrollHeight();
 		}
 	},[showChat]);
@@ -196,6 +196,10 @@ const Chat = (props) => {
 	
 
 	},[firestoreSnapshot]);
+
+	useEffect(()=>{
+		loadMessages();
+	},[]);
 
 	return (
 
@@ -246,7 +250,6 @@ const Chat = (props) => {
 								</div>
 								)
 							}
-
 						
 						}):null}	
 					</div>

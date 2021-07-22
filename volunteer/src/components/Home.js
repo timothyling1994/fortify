@@ -18,7 +18,6 @@ function Home (props){
     
 	    let query = firebase.firestore().collection('requests');
 	    query.onSnapshot((snapshot)=>{
-	    	console.log("SNAPPED1");
 	      let requestObjArr = [];
 	      snapshot.forEach((doc)=>{
 	        let requestObj = doc.data();
@@ -31,7 +30,6 @@ function Home (props){
 
 	    let myRequests_query = firebase.firestore().collection('users').doc(currentUser.currentUser.uid).collection('my_requests');
 	    myRequests_query.onSnapshot((snapshot)=>{
-	    	console.log("SNAPPED2");
 	      let myRequestsObjArr = [];
 	      snapshot.forEach((doc)=>{
 	      	
@@ -44,10 +42,8 @@ function Home (props){
 	       docRef.get().then((docSnapshot)=>{
 	       	if(docSnapshot.exists)
 	       	{	
-	       		console.log("snapshot changed1");
 	       		docRef.onSnapshot((doc)=>{
-	       			console.log("snapshot changed2");
-	       			console.log(myRequestsObjArr);
+	       	
 	       			let requestObj = doc.data();
 	       			let existingRequest = false;
 	       			let existingIndex = -1;
@@ -81,7 +77,6 @@ function Home (props){
 
 	    let myTasks_query = firebase.firestore().collection('users').doc(currentUser.currentUser.uid).collection('my_tasks');
 	    myTasks_query.onSnapshot((snapshot)=>{
-	    	console.log("SNAPPED3");
 	      let myTasksObjArr = [];
 	      snapshot.forEach((doc)=>{
 	        let requestId = doc.data().requestId;

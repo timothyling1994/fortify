@@ -118,29 +118,37 @@ function EntryModal (props) {
 	};
 	const addChat = () =>{
 
-	let docRef = firebase.firestore().collection('users').doc(props.currentUser.currentUser.uid).collection('my_chats').doc(entryId);
-
-	docRef.get().then((doc)=>{
-		if(doc.exists)
+		if(posterId == props.currentUser.currentUser.uid)
 		{
-			//console.log("you already are in communication with organizer!");
-			invalid_form("You are already in communication with organizer!");
+			invalid_form("Can't start a chat with yourself!");
 		}
 		else
 		{
-			firebase.firestore().collection('users').doc(props.currentUser.currentUser.uid).collection('my_chats').doc(entryId).set({
-				posterId: posterId,
-				volunteerId:props.currentUser.currentUser.uid,
-			});
+			let docRef = firebase.firestore().collection('users').doc(props.currentUser.currentUser.uid).collection('my_chats').doc(entryId);
 
-			firebase.firestore().collection('users').doc(posterId).collection('my_chats').doc(entryId).set({
-				posterId: posterId,
-				volunteerId:props.currentUser.currentUser.uid,
-			});
+			docRef.get().then((doc)=>{
+				if(doc.exists)
+				{
+					//console.log("you already are in communication with organizer!");
+					invalid_form("You are already in communication with organizer!");
+				}
+				else
+				{
+					firebase.firestore().collection('users').doc(props.currentUser.currentUser.uid).collection('my_chats').doc(entryId).set({
+						posterId: posterId,
+						volunteerId:props.currentUser.currentUser.uid,
+					});
 
-			props.history.push("/chat");
+					firebase.firestore().collection('users').doc(posterId).collection('my_chats').doc(entryId).set({
+						posterId: posterId,
+						volunteerId:props.currentUser.currentUser.uid,
+					});
+
+					props.history.push("/chat");
+				}
+			});
 		}
-	});
+
 
 	};
 

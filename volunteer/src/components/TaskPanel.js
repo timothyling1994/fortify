@@ -279,21 +279,18 @@ function TaskPanel (props) {
 			let arr = [];
 			if(displayPanelTab === 0)
 			{
-				console.log(props.requests);
 				arr = props.requests;
 				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 				setRequests(sortedRequests);
 			}
 			else if (displayPanelTab === 1)
 			{
-				console.log(props.myRequests);
 				arr = props.myRequests;
 				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 				setRequests(sortedRequests);
 			}
 			else
 			{
-				console.log(props.myTasks);
 				arr = props.myTasks;
 				const sortedRequests = arr.sort((a,b)=> new Date(b.posted_date) - new Date(a.posted_date));
 				setRequests(sortedRequests);
