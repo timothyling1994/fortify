@@ -16,11 +16,13 @@ const Chat = (props) => {
 
 	const initPanel = () => {
 
-		chatGroupRef.current = [];
+		//chatGroupRef.current = [];
 
 		let myChats_query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection('my_chats');
 		myChats_query.onSnapshot((snapshot)=>{
 			
+			chatGroupRef.current = [];
+
 			snapshot.forEach((doc)=>{
 			
 					let requestId = doc.id;
@@ -73,7 +75,55 @@ const Chat = (props) => {
 
 	};
 
-	const loadMessages = () => { 
+	const loadMessages = async () => { 
+
+	
+		let query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection("my_chats");
+		query.onSnapshot(function(snapshot){
+
+			messageRef.current = [];
+
+			let messageObjArr = [];
+
+			snapshot.docs.forEach(function(doc){
+				console.log(doc);
+				//let entryId = doc.id;
+				let msgQuery = doc.ref.collection('messages');
+				
+				
+				msgQuery.onSnapshot(function(msgSnapshot){
+					let messageObj = {};
+
+					msgSnapshot.docs.forEach(function(msgDoc){
+						if(messageObj[msgDoc.ref.parent.parent.id])
+						{
+							messageObj[msgDoc.ref.parent.parent.id].push(msgDoc.data());
+						}
+						else
+						{
+							messageObj[msgDoc.ref.parent.parent.id] = [msgDoc.data()];
+						}
+					});
+					console.log(messageObj);
+					let copyArr = [...messageRef.current];
+					copyArr.push(messageObj);
+					messageRef.current = copyArr;
+					console.log(messageRef.current);
+
+				});
+				
+			});
+			console.log("messageObjArr");
+			console.log(messageRef.current);
+			setFirestoreSnapshot([...messageRef.current]);
+		});
+
+		
+
+        
+	};
+
+	/*const loadMessages = () => { 
 
 		messageRef.current = [];
 		
@@ -89,7 +139,7 @@ const Chat = (props) => {
 
 			    snapshot.docChanges().forEach(function(change) {
 
-			    	console.log("how many times");
+			    console.log("how many times");
 			      if (change.type === 'removed') {
 			      
 			      }
@@ -106,7 +156,7 @@ const Chat = (props) => {
 			    console.log([...messageRef.current]);
         	}	
 	  	});
-	};
+	};*/
 
 	const saveMessage = (e) => {
 		if(e.key=="Enter")
@@ -174,6 +224,7 @@ const Chat = (props) => {
 		if(props.user !== null)
 		{
 			initPanel();
+			loadMessages();
 		}
 	
 	},[props.user]);
@@ -189,17 +240,20 @@ const Chat = (props) => {
 
 	useEffect(()=>{
 
-		firestoreSnapshot.sort((a,b) => { 
+		console.log("reached useeffect");
+
+		console.log(firestoreSnapshot);
+
+		
+
+		/*firestoreSnapshot.sort((a,b) => { 
 			return (a.timestamp - b.timestamp);
 		});
-		setCurrentChatMessages(firestoreSnapshot);
+		setCurrentChatMessages(firestoreSnapshot);*/
 	
 
 	},[firestoreSnapshot]);
 
-	useEffect(()=>{
-		loadMessages();
-	},[]);
 
 	return (
 
