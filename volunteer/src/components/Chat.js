@@ -2,6 +2,7 @@ import React from "react";
 import {useState,useEffect,useRef} from "react";
 import firebase from "firebase";
 import uniqid from "uniqid";
+var async = require("async");
 
 const Chat = (props) => {
 
@@ -77,14 +78,66 @@ const Chat = (props) => {
 
 	const loadMessages = async () => { 
 
-	
 		let query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection("my_chats");
-		query.onSnapshot(function(snapshot){
+		
 
-			messageRef.current = [];
+		let result = await new Promise ((resolve,reject) => {
 
-			let messageObjArr = [];
+			query.onSnapshot(async(snapshot)=>{
 
+				messageRef.current = [];
+				let messageObjArr = [];
+
+				const getAllChatGroups = await Promise.all(snapshot.docs.map(async doc => {
+					
+					console.log("1");
+
+					let msgQuery = doc.ref.collection('messages');
+					
+					let msgQueryResult = await new Promise((resolve,reject)=>{
+						
+						msgQuery.onSnapshot(async (msgSnapshot)=>{
+							
+							let messageObj = {};
+
+							const allMsgs = msgSnapshot.docs.map(async msgDoc => {
+								console.log("3");
+								if(messageObj[msgDoc.ref.parent.parent.id])
+								{
+									messageObj[msgDoc.ref.parent.parent.id].push(msgDoc.data());
+								}
+								else
+								{	
+									messageObj[msgDoc.ref.parent.parent.id] = [msgDoc.data()];
+								}
+
+								resolve(2);
+							});
+
+							let copyArr = [...messageRef.current];
+							copyArr.push(messageObj);
+							messageRef.current = copyArr;
+							setFirestoreSnapshot([...messageRef.current]);
+						});
+
+					});
+
+					console.log(msgQueryResult);
+			
+					return Promise.resolve(1);
+				}));
+
+				console.log(getAllChatGroups);
+
+				resolve(getAllChatGroups);
+			});
+
+		});
+		console.log(result);
+        
+	};
+
+	/*
 			snapshot.docs.forEach(function(doc){
 				console.log(doc);
 				//let entryId = doc.id;
@@ -112,16 +165,7 @@ const Chat = (props) => {
 
 				});
 				
-			});
-			console.log("messageObjArr");
-			console.log(messageRef.current);
-			setFirestoreSnapshot([...messageRef.current]);
-		});
-
-		
-
-        
-	};
+			});*/
 
 	/*const loadMessages = () => { 
 
