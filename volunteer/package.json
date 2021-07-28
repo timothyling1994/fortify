@@ -1,6 +1,5 @@
 {
   "name": "volunteer.me",
-  "homepage": "http://timothyling1994.github.io/volunteer-me",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -22,8 +21,6 @@
     "worker-loader": "^3.0.7"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -48,6 +45,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3"
+
   }
 }
