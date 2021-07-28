@@ -88,7 +88,7 @@ const Chat = (props) => {
 
 				const getAllChatGroups = await Promise.all(snapshot.docs.map(async doc => {
 
-					let msgQuery = doc.ref.collection('messages').orderBy('timestamp', 'desc');
+					let msgQuery = doc.ref.collection('messages').orderBy('timestamp');
 					
 					let msgQueryResult = await new Promise((resolve,reject)=>{
 						
@@ -246,6 +246,15 @@ const Chat = (props) => {
 	
 	},[props.user]);
 
+
+	useEffect(()=>{
+
+		if(currentChatMessages.length !== 0)
+		{
+			setScrollHeight();
+		}
+	},[currentChatMessages]);
+
 	useEffect(()=>{
 
 		if(showChat[0])
@@ -260,7 +269,6 @@ const Chat = (props) => {
 					});
 
 					setCurrentChatMessages(obj[currentChat.entryId]);
-					setScrollHeight();
 					found = true;
 				}
 			});
@@ -285,7 +293,6 @@ const Chat = (props) => {
 					});
 
 					setCurrentChatMessages(obj[currentChat.entryId]);
-					setScrollHeight();
 				}
 			});
 			
@@ -302,7 +309,7 @@ const Chat = (props) => {
 				<div className="chat-groups">
 				{chatGroups.map((chatGroup) => {
 					return (
-						<div className="entry" key={chatGroup.entryId} id={chatGroup.entryId} onClick={(e)=>{setCurrentEntry(e,chatGroup.entryId)}}>
+						<div className="entry" key={uniqid()} id={chatGroup.entryId} onClick={(e)=>{setCurrentEntry(e,chatGroup.entryId)}}>
 							<div className="entry-taskName-container">
 								<div className="entry-taskName">{chatGroup.taskName}</div>
 							</div>

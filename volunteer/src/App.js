@@ -11,7 +11,6 @@ import Login from "./components/Login.js";
 import Header from "./components/Header.js";
 import Home from "./components/Home.js";
 import Chat from "./components/Chat.js";
-import RequestModal from "./components/RequestModal.js";
 import Leaderboard from "./components/Leaderboard.js";
 
 import uniqid from "uniqid";
@@ -31,7 +30,9 @@ function App() {
 
             </AuthContext.Consumer>
             : null
-          }*/
+          }
+
+          setShowRequestModal={setShowRequestModal}*/
 
   return (
   
@@ -44,15 +45,15 @@ function App() {
 
               <Switch>
 
-              <Route key={uniqid()} path="/login"> 
-                <Login/>
-              </Route>
+                <Route key={uniqid()} path="/login"> 
+                  <Login/>
+                </Route>
 
-              <PrivateRoute exact path="/chat" user ={userContext} children={{header: <Header key={uniqid()} setShowRequestModal={setShowRequestModal} user={userContext}/>,chat:<Chat key={uniqid()} user={userContext}/>}}>
-              </PrivateRoute>
+                <PrivateRoute exact path="/chat" user ={userContext} children={{header: <Header key={uniqid()} user={userContext}/>,chat:<Chat key={uniqid()} user={userContext}/>}}>
+                </PrivateRoute>
 
-              <PrivateRoute exact path="/home" user ={userContext} children={{header: <Header key={uniqid()} setShowRequestModal={setShowRequestModal} user={userContext}/>,home:<Home key={uniqid()} user={userContext}/>}}>
-              </PrivateRoute>
+                <PrivateRoute exact path="/home" user ={userContext} children={{header: <Header key={uniqid()} user={userContext}/>,home:<Home key={uniqid()} user={userContext}/>}}>
+                </PrivateRoute>
 
               </Switch>
             }

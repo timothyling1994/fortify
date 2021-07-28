@@ -2,13 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import app from "../firebase.js";
 import history from '../history.js';
+import {useState,useEffect} from "react";
+import RequestModal from "./RequestModal.js";
 
 
 function Header (props) {
 
+	const [showRequestModal, setShowRequestModal] = useState(false);
+
 	const openRequestModal = ()=>{
 		console.log(props);
-		props.setShowRequestModal(true);
+		setShowRequestModal(true);
 	};
 
 	const logOut = () => {
@@ -22,6 +26,9 @@ function Header (props) {
 
 	return (
 		<div className="Header">
+			{
+                showRequestModal ? <RequestModal setShowRequestModal={setShowRequestModal}/>:null
+            }
 			<Link to={"/home"} className="link"><div className="title">Volunteer.Me</div></Link>
 			<div className="header-btn-container">
 				<div className="request-help-btn" onClick={openRequestModal}> Request Help</div>
