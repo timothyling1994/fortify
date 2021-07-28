@@ -11,13 +11,12 @@ const Chat = (props) => {
 	const [currentChat,setCurrentChat]=useState({});
 	const [currentChatMessages,setCurrentChatMessages] = useState([]);
 	const [firestoreSnapshot,setFirestoreSnapshot] = useState([]);
+	const [componentMounted, setComponentMounted] = useState(false);
 
 	const chatGroupRef = useRef([]);
 	const messageRef = useRef([]);
 
 	const initPanel = () => {
-
-		//chatGroupRef.current = [];
 
 		let myChats_query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection('my_chats');
 		myChats_query.onSnapshot((snapshot)=>{
@@ -47,8 +46,6 @@ const Chat = (props) => {
 
 	const setCurrentEntry = (event, entryId) => {
 
-		//console.log(event);
-
 		setShowChat([false]);
 		removeHighlight();
 		highlightDiv(event);
@@ -56,7 +53,6 @@ const Chat = (props) => {
 		chatGroups.forEach((entry)=>{
 			if(entry.entryId===entryId)
 			{
-				//console.log(entry);
 				firebase.firestore().collection("users").doc(props.user.currentUser.uid).collection("my_chats").doc(entry.entryId).get().then((doc)=>{
 					if(doc.exists){
 						//let posterId = doc.data().posterId;
@@ -80,28 +76,30 @@ const Chat = (props) => {
 
 		let query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection("my_chats");
 		
-
 		let result = await new Promise ((resolve,reject) => {
 
 			query.onSnapshot(async(snapshot)=>{
 
+				console.log("query changed");
+
 				messageRef.current = [];
 				let messageObjArr = [];
 
-				const getAllChatGroups = await Promise.all(snapshot.docs.map(async doc => {
-					
-					console.log("1");
 
-					let msgQuery = doc.ref.collection('messages');
+				const getAllChatGroups = await Promise.all(snapshot.docs.map(async doc => {
+
+					let msgQuery = doc.ref.collection('messages').orderBy('timestamp', 'desc');
 					
 					let msgQueryResult = await new Promise((resolve,reject)=>{
 						
 						msgQuery.onSnapshot(async (msgSnapshot)=>{
-							
+
+							console.log("msgQuery changed");
 							let messageObj = {};
+							let chatGroupId = "";
 
 							const allMsgs = msgSnapshot.docs.map(async msgDoc => {
-								console.log("3");
+		
 								if(messageObj[msgDoc.ref.parent.parent.id])
 								{
 									messageObj[msgDoc.ref.parent.parent.id].push(msgDoc.data());
@@ -110,14 +108,42 @@ const Chat = (props) => {
 								{	
 									messageObj[msgDoc.ref.parent.parent.id] = [msgDoc.data()];
 								}
+								chatGroupId = msgDoc.ref.parent.parent.id;
 
 								resolve(2);
 							});
 
 							let copyArr = [...messageRef.current];
-							copyArr.push(messageObj);
+
+							console.log(chatGroupId);
+							console.log(copyArr);
+
+							let found = false; 
+
+							for(let i = 0;i<copyArr.length;i++)
+							{
+								if(copyArr[i][chatGroupId])
+								{
+									found=true;
+									console.log("found");
+									copyArr[i] = messageObj;
+								}
+							}
+
+							if(!found)
+							{
+								copyArr.push(messageObj);
+							}
+
+
 							messageRef.current = copyArr;
-							setFirestoreSnapshot([...messageRef.current]);
+							
+							console.log(componentMounted);
+							//if(componentMounted)
+							{
+								setFirestoreSnapshot([...messageRef.current]);
+							}
+
 						});
 
 					});
@@ -127,80 +153,12 @@ const Chat = (props) => {
 					return Promise.resolve(1);
 				}));
 
-				console.log(getAllChatGroups);
-
 				resolve(getAllChatGroups);
 			});
 
 		});
-		console.log(result);
         
 	};
-
-	/*
-			snapshot.docs.forEach(function(doc){
-				console.log(doc);
-				//let entryId = doc.id;
-				let msgQuery = doc.ref.collection('messages');
-				
-				
-				msgQuery.onSnapshot(function(msgSnapshot){
-					let messageObj = {};
-
-					msgSnapshot.docs.forEach(function(msgDoc){
-						if(messageObj[msgDoc.ref.parent.parent.id])
-						{
-							messageObj[msgDoc.ref.parent.parent.id].push(msgDoc.data());
-						}
-						else
-						{
-							messageObj[msgDoc.ref.parent.parent.id] = [msgDoc.data()];
-						}
-					});
-					console.log(messageObj);
-					let copyArr = [...messageRef.current];
-					copyArr.push(messageObj);
-					messageRef.current = copyArr;
-					console.log(messageRef.current);
-
-				});
-				
-			});*/
-
-	/*const loadMessages = () => { 
-
-		messageRef.current = [];
-		
-		let query = firebase.firestore()
-                  .collection('users').doc(props.user.currentUser.uid).collection("my_chats").doc(currentChat.entryId).collection('messages').orderBy('timestamp', 'desc').limit(20);
-              
-
-        query.onSnapshot(function(snapshot) {
-        	console.log("snapshot changed!!!!");
-        	console.log(snapshot);
-        	if(!snapshot.metadata.hasPendingWrites)
-        	{
-
-			    snapshot.docChanges().forEach(function(change) {
-
-			    console.log("how many times");
-			      if (change.type === 'removed') {
-			      
-			      }
-			      else {
-
-			       	let message = change.doc.data();
-			       	let copyArr = [...messageRef.current];
-			       	copyArr.push(message);
-					//setFirestoreSnapshot(copyArr);
-					messageRef.current = copyArr;
-			      }
-			    });
-			    setFirestoreSnapshot([...messageRef.current]);
-			    console.log([...messageRef.current]);
-        	}	
-	  	});
-	};*/
 
 	const saveMessage = (e) => {
 		if(e.key=="Enter")
@@ -219,24 +177,27 @@ const Chat = (props) => {
 				recipient = currentChat.posterId;
 			}
 
-			firebase.firestore().collection("users").doc(props.user.currentUser.uid).collection("my_chats").doc(currentChat.entryId).collection('messages').add({
-				recipient: recipient,
-				sender:props.user.currentUser.uid,
-				text:message.value,
-				timestamp:firebase.firestore.FieldValue.serverTimestamp()
-			}).catch(function(error){
-				console.error('Error writing new message to database',error);
-			});
+			if(message.value !== "")
+			{
+				firebase.firestore().collection("users").doc(props.user.currentUser.uid).collection("my_chats").doc(currentChat.entryId).collection('messages').add({
+					recipient: recipient,
+					sender:props.user.currentUser.uid,
+					text:message.value,
+					timestamp:firebase.firestore.FieldValue.serverTimestamp()
+				}).catch(function(error){
+					console.error('Error writing new message to database',error);
+				});
 
 
-			firebase.firestore().collection("users").doc(recipient).collection("my_chats").doc(currentChat.entryId).collection('messages').add({
-				recipient: recipient,
-				sender:props.user.currentUser.uid,
-				text:message.value,
-				timestamp:firebase.firestore.FieldValue.serverTimestamp()
-			}).catch(function(error){
-				console.error('Error writing new message to database',error);
-			});
+				firebase.firestore().collection("users").doc(recipient).collection("my_chats").doc(currentChat.entryId).collection('messages').add({
+					recipient: recipient,
+					sender:props.user.currentUser.uid,
+					text:message.value,
+					timestamp:firebase.firestore.FieldValue.serverTimestamp()
+				}).catch(function(error){
+					console.error('Error writing new message to database',error);
+				});
+			}
 
 			message.value = "";
 		}
@@ -244,7 +205,10 @@ const Chat = (props) => {
 
 	const setScrollHeight = () => {
 		const chat_window = document.querySelector(".chat-window-messages");
-		chat_window.scrollTop = (chat_window.getBoundingClientRect().height);
+		
+		if(chat_window !== null) {
+			chat_window.scrollTop = (chat_window.getBoundingClientRect().height);
+		}
 
 	};
 
@@ -265,6 +229,15 @@ const Chat = (props) => {
 	}
 
 	useEffect(()=>{
+		setComponentMounted(true);
+
+		return () => {
+			setComponentMounted(false);
+		};
+	},[]);
+
+	useEffect(()=>{
+
 		if(props.user !== null)
 		{
 			initPanel();
@@ -277,24 +250,46 @@ const Chat = (props) => {
 
 		if(showChat[0])
 		{
-			//loadMessages();
-			setScrollHeight();
+			let found = false;
+			firestoreSnapshot.forEach((obj)=>{
+				if(obj[currentChat.entryId])
+				{
+					obj[currentChat.entryId].sort((a,b)=>{
+			
+						return (a.timestamp - b.timestamp);
+					});
+
+					setCurrentChatMessages(obj[currentChat.entryId]);
+					setScrollHeight();
+					found = true;
+				}
+			});
+
+			if(!found)
+			{
+				setCurrentChatMessages([]);
+			}
 		}
 	},[showChat]);
 
 	useEffect(()=>{
 
-		console.log("reached useeffect");
 
-		console.log(firestoreSnapshot);
+		if(firestoreSnapshot.length !== 0)
+		{
+			firestoreSnapshot.forEach((obj)=>{
+				if(obj[currentChat.entryId])
+				{
+					obj[currentChat.entryId].sort((a,b)=>{
+						return (a.timestamp - b.timestamp);
+					});
 
-		
-
-		/*firestoreSnapshot.sort((a,b) => { 
-			return (a.timestamp - b.timestamp);
-		});
-		setCurrentChatMessages(firestoreSnapshot);*/
-	
+					setCurrentChatMessages(obj[currentChat.entryId]);
+					setScrollHeight();
+				}
+			});
+			
+		}
 
 	},[firestoreSnapshot]);
 
