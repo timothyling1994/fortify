@@ -26,10 +26,6 @@ function App() {
 
               <Switch>
 
-                <Route key={uniqid()} exact path="/login"> 
-                  <Login/>
-                </Route>
-
                 <PrivateRoute exact path="/chat" user ={userContext} children={{header: <Header key={uniqid()} user={userContext}/>,chat:<Chat key={uniqid()} user={userContext}/>}}>
                 </PrivateRoute>
 
@@ -38,6 +34,10 @@ function App() {
 
                 <PrivateRoute exact path="/leaderboard" user ={userContext} children={{header: <Header key={uniqid()} user={userContext}/>,home:<Leaderboard key={uniqid()} user={userContext}/>}}>
                 </PrivateRoute>
+
+                <Route key={uniqid()} path="/"> 
+                  <Login/>
+                </Route>
 
               </Switch>
             }
