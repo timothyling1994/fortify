@@ -118,7 +118,7 @@ function EntryModal (props) {
 	};
 	const addChat = () =>{
 
-		if(posterId == props.currentUser.currentUser.uid)
+		if(posterId === props.currentUser.currentUser.uid)
 		{
 			invalid_form("Can't start a chat with yourself!");
 		}

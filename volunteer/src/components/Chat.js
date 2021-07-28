@@ -2,7 +2,6 @@ import React from "react";
 import {useState,useEffect,useRef} from "react";
 import firebase from "firebase";
 import uniqid from "uniqid";
-var async = require("async");
 
 const Chat = (props) => {
 
@@ -76,15 +75,13 @@ const Chat = (props) => {
 
 		let query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection("my_chats");
 		
-		let result = await new Promise ((resolve,reject) => {
+		await new Promise ((resolve,reject) => {
 
 			query.onSnapshot(async(snapshot)=>{
 
 				console.log("query changed");
 
 				messageRef.current = [];
-				let messageObjArr = [];
-
 
 				const getAllChatGroups = await Promise.all(snapshot.docs.map(async doc => {
 
@@ -98,7 +95,7 @@ const Chat = (props) => {
 							let messageObj = {};
 							let chatGroupId = "";
 
-							const allMsgs = msgSnapshot.docs.map(async msgDoc => {
+							msgSnapshot.docs.map(async msgDoc => {
 		
 								if(messageObj[msgDoc.ref.parent.parent.id])
 								{
@@ -140,9 +137,9 @@ const Chat = (props) => {
 							
 							console.log(componentMounted);
 							//if(componentMounted)
-							{
+							//{
 								setFirestoreSnapshot([...messageRef.current]);
-							}
+							//}
 
 						});
 
@@ -161,14 +158,14 @@ const Chat = (props) => {
 	};
 
 	const saveMessage = (e) => {
-		if(e.key=="Enter")
+		if(e.key==="Enter")
 		{
 
 			let message = document.querySelector(".chat-text-bar");
 
 			let recipient = "";
 
-			if(props.user.currentUser.uid == currentChat.posterId)
+			if(props.user.currentUser.uid === currentChat.posterId)
 			{
 				recipient = currentChat.volunteerId;
 			}

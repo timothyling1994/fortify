@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import app from "../firebase.js";
 import history from '../history.js';
-import {useState,useEffect} from "react";
+import {useState} from "react";
 import RequestModal from "./RequestModal.js";
 
 

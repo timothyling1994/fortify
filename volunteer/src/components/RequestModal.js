@@ -9,11 +9,8 @@ import {useState,useEffect} from "react";
 import uniqid from "uniqid";
 import {ToastContainer,toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Paypal from "./Paypal.js";
 import firebase from "firebase";
-import CharityWater from "../charitywater.jpg";
-import AfricanWildLife from "../african-wildlife.jpg";
-import CancerResearch from "../cancer_research.jpg";
+
 
 
 function RequestModal (props) {

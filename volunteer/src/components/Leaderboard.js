@@ -1,8 +1,6 @@
 import React from "react";
 import {useState,useEffect,useRef} from "react";
 import firebase from "firebase";
-import uniqid from "uniqid";
-var async = require("async");
 
 const Leaderboard = (props) => {
 
@@ -60,7 +58,7 @@ const Leaderboard = (props) => {
 
 	return(
 		<div className="Leaderboard">
-			<div className="leaderboard-header">Leaderboards</div>
+			<div className="leaderboard-header">Leaderboard</div>
 			<div>
 			{ Object.keys(leaderboardObj).map(function(keyName,keyIndex){
 				return(

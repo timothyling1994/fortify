@@ -415,7 +415,11 @@
 .modal-chat-btn:hover{
   background-color: #00abfb;
 }
-.modal-submit-btn:hover, .confirm-completion-btn: hover{
+.modal-submit-btn:hover{
+  background-color: #7bc62d;
+}
+
+.confirm-completion-btn:hover{
   background-color: #7bc62d;
 }
 
@@ -701,6 +705,11 @@
   text-align: center;
   font-size:40px;
   padding:0.25em;
+}
+
+.leaderboard-header{
+  width: 100%;
+  text-align: center;
 }
 
 .details-container{

@@ -3,11 +3,6 @@ import "firebase/auth";
 import * as firebaseui from 'firebaseui';
 import "firebase/firestore";
 
-import { withRouter } from "react-router-dom";
-
-import App from './App.js';
-
-
 const app = firebase.initializeApp({
 
   apiKey: "AIzaSyDmj00TsgdwjngHDf2ZZFJn7hwMgF0qjdU",

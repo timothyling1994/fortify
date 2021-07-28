@@ -1,8 +1,7 @@
 import React from "react";
 import MapImage from "./MapImage.js";
 import TaskPanel from "./TaskPanel.js";
-import {useState,useEffect,useContext} from "react";
-import { AuthContext } from "../auth.js";
+import {useState,useEffect} from "react";
 import firebase from "firebase";
 
 function Home (props){
@@ -50,7 +49,7 @@ function Home (props){
 
 	       			for(let i = 0; i< myRequestsObjArr.length;i++)
 	       			{
-	       				if(myRequestsObjArr[i].entryId == requestId)
+	       				if(myRequestsObjArr[i].entryId === requestId)
 	       				{
 	       					existingRequest = true;
 	       					existingIndex = i;
