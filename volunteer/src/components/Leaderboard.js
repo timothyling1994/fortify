@@ -1,6 +1,6 @@
 import React from "react";
 import {useState,useEffect,useRef} from "react";
-import firebase from "firebase";
+import firebase from 'firebase/app'
 
 const Leaderboard = (props) => {
 

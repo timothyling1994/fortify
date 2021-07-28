@@ -1,5 +1,5 @@
 import React from "react";
-import firebase from "firebase";
+import firebase from 'firebase/app'
 import Paypal from "./Paypal.js";
 
 const ConfirmCompletionModal = (props) => {

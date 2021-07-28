@@ -1,5 +1,5 @@
 import React,{useRef,useEffect} from "react";
-import firebase from "firebase";
+import firebase from 'firebase/app'
 
 const Paypal = (props) => {
 

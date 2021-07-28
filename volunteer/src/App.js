@@ -26,7 +26,7 @@ function App() {
 
               <Switch>
 
-                <Route key={uniqid()} path="/login"> 
+                <Route key={uniqid()} exact path="/login"> 
                   <Login/>
                 </Route>
 

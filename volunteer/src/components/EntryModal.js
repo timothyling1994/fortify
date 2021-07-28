@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase from 'firebase/app'
 import { withRouter } from "react-router-dom";
 import {ToastContainer,toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

@@ -9,7 +9,7 @@ import {useState,useEffect} from "react";
 import uniqid from "uniqid";
 import {ToastContainer,toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import firebase from "firebase";
+import firebase from 'firebase/app'
 
 
 

@@ -12,10 +12,10 @@ export const AuthProvider = ({ children }) => {
     app.auth().onAuthStateChanged((user) => { 
       
     	console.log("auth state changed");
-      //console.log(user);
 
       if(user)
       {
+        console.log("reached2");
         setCurrentUser(user);
       }
 
@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(()=>{
     if(currentUser !== null)
     {
+      console.log("reached1");
       history.push("/home");
     }
   },[currentUser]);

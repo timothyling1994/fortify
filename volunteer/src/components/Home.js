@@ -2,7 +2,7 @@ import React from "react";
 import MapImage from "./MapImage.js";
 import TaskPanel from "./TaskPanel.js";
 import {useState,useEffect} from "react";
-import firebase from "firebase";
+import firebase from 'firebase/app'
 
 function Home (props){
 
