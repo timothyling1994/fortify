@@ -15,24 +15,9 @@ import Leaderboard from "./components/Leaderboard.js";
 
 import uniqid from "uniqid";
 
-/*             <Header setShowRequestModal={setShowRequestModal}/>
-                      <Home user={userContext}/>*/
 function App() {
 
   const [showRequestModal,setShowRequestModal] = useState(false);
-
-  /*          {
-            showRequestModal ? 
-            <AuthContext.Consumer>
-              { userContext => (
-                  <RequestModal user={userContext} setShowRequestModal={setShowRequestModal}/>
-              )}
-
-            </AuthContext.Consumer>
-            : null
-          }
-
-          setShowRequestModal={setShowRequestModal}*/
 
   return (
   
@@ -53,6 +38,9 @@ function App() {
                 </PrivateRoute>
 
                 <PrivateRoute exact path="/home" user ={userContext} children={{header: <Header key={uniqid()} user={userContext}/>,home:<Home key={uniqid()} user={userContext}/>}}>
+                </PrivateRoute>
+
+                <PrivateRoute exact path="/leaderboard" user ={userContext} children={{header: <Header key={uniqid()} user={userContext}/>,home:<Leaderboard key={uniqid()} user={userContext}/>}}>
                 </PrivateRoute>
 
               </Switch>

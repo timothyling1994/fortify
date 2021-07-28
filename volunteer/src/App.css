@@ -415,11 +415,11 @@
 .modal-chat-btn:hover{
   background-color: #00abfb;
 }
-.modal-submit-btn:hover{
+.modal-submit-btn:hover, .confirm-completion-btn: hover{
   background-color: #7bc62d;
 }
 
-.modal-cancel-btn:hover{
+.modal-cancel-btn:hover,.cancel-completion-btn:hover{
   background-color: #ff4500;
 }
 
@@ -504,7 +504,6 @@
   width: 100%;
   text-align: center;
   font-size: 50px;
-  margin: .75em;
 }
 
 .request-delivery-btn-container{
