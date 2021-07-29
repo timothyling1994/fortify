@@ -324,8 +324,8 @@ const Chat = (props) => {
 			{showChat[0] ? 
 				<div className="chat-window">
 					<div className="chat-window-top-bar">
-						<div className="chat-window-top-bar-user">{currentChat.entryId}</div>
-						<div className="chat-window-top-bar-pic"></div>
+						<img className="chat-window-top-bar-pic" src={currentChat.photoURL}/>
+						<div className="chat-window-top-bar-user">{currentChat.posterName}</div>
 					</div>
 					<div className="chat-window-messages">
 						{currentChatMessages ? currentChatMessages.map((msg)=>{

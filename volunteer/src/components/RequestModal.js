@@ -78,6 +78,8 @@ function RequestModal (props) {
 				taskName:currentForm.request_details_input,
 				location:currentForm.request_location_input,
 				posterId:props.user.currentUser.uid,
+				posterName: props.user.currentUser.displayName,
+				photoURL: props.user.currentUser.photoURL,
 				volunteerId:"",
 				posted_date: posted_date,
 				volunteers_accepted:0,

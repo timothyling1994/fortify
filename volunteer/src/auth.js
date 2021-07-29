@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
 
       if(user)
       {
-        console.log("reached2");
         setCurrentUser(user);
       }
 
@@ -25,7 +24,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(()=>{
     if(currentUser !== null)
     {
-      console.log("reached1");
       history.push("/home");
     }
   },[currentUser]);
