@@ -62,8 +62,13 @@
   padding:0.5em;
 }
 
+.log-out{
+  margin: 0.15em;
+}
+
 .log-out:hover{
- 
+  background-color: lightgrey;
+  color: white;
 }
 
 .inbox svg:hover{
@@ -75,7 +80,9 @@
 }
 
 .request-help-btn:hover{
-  animation:enlarge 1s;
+  animation:  enlarge 0.5s;
+  background-color: #7bc62d;
+  color: white;
 }
 .profile-btn svg:hover{
   fill:#009988;
@@ -353,6 +360,7 @@
   background-color: #fefefe;
   border: 1px solid #888;
   width:50%;
+  padding: 0.5em;
 }
 
 .request-modal-container,.ConfirmCompletionContainer{
@@ -367,6 +375,7 @@
   width:60%;
   overflow:auto;
   z-index: 2;
+  padding: 0.5em;
 }
 
 .modal-taskName{
@@ -441,6 +450,7 @@
   text-align:center;
   font-size:45px;
   padding-top:0.25em;
+  padding-bottom: 0.5em;
 }
 
 .request-main-category-container{
@@ -472,7 +482,7 @@
 }
 
 .request-category-container:hover{
-  animation:enlarge 1s;
+  animation:enlarge 0.5s;
 }
 
 .request-category-highlight{
@@ -481,10 +491,10 @@
 
 @keyframes enlarge {
   0%{transform:scale(1);}
-  50%{transform:scale(1.15);}
+  50%{transform:scale(1.05);}
   100%{transform:scale(1);}
 }
-.request-location-container,.request-details-container,.request-date-container,.donation-container{
+.request-location-container,.request-details-container,.request-date-container,.donation-container,.request-volunteers-container,.donation-amount-container{
   display:flex;
   justify-content: flex-start;
   flex-wrap:wrap;
@@ -492,11 +502,6 @@
   padding:0.25em;
 }
 
-.donation-amount-container{
-  display:flex;
-  width:100%;
- 
-}
 
 .charity-container{
   width: 100%;
@@ -510,17 +515,18 @@
   font-size: 50px;
 }
 
-.request-delivery-btn-container{
+.request-task-btn-container{
   display:flex;
   justify-content: center;
   width:100%;
   padding:0.25em;
 }
-.request-location-label,.request-details-label,.request-date-label,.donation-option-label,.donation-amount-label{
+.request-location-label,.request-details-label,.request-date-label,.donation-option-label,.donation-amount-label,.request-volunteers-label{
   text-align:right;
   font-size:30px;
-  width:5em;
+  width:6em;
   margin-right:0.5em;
+
 }
 
 .donation-form{
@@ -572,14 +578,15 @@
   text-align: center;
   width:100%;
 }
-.request-delivery-btn,.request-cancel-btn{
+.request-task-btn,.request-cancel-btn{
   border:solid black 2px;
-  padding:0.1em;
+  padding:0.25em;
   font-size:30px;
   margin:0.5em;
+
 }
 
-.request-delivery-btn:hover{
+.request-task-btn:hover{
   background-color: #7bc62d;
 }
 
@@ -589,6 +596,11 @@
 
 .request-location-input,.request-details-input{
   flex-grow:1;
+  font-size:20px;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.request-volunteers-input{
   font-size:20px;
   font-family: 'Noto Sans', sans-serif;
 }
@@ -738,4 +750,8 @@
   padding:0.4em;
   margin:0.5em;
   border: solid black 2px;
+}
+
+input:focus{
+  outline: none;
 }

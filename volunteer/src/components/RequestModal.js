@@ -83,7 +83,7 @@ function RequestModal (props) {
 				volunteerId:"",
 				posted_date: posted_date,
 				volunteers_accepted:0,
-				volunteers_needed: 2,
+				volunteers_needed: currentForm.request_volunteers_input,
 				status:"open",
 				completed:false,
 				isDonating:donationOptions,
@@ -121,6 +121,7 @@ function RequestModal (props) {
 		let request_location_input = document.querySelector(".request-location-input").value;
 		let request_details_input = document.querySelector(".request-details-input").value;
 		let request_date_input = document.querySelector(".request-date-input").value;
+		let request_volunteers_input = document.querySelector(".request-volunteers-input").value;
 		let donation_amount;
 		
 		if(donationOptions)
@@ -165,6 +166,7 @@ function RequestModal (props) {
 						request_date_input,
 						request_category_input,
 						request_location_coords,
+						request_volunteers_input,
 						donation_amount,
 					});
 
@@ -290,7 +292,10 @@ function RequestModal (props) {
 							:
 							null
 					}
-				
+				<div className="request-volunteers-container">
+					<div className="request-volunteers-label">Volunteers?</div>
+					<input type="number" name="quantity" min="1" max="5" className="request-volunteers-input"/>
+				</div>
 				<div className="request-main-category-container">
 					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">
@@ -365,8 +370,8 @@ function RequestModal (props) {
 						<div className="request-category-label">Other</div>
 					</div>
 				</div>
-				<div className="request-delivery-btn-container">
-					<div className="request-delivery-btn" onClick={formValidation}>Make Request</div>
+				<div className="request-task-btn-container">
+					<div className="request-task-btn" onClick={formValidation}>Make Request</div>
 					<div className="request-cancel-btn" onClick={closeRequestModal}>Cancel</div>
 				</div>
 			</div>
