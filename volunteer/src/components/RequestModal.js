@@ -61,48 +61,6 @@ function RequestModal (props) {
 		props.setShowRequestModal(false);
 	};
 
-	const addRequest = () => {
-
-		if(Object.keys(currentForm).length !== 0)
-		{
-			let today = new Date();
-			let posted_date = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+(today.getDate());
-
-			console.log("token:"+props.user.currentUser.uid);
-
-			firebase.firestore().collection('requests').add({
-
-				category:currentForm.request_category_input,
-				coords:currentForm.request_location_coords,
-				date:currentForm.request_date_input,
-				taskName:currentForm.request_details_input,
-				location:currentForm.request_location_input,
-				posterId:props.user.currentUser.uid,
-				posterName: props.user.currentUser.displayName,
-				photoURL: props.user.currentUser.photoURL,
-				volunteerId:"",
-				posted_date: posted_date,
-				volunteers_accepted:0,
-				volunteers_needed: currentForm.request_volunteers_input,
-				status:"open",
-				completed:false,
-				isDonating:donationOptions,
-				donation_amount:parseInt(currentForm.donation_amount),
-
-			}).then((docRef)=>{
-				//console.log(docRef.id);
-				firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection('my_requests').doc().set({
-					requestId: docRef.id,
-					requestsRef: firebase.firestore().doc("requests/"+docRef.id)
-				});
-			});
-
-
-
-			closeRequestModal();
-		}
-	};
-
 	const addCategoryHighlight = (event) => {
 		
 		let nodelist = document.querySelectorAll(".request-category-container");
@@ -211,8 +169,50 @@ function RequestModal (props) {
 
 	useEffect(()=>{
 
-		addRequest();
+		const addRequest = () => {
 
+			if(Object.keys(currentForm).length !== 0)
+			{
+				let today = new Date();
+				let posted_date = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+
+				console.log("token:"+props.user.currentUser.uid);
+
+				firebase.firestore().collection('requests').add({
+
+					category:currentForm.request_category_input,
+					coords:currentForm.request_location_coords,
+					date:currentForm.request_date_input,
+					taskName:currentForm.request_details_input,
+					location:currentForm.request_location_input,
+					posterId:props.user.currentUser.uid,
+					posterName: props.user.currentUser.displayName,
+					photoURL: props.user.currentUser.photoURL,
+					volunteerId:"",
+					posted_date: posted_date,
+					volunteers_accepted:0,
+					volunteers_needed: currentForm.request_volunteers_input,
+					status:"open",
+					completed:false,
+					isDonating:donationOptions,
+					donation_amount:parseInt(currentForm.donation_amount),
+
+				}).then((docRef)=>{
+					//console.log(docRef.id);
+					firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection('my_requests').doc().set({
+						requestId: docRef.id,
+						requestsRef: firebase.firestore().doc("requests/"+docRef.id)
+					});
+				});
+
+
+
+				closeRequestModal();
+			}
+		};
+
+		addRequest();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[currentForm]);
 
 	/*

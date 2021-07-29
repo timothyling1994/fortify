@@ -10,38 +10,10 @@ const Chat = (props) => {
 	const [currentChat,setCurrentChat]=useState({});
 	const [currentChatMessages,setCurrentChatMessages] = useState([]);
 	const [firestoreSnapshot,setFirestoreSnapshot] = useState([]);
-	const [componentMounted, setComponentMounted] = useState(false);
+	//const [componentMounted, setComponentMounted] = useState(false);
 
 	const chatGroupRef = useRef([]);
 	const messageRef = useRef([]);
-
-	const initPanel = () => {
-
-		let myChats_query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection('my_chats');
-		myChats_query.onSnapshot((snapshot)=>{
-			
-			chatGroupRef.current = [];
-
-			snapshot.forEach((doc)=>{
-			
-					let requestId = doc.id;
-				
-					firebase.firestore().collection('requests').doc(requestId).get().then((doc)=>
-					{
-
-					  if(doc.exists)
-					  {
-					    let requestObj = {...doc.data()};
-					    requestObj.entryId = requestId;
-					    let newRequestArr = [...chatGroupRef.current];
-					    newRequestArr.push(requestObj);
-					    setChatGroups(newRequestArr);
-					    chatGroupRef.current = newRequestArr;
-					  }
-					});
-			});
-		});
-	};
 
 	const setCurrentEntry = (event, entryId) => {
 
@@ -69,92 +41,6 @@ const Chat = (props) => {
 			}
 		});
 
-	};
-
-	const loadMessages = async () => { 
-
-		let query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection("my_chats");
-		
-		await new Promise ((resolve,reject) => {
-
-			query.onSnapshot(async(snapshot)=>{
-
-				console.log("query changed");
-
-				messageRef.current = [];
-
-				const getAllChatGroups = await Promise.all(snapshot.docs.map(async doc => {
-
-					let msgQuery = doc.ref.collection('messages').orderBy('timestamp');
-					
-					let msgQueryResult = await new Promise((resolve,reject)=>{
-						
-						msgQuery.onSnapshot(async (msgSnapshot)=>{
-
-							console.log("msgQuery changed");
-							let messageObj = {};
-							let chatGroupId = "";
-
-							msgSnapshot.docs.map(async msgDoc => {
-		
-								if(messageObj[msgDoc.ref.parent.parent.id])
-								{
-									messageObj[msgDoc.ref.parent.parent.id].push(msgDoc.data());
-								}
-								else
-								{	
-									messageObj[msgDoc.ref.parent.parent.id] = [msgDoc.data()];
-								}
-								chatGroupId = msgDoc.ref.parent.parent.id;
-
-								resolve(2);
-							});
-
-							let copyArr = [...messageRef.current];
-
-							console.log(chatGroupId);
-							console.log(copyArr);
-
-							let found = false; 
-
-							for(let i = 0;i<copyArr.length;i++)
-							{
-								if(copyArr[i][chatGroupId])
-								{
-									found=true;
-									console.log("found");
-									copyArr[i] = messageObj;
-								}
-							}
-
-							if(!found)
-							{
-								copyArr.push(messageObj);
-							}
-
-
-							messageRef.current = copyArr;
-							
-							console.log(componentMounted);
-							//if(componentMounted)
-							//{
-								setFirestoreSnapshot([...messageRef.current]);
-							//}
-
-						});
-
-					});
-
-					console.log(msgQueryResult);
-			
-					return Promise.resolve(1);
-				}));
-
-				resolve(getAllChatGroups);
-			});
-
-		});
-        
 	};
 
 	const saveMessage = (e) => {
@@ -225,15 +111,126 @@ const Chat = (props) => {
 		});
 	}
 
-	useEffect(()=>{
+	/*useEffect(()=>{
 		setComponentMounted(true);
 
 		return () => {
 			setComponentMounted(false);
 		};
-	},[]);
+	},[]);*/
 
 	useEffect(()=>{
+
+		const initPanel = () => {
+
+			let myChats_query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection('my_chats');
+				myChats_query.onSnapshot((snapshot)=>{
+					
+					chatGroupRef.current = [];
+
+					snapshot.forEach((doc)=>{
+					
+							let requestId = doc.id;
+						
+							firebase.firestore().collection('requests').doc(requestId).get().then((doc)=>
+							{
+
+							  if(doc.exists)
+							  {
+							    let requestObj = {...doc.data()};
+							    requestObj.entryId = requestId;
+							    let newRequestArr = [...chatGroupRef.current];
+							    newRequestArr.push(requestObj);
+							    setChatGroups(newRequestArr);
+							    chatGroupRef.current = newRequestArr;
+							  }
+							});
+					});
+				});
+		};
+
+		const loadMessages = async () => { 
+
+			let query = firebase.firestore().collection('users').doc(props.user.currentUser.uid).collection("my_chats");
+			
+			await new Promise ((resolve,reject) => {
+
+				query.onSnapshot(async(snapshot)=>{
+
+					console.log("query changed");
+
+					messageRef.current = [];
+
+					const getAllChatGroups = await Promise.all(snapshot.docs.map(async doc => {
+
+						let msgQuery = doc.ref.collection('messages').orderBy('timestamp');
+						
+						let msgQueryResult = await new Promise((resolve,reject)=>{
+							
+							msgQuery.onSnapshot(async (msgSnapshot)=>{
+
+								console.log("msgQuery changed");
+								let messageObj = {};
+								let chatGroupId = "";
+
+								msgSnapshot.docs.map(async msgDoc => {
+			
+									if(messageObj[msgDoc.ref.parent.parent.id])
+									{
+										messageObj[msgDoc.ref.parent.parent.id].push(msgDoc.data());
+									}
+									else
+									{	
+										messageObj[msgDoc.ref.parent.parent.id] = [msgDoc.data()];
+									}
+									chatGroupId = msgDoc.ref.parent.parent.id;
+
+									resolve(2);
+								});
+
+								let copyArr = [...messageRef.current];
+
+								console.log(chatGroupId);
+								console.log(copyArr);
+
+								let found = false; 
+
+								for(let i = 0;i<copyArr.length;i++)
+								{
+									if(copyArr[i][chatGroupId])
+									{
+										found=true;
+										console.log("found");
+										copyArr[i] = messageObj;
+									}
+								}
+
+								if(!found)
+								{
+									copyArr.push(messageObj);
+								}
+
+
+								messageRef.current = copyArr;
+								
+								setFirestoreSnapshot([...messageRef.current]);
+								
+
+							});
+
+						});
+
+						console.log(msgQueryResult);
+				
+						return Promise.resolve(1);
+					}));
+
+					resolve(getAllChatGroups);
+				});
+
+			});
+        
+		};
 
 		if(props.user !== null)
 		{
@@ -275,6 +272,7 @@ const Chat = (props) => {
 				setCurrentChatMessages([]);
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[showChat]);
 
 	useEffect(()=>{
@@ -294,7 +292,7 @@ const Chat = (props) => {
 			});
 			
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[firestoreSnapshot]);
 
 
@@ -324,7 +322,7 @@ const Chat = (props) => {
 			{showChat[0] ? 
 				<div className="chat-window">
 					<div className="chat-window-top-bar">
-						<img className="chat-window-top-bar-pic" src={currentChat.photoURL}/>
+						<img className="chat-window-top-bar-pic" src={currentChat.photoURL} alt="organizer's profile pic"/>
 						<div className="chat-window-top-bar-user">{currentChat.posterName}</div>
 					</div>
 					<div className="chat-window-messages">

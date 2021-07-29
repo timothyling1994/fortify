@@ -76,6 +76,7 @@ const Paypal = (props) => {
 				console.log(err);
 			}
 		}).render(paypal.current);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[]);
 
 	return (

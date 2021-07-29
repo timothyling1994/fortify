@@ -24,28 +24,6 @@ function TaskPanel (props) {
 		setDisplayPanelTab(value);
 	};
 
-	const highlightDiv = () => {
-
-		if(displayPanelTab === 0)
-		{
-			setRequestAttributes(["requests-label","highlight"]);
-			setMyRequestsAttributes(["my-requests-label"]);
-			setMyTasksAttribute(["my-tasks-label"]);
-		}
-		else if(displayPanelTab === 1)
-		{
-			setRequestAttributes(["requests-label"]);
-			setMyRequestsAttributes(["my-requests-label","highlight"]);
-			setMyTasksAttribute(["my-tasks-label"]);
-		}
-		else
-		{
-			setRequestAttributes(["requests-label"]);
-			setMyRequestsAttributes(["my-requests-label"]);
-			setMyTasksAttribute(["my-tasks-label","highlight"]);
-		}
-	};
-
 	const openEntryModal = (entryId) => {
 		setCurrentEntryId(entryId);
 		setDisplayEntryModal(true);
@@ -53,25 +31,6 @@ function TaskPanel (props) {
 
 	const closeEntryModal = () => {
 		setDisplayEntryModal(false);
-	};
-
-	const setScrollPosition = () => {
-		
-		const panel = document.querySelector(".TaskPanel");
-		const panelEntryId = props.scrollToEntry[0].substring(7,);
-		const entryDiv = document.getElementById(panelEntryId);
-
-		//double check this
-		if(entryDiv !== null)
-		{
-			panel.scrollTop = entryDiv.offsetTop-(entryDiv.offsetHeight);
-
-			entryDiv.classList.add("temp-highlight");
-			setTimeout(function(){
-				entryDiv.classList.remove("temp-highlight")
-			},1000);
-		}
-
 	};
 
 	//sorting array uses same array reference, which doesn't cause react re-render. You need to use spread operator to create new reference
@@ -232,6 +191,26 @@ function TaskPanel (props) {
 
 
 	useEffect(()=>{
+
+		const setScrollPosition = () => {
+		
+			const panel = document.querySelector(".TaskPanel");
+			const panelEntryId = props.scrollToEntry[0].substring(7,);
+			const entryDiv = document.getElementById(panelEntryId);
+
+			//double check this
+			if(entryDiv !== null)
+			{
+				panel.scrollTop = entryDiv.offsetTop-(entryDiv.offsetHeight);
+
+				entryDiv.classList.add("temp-highlight");
+				setTimeout(function(){
+					entryDiv.classList.remove("temp-highlight")
+				},1000);
+			}
+
+		};
+
 		if(props.scrollToEntry.length !== 0)
 		{
 			setScrollPosition();
@@ -239,6 +218,28 @@ function TaskPanel (props) {
 	},[props.scrollToEntry]);
 
 	useEffect(()=>{
+
+		const highlightDiv = () => {
+
+			if(displayPanelTab === 0)
+			{
+				setRequestAttributes(["requests-label","highlight"]);
+				setMyRequestsAttributes(["my-requests-label"]);
+				setMyTasksAttribute(["my-tasks-label"]);
+			}
+			else if(displayPanelTab === 1)
+			{
+				setRequestAttributes(["requests-label"]);
+				setMyRequestsAttributes(["my-requests-label","highlight"]);
+				setMyTasksAttribute(["my-tasks-label"]);
+			}
+			else
+			{
+				setRequestAttributes(["requests-label"]);
+				setMyRequestsAttributes(["my-requests-label"]);
+				setMyTasksAttribute(["my-tasks-label","highlight"]);
+			}
+		};
 
 		highlightDiv();
 
@@ -270,6 +271,7 @@ function TaskPanel (props) {
 		document.querySelector(".category-filter-container").style.backgroundColor = "#ffec00";
 		document.querySelector(".category-filter").innerHTML = "Filter by Category";
 
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[displayPanelTab])
 
 	useEffect(()=>{
@@ -296,7 +298,7 @@ function TaskPanel (props) {
 				setRequests(sortedRequests);
 			}
 		}
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[props.requests,props.myRequests,props.myTasks]);
 
 

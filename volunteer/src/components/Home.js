@@ -12,8 +12,18 @@ function Home (props){
   	const [myTasks,setMyTasks] = useState([]);
   	const [scrollToEntry,setScrollToEntry] = useState([]);
 
+  useEffect(()=>{
 
-	const callFirestore = () => {
+  	if(props.user !== null) 
+  	{
+  		setCurrentUser(props.user);
+  	}
+
+  },[props.user]);
+
+  useEffect(()=>{
+
+  	const callFirestore = () => {
     
 	    let query = firebase.firestore().collection('requests');
 	    query.onSnapshot((snapshot)=>{
@@ -93,25 +103,14 @@ function Home (props){
 	      setMyTasks(myTasksObjArr);
 	    });
 	  
-  };
-
-  useEffect(()=>{
-
-  	if(props.user !== null) 
-  	{
-  		setCurrentUser(props.user);
-  	}
-
-  },[props.user]);
-
-  useEffect(()=>{
+  	};
 
   	if(currentUser !== null)
   	{
   		console.log("calling firestore");
   		callFirestore();
   	}
-
+  	
   },[currentUser]);
 
 
