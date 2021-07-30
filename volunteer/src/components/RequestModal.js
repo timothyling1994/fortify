@@ -296,6 +296,9 @@ function RequestModal (props) {
 					<div className="request-volunteers-label">Volunteers?</div>
 					<input type="number" name="quantity" min="1" max="5" className="request-volunteers-input"/>
 				</div>
+
+
+				
 				<div className="request-main-category-container">
 					<div className="request-category-container" onClick={(e)=>{addCategoryHighlight(e)}}>
 						<div className="request-category-image">

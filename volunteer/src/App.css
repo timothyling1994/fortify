@@ -15,6 +15,7 @@
 
 .Header{
   display:flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   width:100%;
@@ -96,6 +97,7 @@
 
 .Home{
   display:flex;
+  flex-wrap: wrap;
   height:90vh;
   width:100vw;
 }
@@ -180,7 +182,7 @@
   border-bottom:solid black 2px;
   border-top:solid black 2px;
   text-align:center;
-  font-size:25px;
+  font-size:0.9em;
 }
 
 .requests-label{
@@ -466,14 +468,13 @@
 .request-category-container{
   display:flex;
   flex-wrap:wrap;
-  width:7vw;
+  width:5vw;
   justify-content: center;
   align-items: center;
   padding:0.25em;
   border: solid black 1px;
-  font-size:15px;
+  font-size:0.7em;
   margin:0.05em;
-  background-color: white;
 }
 
 .request-category-image{
@@ -754,4 +755,192 @@
 
 input:focus{
   outline: none;
+}
+
+
+
+@media (max-width: 768px) {
+  /* For mobile phones: */
+
+  .Header{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    border-bottom:solid black 2px;
+    height:20vh;
+  }
+
+  .title{
+    font-size: 0.75em;
+    width: 100vw;
+    text-align: center;
+    border-bottom: solid black 2px;
+  }
+
+  .header-btn-container{
+
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    font-size:0.5em;
+    width: 100%;
+  }
+
+  .TaskPanel{
+    display:flex;
+    align-content: flex-start;
+    flex-wrap:wrap;
+    width:100%;
+    font-size:27px;
+    overflow:auto;
+  }
+
+  .MapImage{
+
+    height:50vh;
+    width:100%;
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
+
+  .requests-label, .my-requests-label, .my-tasks-label,{
+    width:33%;
+    border-bottom:solid black 2px;
+    border-top:solid black 2px;
+    text-align:center;
+    font-size: 0.5em;
+
+  }
+
+  .modal-container,.request-modal-container,.ConfirmCompletionContainer{
+    display:flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: center;
+    align-content: center;
+    margin: 5% auto;
+    background-color: #fefefe;
+    border: 1px solid #888;
+    width:80%;
+    padding: 0.55em;
+    overflow: scroll;
+  }
+  .modal-taskName,.confirm-header{
+    width: 100%;
+    text-align:center;
+    padding:0.5em;
+    font-size:1em;
+  }
+  .request-category-header{
+    width: 100%;
+    text-align:center;
+    padding:0.5em;
+    font-size:0.5em;
+  }
+  .modal-location{
+    text-align:center;
+    font-size:0.7em;
+  }
+
+  .modal-date-container{
+    display:flex;
+    width:100%;
+    font-size:0.7em;
+    margin-top:1em;
+  }
+
+  .entry-status-details{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .entry-status{
+
+    font-size: 0.7em;
+    border: solid black 2px;
+    margin: 0.25em;
+    border-radius:30px;
+    padding-top:0.15em;
+    padding-bottom:0.15em;
+    padding-left:0.5em;
+    padding-right:0.5em;
+    color:black;
+  }
+
+  .modal-btn-container{
+
+    display:flex;
+    justify-content: center;
+    width:100%;
+    font-size: 0.7em;
+    margin-top:1em;
+  }
+
+  .modal-submit-btn,.modal-cancel-btn,.modal-chat-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border:solid black 1px;
+    margin:0.5em;
+    padding:0.25em;
+  } 
+  .modal-donation-amount{
+    margin-bottom: 0.25em;
+  }
+  .cancel-completion-btn{
+    padding:0.4em;
+    margin:0.1em;
+    border: solid black 2px;
+  }
+
+  .request-details-label,.request-location-label,.request-date-label,.donation-option-label,.request-volunteers-label{
+    
+    text-align: center;
+    width: 100%;
+    font-size:0.7em;
+    width:6em;
+    margin-right:0.5em;
+
+  }
+
+  .request-details-container,.request-location-container,.request-date-container,.donation-container,.request-volunteers-container{
+    display:flex;
+    justify-content: center;
+    flex-wrap:wrap;
+    width:100%;
+    padding:0.25em;
+  }
+  .donation-form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .request-category-container{
+    display:flex;
+    flex-wrap:wrap;
+    width:25vw;
+    height: 25vw;
+    justify-content: center;
+    align-items: center;
+    border: solid black 1px;
+    font-size:0.7em;
+    margin:0.05em;
+    background-color: white;
+  }
+  .request-category-image{
+    width: 15vw;
+    height: 15vw;
+    background-color: green;
+  }
+  .request-category-label{
+    font-size: 0.5em; 
+  }
+
 }

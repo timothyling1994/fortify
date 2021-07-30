@@ -166,7 +166,7 @@ function EntryModal (props) {
 					<div className="modal-volunteer-date"> date: {volunteer_date}</div>
 				</div>
 				<div className="entry-status-details">
-					<div className="entry-status">Volunteers {entry_status}</div> : 	
+					<div className="entry-status">Volunteers {entry_status}</div> 	
 					<div className="entry-volunteer-num">{volunteers_accepted}/{volunteers_needed} Volunteers Needed</div>
 				</div>
 				<div className="modal-btn-container">
