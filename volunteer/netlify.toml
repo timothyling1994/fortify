@@ -1,5 +1,5 @@
 [build]
   base = "volunteer/"
   command = "npm run build"
-  publish = "volunteer/public"
+  publish = "volunteer/build"
   ignore = "false"
