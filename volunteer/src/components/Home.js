@@ -52,10 +52,13 @@ function Home (props){
 	       	if(docSnapshot.exists)
 	       	{	
 	       		docRef.onSnapshot((doc)=>{
+	       			console.log("SNAPSHOT TRIGGERD FOR REQUEST");
 	       	
 	       			let requestObj = doc.data();
 	       			let existingRequest = false;
 	       			let existingIndex = -1;
+
+	       			console.log(myRequestsObjArr);
 
 	       			for(let i = 0; i< myRequestsObjArr.length;i++)
 	       			{
@@ -110,7 +113,7 @@ function Home (props){
   		console.log("calling firestore");
   		callFirestore();
   	}
-  	
+
   },[currentUser]);
 
 

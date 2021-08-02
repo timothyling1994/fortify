@@ -11,7 +11,10 @@ function Login () {
 
 	return (
 		<div className="Login">	
+			<div className="home-page-title">Volunteer.Me</div>
 			<div className="firebase-auth-container"></div>
+			<div className="home-page-pic"><img src="/volunteer-hands.gif" alt="graphic of raising hands"/></div>
+			<div className="home-page-created-by"></div>
 		</div>
 	)
 }

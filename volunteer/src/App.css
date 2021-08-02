@@ -4,13 +4,35 @@
   width:100vw;
   height:100vh;
   font-family: 'Noto Sans', sans-serif;
-  font-size:45px;
+  font-size:3em;
   margin:0;
   overflow: hidden;
 }
 
+.Login{
+  width: 100vw;
+  height: 100vh;
+  background-color: #f8e575;
+}
+
+.home-page-title{
+  text-align: center;
+  padding: 1em;
+}
+
+.home-page-pic{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.home-page-pic img{
+  width: 50vw;
+  height: auto;
+}
+
 .firebaseui-list-item{
-  font-size: 30px;
+  font-size: 2.5em;
 }
 
 .Header{
@@ -38,7 +60,7 @@
   display:flex;
   justify-content: center;
   align-items:center;
-  font-size:25px;
+  font-size:0.6em;
 }
 
 .inbox{
@@ -106,7 +128,7 @@
   flex-wrap:wrap;
   width:35vw;
   height:100%;
-  font-size:27px;
+  font-size:0.6em;
   overflow:auto;
 }
 
@@ -127,7 +149,7 @@
 }
 
 .filter-options{
-  font-size:15px;
+  font-size:0.6em;
   border-radius: 5px;
   border:solid black 2px;
   padding:0.25em;
@@ -146,7 +168,7 @@
 }
 
 .category-filter-container{
-  font-size:15px;
+  font-size:0.6em;
   border-radius: 5px;
   border:solid black 2px;
   padding:0.25em;
@@ -167,7 +189,7 @@
   position:absolute;
   z-index:1;
   background-color: #ffec00;
-  font-size:25px;
+  font-size:1.5em;
   border:solid black 2px;
 }
 
@@ -726,13 +748,13 @@
   height: 100vh;
   justify-content: center;
   align-content:flex-start;
-  font-size:50px;
+  font-size:1em;
 }
 
 .leaderboard-container{
   width:100%;
   text-align: center;
-  font-size:40px;
+  font-size:1em;
   padding:0.25em;
 }
 
