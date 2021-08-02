@@ -1,6 +1,7 @@
 import React from "react";
 import {useState,useEffect,useRef} from "react";
 import firebase from 'firebase/app'
+import uniqid from "uniqid";
 
 const Leaderboard = (props) => {
 
@@ -62,7 +63,7 @@ const Leaderboard = (props) => {
 			<div>
 			{ Object.keys(leaderboardObj).map(function(keyName,keyIndex){
 				return(
-					<div className="leaderboard-container">
+					<div className="leaderboard-container" key={uniqid()}>
 						<div className="details-container">
 							
 							<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-crown" width="68" height="68" viewBox="0 0 24 24" strokeWidth="2" stroke="#6f32be" fill="none" strokeLinecap="round" strokeLinejoin="round">

@@ -25,23 +25,7 @@ const Paypal = (props) => {
 			},
 			onApprove: async (data,actions)=>{
 				await actions.order.capture();
-				//
-
-				/*
-				var docRef = firebase.collection("users").doc(props.currentUser.uid);
-
-				docRef.get().then((doc) => {
-				    if (doc.exists) {
-				        console.log("Document data:", doc.data());
-				    } else {
-				        // doc.data() will be undefined in this case
-				        console.log("No such document!");
-				    }
-				}).catch((error) => {
-				    console.log("Error getting document:", error);
-				});*/
-
-
+				
 
 				/*firebase.firestore().collection("users").doc(props.currentUser.uid).collection("donations_raised").add({
 					donations_raised: 
@@ -49,10 +33,11 @@ const Paypal = (props) => {
 				console.log(props.currentUser.currentUser.uid);
 				var docRef = firebase.firestore().collection("users").doc(props.currentUser.currentUser.uid);
 				docRef.get().then((doc) => {
+					console.log(doc);
 				    if (doc.exists) {
 				        console.log("Document data:", doc.data());
 				        let document_data = doc.data();
-				        firebase.firestore().collection("users").doc(props.currentUser.currentUser.uid).set({
+				        firebase.firestore().collection("users").doc(props.currentUser.currentUser.uid).update({
 							donations_raised: (document_data.donations_raised + props.donationAmount),
 						});
 
@@ -65,8 +50,18 @@ const Paypal = (props) => {
 						props.setDisplayCompletionModal(false)
 				        //console.log(document_data.donations_raised);
 				    } else {
-				        // doc.data() will be undefined in this case
-				        console.log("No such document!");
+				    	console.log("No such document!");
+				    	console.log(props.donationAmount);
+
+				    	firebase.firestore().collection("users").doc(props.currentUser.currentUser.uid).update({
+							donations_raised: (props.donationAmount),
+						});
+						firebase.firestore().collection('requests').doc(props.currentTask).update({
+							completed: true,
+						});
+
+						props.setDisplayCompletionModal(false)
+				
 				    }
 				}).catch((error) => {
 				    console.log("Error getting document:", error);
