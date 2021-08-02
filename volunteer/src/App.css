@@ -20,7 +20,6 @@
   align-items: center;
   width:100%;
   border-bottom:solid black 2px;
-  height:10vh;
 }
 
 .link{
@@ -347,7 +346,7 @@
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  overflow: none; /* Enable scroll if needed */
+  overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
 }
@@ -468,7 +467,8 @@
 .request-category-container{
   display:flex;
   flex-wrap:wrap;
-  width:5vw;
+  width:8vw;
+  height:8vw;
   justify-content: center;
   align-items: center;
   padding:0.25em;
@@ -479,7 +479,12 @@
 
 .request-category-image{
   width:100%;
+  height: auto;
   text-align: center;
+}
+
+.request-category-label{
+  font-size: 1.25vw;
 }
 
 .request-category-container:hover{
@@ -643,6 +648,7 @@
 .chat-groups{
   display:flex;
   flex-wrap:wrap;
+  overflow: auto;
 }
 
 .chat-window{
@@ -707,7 +713,7 @@
   position:absolute;
   bottom:0;
   height: 7vh;
-  font-size:40px;
+  font-size:1em;
   border-radius:10px;
   width:63vw;
   margin:0.1em;
@@ -757,6 +763,45 @@ input:focus{
   outline: none;
 }
 
+@media(max-width: 1300px){
+  .requests-label, .my-requests-label, .my-tasks-label {
+    width:33%;
+    border-bottom:solid black 2px;
+    border-top:solid black 2px;
+    text-align:center;
+    font-size: 0.7em;
+  }
+}
+
+@media(max-width: 1021px){
+  .requests-label, .my-requests-label, .my-tasks-label {
+    width:33%;
+    border-bottom:solid black 2px;
+    border-top:solid black 2px;
+    text-align:center;
+    font-size: 0.7em;
+  }
+}
+
+@media(max-width: 879px){
+  .requests-label, .my-requests-label, .my-tasks-label {
+    width:33%;
+    border-bottom:solid black 2px;
+    border-top:solid black 2px;
+    text-align:center;
+    font-size: 0.6em;
+  }
+}
+
+@media(max-width: 879px){
+  .requests-label, .my-requests-label, .my-tasks-label {
+    width:33%;
+    border-bottom:solid black 2px;
+    border-top:solid black 2px;
+    text-align:center;
+    font-size: 0.6em;
+  }
+}
 
 
 @media (max-width: 768px) {
@@ -768,15 +813,13 @@ input:focus{
     justify-content: center;
     align-items: center;
     width:100%;
-    border-bottom:solid black 2px;
-    height:20vh;
   }
+
 
   .title{
     font-size: 0.75em;
     width: 100vw;
     text-align: center;
-    border-bottom: solid black 2px;
   }
 
   .header-btn-container{
@@ -786,6 +829,7 @@ input:focus{
     align-items:center;
     font-size:0.5em;
     width: 100%;
+    border-top: solid black 2px; 
   }
 
   .TaskPanel{
@@ -793,27 +837,19 @@ input:focus{
     align-content: flex-start;
     flex-wrap:wrap;
     width:100%;
-    font-size:27px;
+    font-size:0.65em;
     overflow:auto;
   }
 
-  .MapImage{
-
-    height:50vh;
-    width:100%;
-    position: relative;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
+  .MapImage {
+    display: none;
   }
 
-  .requests-label, .my-requests-label, .my-tasks-label,{
+  .requests-label, .my-requests-label, .my-tasks-label {
     width:33%;
     border-bottom:solid black 2px;
-    border-top:solid black 2px;
     text-align:center;
-    font-size: 0.5em;
+    font-size: 0.8em;
 
   }
 
@@ -828,7 +864,7 @@ input:focus{
     border: 1px solid #888;
     width:80%;
     padding: 0.55em;
-    overflow: scroll;
+    overflow: auto;
   }
   .modal-taskName,.confirm-header{
     width: 100%;
@@ -892,9 +928,9 @@ input:focus{
   .modal-donation-amount{
     margin-bottom: 0.25em;
   }
+
   .cancel-completion-btn{
     padding:0.4em;
-    margin:0.1em;
     border: solid black 2px;
   }
 
@@ -935,12 +971,71 @@ input:focus{
     background-color: white;
   }
   .request-category-image{
+    width:100%;
+    text-align: center;
+  }
+  .request-category-image svg{
     width: 15vw;
     height: 15vw;
-    background-color: green;
   }
   .request-category-label{
     font-size: 0.5em; 
   }
+  .request-task-btn,.request-cancel-btn{
+    border:solid black 2px;
+    padding:0.25em;
+    font-size:0.5em;
+    margin:0.5em;
 
+  }
+
+  .category{
+    font-size: 0.6em;
+  }
+
+  .entry-taskName,.entry-location{
+    font-size: .7em;
+  }
+  .entry-date-container{
+    font-size: .5em;
+  }
+
+  .chat-window-top-bar-user{
+    font-size: .5em;
+  }
+
+  .chat-text-bar{
+
+    position:absolute;
+    bottom:0;
+    height: 7vh;
+    font-size:0.7em;
+    border-radius:10px;
+    width:63vw;
+    margin:0.1em;
+  }
+  .Leaderboard{
+    font-size: 0.7em;
+  }
+
+}
+
+@media(max-width: 423px){
+  .requests-label, .my-requests-label, .my-tasks-label {
+    width:33%;
+    border-bottom:solid black 2px;
+    border-top:solid black 2px;
+    text-align:center;
+    font-size: 0.6em;
+  }
+}
+
+@media(max-width: 317px){
+  .requests-label, .my-requests-label, .my-tasks-label {
+    width:33%;
+    border-bottom:solid black 2px;
+    border-top:solid black 2px;
+    text-align:center;
+    font-size: 0.58em;
+  }
 }
